@@ -18,9 +18,5 @@ Route::get('/', function () {
     return view('site.index');
 })->name('site');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 
 
