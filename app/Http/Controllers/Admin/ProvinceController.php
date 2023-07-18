@@ -16,7 +16,7 @@ class ProvinceController extends Controller
     {
         $query = $request->get('query');
         $provinces = Province::where('title', 'LIKE', '%' . $query . '%')->paginate(15);
-        return view('provinces.index', ['provinces' => $provinces]);
+        return view('admin.provinces.index', ['provinces' => $provinces]);
     }
 
     /**
@@ -26,10 +26,10 @@ class ProvinceController extends Controller
     {
         try {
             Province::create($request->all());
-            return redirect()->route('provinces.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+            return redirect()->route('admin.provinces.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
         }
         catch (Throwable $th) {
-            return redirect()->route('provinces.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            return redirect()->route('admin.provinces.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
     }
 
@@ -40,10 +40,10 @@ class ProvinceController extends Controller
     {
         try {
             $province->update($request->all());
-            return redirect()->route('provinces.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
+            return redirect()->route('admin.provinces.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
         }
         catch (Throwable $th) {
-            return redirect()->route('provinces.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            return redirect()->route('admin.provinces.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
     }
 
@@ -54,10 +54,10 @@ class ProvinceController extends Controller
     {
         try {
            $province->delete();
-            return redirect()->route('provinces.index')->with('success', 'حذف اطلاعات  باموفقیت انجام شد.');
+            return redirect()->route('admin.provinces.index')->with('success', 'حذف اطلاعات  باموفقیت انجام شد.');
         }
         catch (Throwable $th) {
-            return redirect()->route('provinces.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            return redirect()->route('admin.provinces.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
     }
 }

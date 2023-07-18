@@ -22,7 +22,7 @@
 			<!--end::Aside-->
 			<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 				<!--begin::Header-->
-				@include('layouts.header')
+				@include('layouts.admin.header')
 				<!--begin::breadcrumb-->
 				<div class="toolbar" id="kt_toolbar">
 					@include('layouts.admin.breadcrumb')

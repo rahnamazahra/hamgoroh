@@ -2,7 +2,7 @@
 @section('title', 'شهرها')
 @section('content')
 @include('admin.toast.errortoast')
-@can('cities-index')
+@can('cities_index')
 <div class="card">
       <div class="card-header">
         <div class="card-title">
@@ -26,7 +26,7 @@
         </div>
         <div class="card-toolbar">
             <div class="d-flex justify-content-start bd-highlight mb-8 mt-8">
-                @can('cities-create')
+                @can('cities_create')
                     <div class="p-2 bd-highlight">
                         <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#city_create_modal">جدید +</button>
                     </div>
@@ -68,7 +68,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn btn-group-sm">
-                                    @can('cities-create')
+                                    @can('cities_create')
                                     <a class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" onclick="openUpdateModal({{ $city}})" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
                                         <span class="svg-icon svg-icon-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -78,7 +78,7 @@
                                         </span>
                                     </a>
                                     @endcan
-                                    @can('cities-delete')
+                                    @can('cities_delete')
                                     <button onclick="showDeleteAlert({{ route('categories.delete', ['city' => $city->id]) }})" type="button" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
                                         <span class="svg-icon svg-icon-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -104,8 +104,8 @@
          </div>
     </div>
 @endcan
-@include('admin.city.create')
-@include('admin.city.update')
+@include('admin.cities.create')
+@include('admin.cities.update')
 </div>
 @endsection
 @push('custom-scripts')

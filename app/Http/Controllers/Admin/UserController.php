@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Models\City;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,12 +18,12 @@ class UserController extends Controller
 
         if ($item = $request->query('item_roles') and $item != 'all')
         {
-            $users = Role::find($item)->users;
+            $users = Role::find($item)->users->paginate(15);
         } else
         {
-            $users = User::with(['roles'])->orderBy('last_name')->orderBy('first_name')->get();
+            $users = User::with(['roles'])->orderBy('last_name')->orderBy('first_name')->paginate(15);
         }
-        return view('admin.users.index', ['users' => $users, 'roles' => $roles]);
+        return view('admin.users.index', ['users' => $users, 'roles' => $roles, 'cities'=>City::all()]);
     }
     public function store(UserRequest $request)
     {

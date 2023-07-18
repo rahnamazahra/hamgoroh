@@ -1,8 +1,8 @@
-@extends('index')
+@extends('layouts.admin.master')
 @section('title', 'مدیریت کاربران')
 @section('content')
 @include('admin.toast.errortoast')
-@can('users-index')
+@can('users_index')
     <div class="card">
         <div class="card-header">
             <div class="card-title">
@@ -35,9 +35,9 @@
             </div>
             <div class="card-toolbar">
                 <div class="d-flex justify-content-start bd-highlight mb-8 mt-8">
-                    @can('users-create')
+                    @can('users_create')
                         <div class="p-2 bd-highlight">
-                            @include('admin.user.create')
+                            @include('admin.users.create')
                         </div>
                     @endcan
                 </div>
@@ -128,7 +128,7 @@
                                                     </svg>
                                                 </span>
                                         </button>
-                                        @can('users-update')
+                                        @can('users_update')
                                         <button data-bs-toggle="modal" data-bs-target="#user_update_modal" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
                                             <span class="svg-icon svg-icon-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -138,7 +138,7 @@
                                             </span>
                                         </button>
                                         @endcan
-                                        @can('users-delete')
+                                        @can('users_delete')
                                         <button data-bs-toggle="modal" data-bs-target="#user_delete_modal" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
                                             <span class="svg-icon svg-icon-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -160,11 +160,11 @@
                 </table>
             </div>
             <div class="mt-5">
-                {{ $users->withQueryString()->links('partials.pagination') }}
+                {{ $users->links('admin.partials.pagination') }}
             </div>
         </div>
-    @include('admin.user.update')
-    @include('admin.user.delete')
+    @include('admin.users.update')
+    @include('admin.users.delete')
     </div>
 @endcan
 @endsection

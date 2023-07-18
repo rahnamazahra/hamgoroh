@@ -1,8 +1,8 @@
-@extends('layouts.admin')
+@extends('layouts.admin.master')
 @section('title', 'استان ها')
 @section('content')
 @include('admin.toast.errortoast')
-@can('provinces-index')
+@can('provinces_index')
 <div class="card">
     <div class="card-header">
         <div class="card-title">
@@ -26,9 +26,9 @@
         </div>
         <div class="card-toolbar">
             <div class="d-flex justify-content-start bd-highlight mb-8 mt-8">
-                @can('provinces-create')
+                @can('provinces_create')
                     <div class="p-2 bd-highlight">
-                        @include('admin.province.create')
+                        @include('admin.provinces.create')
                     </div>
                 @endcan
             </div>
@@ -61,7 +61,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn btn-group-sm">
-                                    @can('provinces-update')
+                                    @can('provinces_update')
                                     <button data-bs-toggle="modal" data-bs-target="#province_update_modal" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
                                         <span class="svg-icon svg-icon-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -71,7 +71,7 @@
                                         </span>
                                     </button>
                                     @endcan
-                                    @can('provinces-delete')
+                                    @can('provinces_delete')
                                     <button data-bs-toggle="modal" data-bs-target="#province_delete_modal" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
                                         <span class="svg-icon svg-icon-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -93,11 +93,11 @@
             </table>
         </div>
         <div class="mt-5">
-            {{ $provinces->withQueryString()->links('partials.pagination') }}
+            {{ $provinces->links('admin.partials.pagination') }}
          </div>
     </div>
-    @include('admin.province.update')
-    @include('admin.province.delete')
+    @include('admin.provinces.update')
+    @include('admin.provinces.delete')
 </div>
 @endcan
 @endsection

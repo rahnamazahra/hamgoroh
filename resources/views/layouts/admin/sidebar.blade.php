@@ -27,9 +27,10 @@
         <div class="hover-scroll-overlay-y my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="0">
             <!--begin::Menu-->
             <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true" data-kt-menu-expand="false">
-                <div class="menu-item {{ Request::routeIs('admin') ? 'hover show' : '' }}"> data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
+                @can('admin_index')
+                <div class="menu-item">
+                    <a class="menu-link {{ Request::routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard')}}">
                         <span class="menu-icon">
-                            <!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
                             <span class="svg-icon svg-icon-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none">
@@ -39,14 +40,14 @@
                                     <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="currentColor" />
                                 </svg>
                             </span>
-                            <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">داشبورد‌</span>
                     </a>
                 </div>
-                @canany(['permissions-index', 'permissions-create', 'roles-index'])
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::routeIs('admin.permissions') ? 'hover show' : '' }}">
-                    <a class="menu-link {{ Request::routeIs('admin.permissions') ? 'active' : '' }}" href="{{ route('admin.permissions') }}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
+                @endcan
+                {{--  @canany(['permissions_index', 'permissions_create', 'roles_index'])
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::routeIs('admin.permissions.index') ? 'hover show' : '' }}">
+                    <a class="menu-link {{ Request::routeIs('admin.permissions') ? 'active' : '' }}" href="{{ route('admin.permissions.index') }}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
                         <span class="menu-icon">
                             <span class="svg-icon svg-icon-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -59,28 +60,24 @@
                         <span class="menu-title">نقش ها و دسترسی ها</span>
                     </a>
                 </div>
-                @endcanany
-                @canany(['users-index', 'users-create', 'users-update', 'users-delete'])
-                <div class="menu-item {{ Request::routeIs('admin.users') ? 'hover show' : '' }}">
-                    <a class="menu-link {{ Request::routeIs('admin.users.index') ? 'active' : '' }}" href="{{ route('admin.users.index') }}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
+                @endcanany  --}}
+                @canany(['users_index', 'users_create', 'users_update', 'users_delete'])
+                <div class="menu-item">
+                    <a class="menu-link {{ Request::routeIs('admin.users.index') ? 'active' : '' }}" href="{{ route('admin.users.index')}}">
                         <span class="menu-icon">
-                            <!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
                             <span class="svg-icon svg-icon-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                     <path d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z" fill="currentColor"></path>
-                                    <rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4" fill="currentColor">
-                                    </rect>
+                                    <rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4" fill="currentColor"></rect>
                                 </svg>
                             </span>
-                            <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">مدیریت کاربران</span>
                     </a>
                 </div>
                 @endcan
-                @canany(['provinces-index', 'provinces-create', 'provinces-update', 'provinces-delete', 'cities-index', 'cities-create', 'cities-update', 'cities-delete'])
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::routeIs('admin.provinces.index') || Request::routeIs('admin.cities.index') ? 'hover show' : '' }}">
+                @canany(['provinces_index', 'provinces_create', 'provinces_update', 'provinces_delete', 'cities_index', 'cities_create', 'cities_update', 'cities_delete'])
+                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                         <span class="menu-link">
                             <span class="menu-icon">
                                 <span class="svg-icon svg-icon-2">
@@ -94,7 +91,7 @@
                             <span class="menu-arrow"></span>
                         </span>
                         <div class="menu-sub menu-sub-accordion">
-                            @can(['provinces-index', 'provinces-create', 'provinces-update', 'provinces-delete'])
+                            @can(['provinces_index', 'provinces_create', 'provinces_update', 'provinces_delete'])
                                 <div class="menu-item">
                                     <a class="menu-link {{ Request::routeIs('admin.provinces.index') ? 'active' : '' }}" href="{{ route('admin.provinces.index') }}">
                                         <span class="menu-bullet">
@@ -104,7 +101,7 @@
                                     </a>
                                 </div>
                             @endcan
-                            @can(['cities-index', 'cities-create', 'cities-update', 'cities-delete'])
+                            @can(['cities_index', 'cities_create', 'cities_update', 'cities_delete'])
                                 <div class="menu-item">
                                     <a class="menu-link {{ Request::routeIs('admin.cities.index') ? 'active' : '' }}" href="{{ route('admin.cities.index') }}">
                                         <span class="menu-bullet">

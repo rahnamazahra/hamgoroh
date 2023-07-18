@@ -19,15 +19,14 @@ class User extends Authenticatable
     protected $hidden   = ['password'];
     protected $casts    = ['phone_verified_at' => 'datetime','password' => 'hashed',];
 
-    public function roles(): BelongsToMany
+    public function roles()
     {
         return $this->belongsToMany(Role::class);
     }
 
     public function hasRole($roles)
     {
-        $roles = collect($roles);
-        return (bool) $roles->intersect(collect($this->roles))->count();
+        return $roles->intersect($this->roles);
     }
 
     public function hasPermission($permission)
