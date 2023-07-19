@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\View\View;
-use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use App\Providers\RouteServiceProvider;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\Role;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -45,7 +43,8 @@ class AuthenticatedSessionController extends Controller
     public function configVerify(Request $request): RedirectResponse
     {
         $credentials = $request->only('phone', 'password');
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials))
+        {
             $user = Auth::user();
             $request->session()->regenerate();
             if ($user->roles->contains(2))
