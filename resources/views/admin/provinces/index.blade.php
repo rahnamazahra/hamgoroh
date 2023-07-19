@@ -92,7 +92,7 @@
          </div>
     </div>
     @include('admin.provinces.update')
-    @include('admin.provinces.delete')
+{{--    @include('admin.provinces.delete')--}}
 </div>
 @endcan
 @endsection
