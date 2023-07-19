@@ -51,7 +51,7 @@
                             <td class="text-center">{{ $loop->index+1 }}</td>
                             <td class="text-center">
                                 <div class="position-relative ps-6 pe-3 py-2">
-                                    <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder"> {{ $province->title ?? '-' }}</a>
+                                    <span class="mb-1 text-dark fw-bolder"> {{ $province->title ?? '-' }}</span>
                                 </div>
                             </td>
                             <td class="text-center">

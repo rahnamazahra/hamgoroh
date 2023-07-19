@@ -27,7 +27,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users', 'index')->name('admin.users.index');
     Route::post('/users', 'store')->name('admin.users.store');
     Route::patch('/users/{user}', 'update')->name('admin.users.update');
-    Route::get('/users/{user}/delete', 'delete')->name('admin.users.delete');
+    Route::delete('/users/{user}/delete', 'delete')->name('admin.users.delete');
 });
 // provinces
 Route::controller(ProvinceController::class)->group(function () {
@@ -41,7 +41,7 @@ Route::controller(CityController::class)->group(function () {
     Route::get('/cities', 'index')->name('admin.cities.index');
     Route::post('/cities', 'store')->name('admkn.cities.store');
     Route::patch('/cities/{city}', 'update')->name('admin.cities.update');
-    Route::get('/cities/{city}/delete', 'delete')->name('admin.cities.delete');
+    Route::delete('/cities/{city}/delete', 'delete')->name('admin.cities.delete');
 });
 // Fields
 Route::controller(FieldController::class)->group(function () {
@@ -49,5 +49,5 @@ Route::controller(FieldController::class)->group(function () {
     Route::get('/fields', 'index')->name('admin.fields.index');
     Route::post('/fields', 'store')->name('admin.fields.store');
     Route::patch('/fields/{field}', 'update')->name('admin.fields.update');
-    Route::get('/fields/{field}/delete', 'delete')->name('admin.fields.delete');
+    Route::delete('/fields/{field}/delete', 'delete')->name('admin.fields.delete');
 });
