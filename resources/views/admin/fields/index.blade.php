@@ -1,5 +1,6 @@
+@extends('layouts.admin.master')
 @section('title', 'رشته‌ها')
-
+@section('content')
 @include('admin.toast.errortoast')
 
 <div class="card shadow-sm">
@@ -22,10 +23,10 @@
             </div>
         </div>
         <div class="card-toolbar">
-            @can('fields-create')
+{{--            @can('fields-create')--}}
                 <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#fieldCreateModal">رشته جدید +</button>
                 @include('admin.fields.create')
-            @endcan
+{{--            @endcan--}}
         </div>
     </div>
     <div class="card-body">
@@ -84,3 +85,4 @@
 </div>
 
 @include('admin.fields.update')
+@endsection('content')

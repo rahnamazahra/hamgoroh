@@ -62,6 +62,18 @@ class UserRoleSeeder extends Seeder
             'birthday_date' => '1990-12-31',
         ]);
 
+        $user5 = User::create([
+            'first_name'    => 'فاطمه',
+            'last_name'     => 'طوسی',
+            'phone'         => '09912531490',
+            'password'      => '$2y$10$VPWWn1FmvVUh7YW4MAnHq.FBHtyGlX7uvMVgWhpvwNzwyGWkWxiTW',
+            'is_active'     => 1,
+            'city_id'       => 722,
+            'national_code' => '1111111414',
+            'gender'        => 0,
+            'birthday_date' => '1990-12-31',
+        ]);
+
         $developer          = Role::create(['title' => 'برنامه نویس', 'slug' => 'developer', 'is_orginal' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         $admin              = Role::create(['title' => 'ادمین', 'slug' => 'admin', 'is_orginal' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
         $general_manager    = Role::create(['title' => 'مدیرکل', 'slug' => 'general_manager', 'is_orginal' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
@@ -74,5 +86,6 @@ class UserRoleSeeder extends Seeder
         $user2->roles()->attach($admin->id);
         $user3->roles()->attach([$developer->id, $admin->id]);
         $user4->roles()->attach([$developer->id, $admin->id]);
+        $user5->roles()->attach([$developer->id, $admin->id]);
     }
 }

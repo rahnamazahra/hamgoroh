@@ -26,7 +26,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light"   data-bs-dismiss="modal">لغو</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" wire:click.prevent="update({{ $field_id }})">ذخیره</button>
+{{--                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" wire:click.prevent="update({{ $fields->id }})">ذخیره</button>--}}
                 </div>
             </form>
         </div>
