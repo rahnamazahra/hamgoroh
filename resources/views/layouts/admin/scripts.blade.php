@@ -6,4 +6,4 @@
 <script src="{{ asset('assets/admin/js/js.js') }}"></script>
 <!--end::Global Javascript Bundle-->
 <!--end::Javascript-->
-
+@vite('resources/js/app.js')

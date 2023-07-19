@@ -17,16 +17,16 @@
                 <!--end::Close-->
             </div>
             <form class="form" role="form" autocomplete="off" id="add_province_form">
-                @csrf
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
                     <div class="col-md-12 fv-row">
                         <label for="title" class="required d-flex align-items-center fs-6 fw-bold mb-2">نام استان</label>
-                        <input type="text" class="form-control form-control-solid" name="title" id="title" value="{{ old('title') }}/>
+                        <input type="text" class="form-control form-control-solid" name="title" id="title" value="{{ old('title') }}"/>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="btn_add_province">ذخیره</button>
-                    <button type="button" class="btn btn-light"   data-bs-dismiss="modal">انصراف</button>
+                    <button type="button" data-form-id="add_province_form" data-url="{{ route('admin.provinces.store') }}" class="btn btn-primary btn_create_form" data-bs-dismiss="modal" id="btn_add_province">ذخیره</button>
+                    <button type="button" class="btn btn-light"  data-bs-dismiss="modal">انصراف</button>
                 </div>
         </form>
         </div>

@@ -63,7 +63,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="position-relative ps-6 pe-3 py-2">
-                                    <span class="mb-1 text-dark"> {{ $city->country->title }}</span>
+                                    <span class="mb-1 text-dark"></span>
                                 </div>
                             </td>
                             <td class="text-center">
@@ -79,7 +79,7 @@
                                     </a>
                                     @endcan
                                     @can('cities_delete')
-                                    <button onclick="showDeleteAlert({{ route('categories.delete', ['city' => $city->id]) }})" type="button" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
+                                    <button onclick="showDeleteAlert({{ route('admin.cities.delete', ['city' => $city->id]) }})" type="button" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
                                         <span class="svg-icon svg-icon-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path>

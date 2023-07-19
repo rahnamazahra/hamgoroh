@@ -34,7 +34,7 @@ Route::controller(ProvinceController::class)->group(function () {
     Route::get('/provinces', 'index')->name('admin.provinces.index');
     Route::post('/provinces', 'store')->name('admin.provinces.store');
     Route::patch('/provinces/{province}', 'update')->name('admin.provinces.update');
-    Route::get('/provinces/{province}/delete', 'delete')->name('admin.provinces.delete');
+    Route::delete('/provinces/{province}/delete', 'delete')->name('admin.provinces.delete');
 });
 // cities
 Route::controller(CityController::class)->group(function () {

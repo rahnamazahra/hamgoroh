@@ -26,10 +26,10 @@ class ProvinceController extends Controller
     {
         try {
             Province::create($request->all());
-            return redirect()->route('admin.provinces.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+            return response()->json(['success' => true], 200);
         }
-        catch (Throwable $th) {
-            return redirect()->route('admin.provinces.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        catch (\Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
 
@@ -40,10 +40,10 @@ class ProvinceController extends Controller
     {
         try {
             $province->update($request->all());
-            return redirect()->route('admin.provinces.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
+            return response()->json(['success' => true], 200);
         }
-        catch (Throwable $th) {
-            return redirect()->route('admin.provinces.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        catch (\Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
 
@@ -53,11 +53,11 @@ class ProvinceController extends Controller
     public function delete(Province $province)
     {
         try {
-           $province->delete();
-            return redirect()->route('admin.provinces.index')->with('success', 'حذف اطلاعات  باموفقیت انجام شد.');
+            $province->delete();
+            return response()->json(['success' => true], 200);
         }
-        catch (Throwable $th) {
-            return redirect()->route('admin.provinces.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        catch (\Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
 }

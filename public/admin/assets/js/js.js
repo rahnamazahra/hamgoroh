@@ -1,5 +1,4 @@
 const myInput = document.getElementById("input_just_number");
-
 myInput.addEventListener("keypress", function (evt) {
     const charCode = evt.which ? evt.which : event.keyCode;
 
