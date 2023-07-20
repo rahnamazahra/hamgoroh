@@ -100,43 +100,11 @@
             </table>
         </div>
         <div class="mt-5">
-            {{ $cities->withQueryString()->links('partials.pagination') }}
+            {{ $cities->links('partials.pagination') }}
          </div>
     </div>
 @endcan
 @include('admin.cities.create')
-@include('admin.cities.update')
 </div>
 @endsection
-@push('custom-scripts')
-<script>
-    $('#search_item').on('keyup',function() {
-        var query = $(this).val();
-        $.ajax({
-            url:"{{ route('admin.cities.index') }}",
-            type:"GET",
-            data:{'query':query},
-            success:function (data) {
-                $('#cityList').html(data);
-            }
-        })
-    });
-    $('body').on('click', 'li', function(){
-        var value = $(this).text();
-    });
-</script>
-<script>
-    function openUpdateModal(city)
-    {
-        var content = '<form class="form" role="form" autocomplete="off" id="update_city_form"> <input type="hidden" name="_token" value="{{csrf_token()}}"/> <div class="modal-body"> <div class="col-md-12 fv-row"> <div> <div class="form-group"> <div class="input-group"> <label for="province_id" class="required d-flex align-items-center fs-6 fw-bold mb-2">نام اسـتان </label> <select class="form-select form-select-solid" name="province_id" id="province_id" style="width: 100%;" tabindex="-1" aria-hidden="true"> <option value=""></option> @foreach($provinces as $title=>$id) <option value="{{$id}}" @if( $city->province_id==$id) selected @endif>{{$title}}</option> @endforeach </select> </div></div></div></div><div class="col-md-12 fv-row"> <label for="title" class="required d-flex align-items-center fs-6 fw-bold mb-2">نام شهر</label> <input type="text" class="form-control form-control-solid" name="title" id="title" value="{{old('title')}}"/> </div></div><div class="modal-footer"> <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="btn_update_city">ذخیره</button> <button type="button" class="btn btn-light" data-bs-dismiss="modal">انصراف</button> </div></form>';
-        $('#update_content_div').html(content);
-        $('#update_city_modal').modal('show');
-        $('#update_city_form').on('submit', function (e)
-        {
-            e.preventDefault();
-            CrudHandler.editEntry({{route('admin.cities.update', ['city'=> $city->id])}}, '#update_city_form');
-        });
-    }
-</script>
-@endpush
 

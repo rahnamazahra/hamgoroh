@@ -1,8 +1,7 @@
 @extends('layouts.admin.master')
 @section('title', 'مدیریت کاربران')
 @section('content')
-@include('admin.toast.errortoast')
-@can('users_index')
+@can('users-index')
     <div class="card">
         <div class="card-header">
             <div class="card-title">
@@ -35,9 +34,9 @@
             </div>
             <div class="card-toolbar">
                 <div class="d-flex justify-content-start bd-highlight mb-8 mt-8">
-                    @can('users_create')
+                    @can('users-create')
                         <div class="p-2 bd-highlight">
-                            @include('admin.users.create')
+                            <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary" >جدید +</button>
                         </div>
                     @endcan
                 </div>
@@ -128,7 +127,7 @@
                                                     </svg>
                                                 </span>
                                         </button>
-                                        @can('users_update')
+                                        @can('users-update')
                                         <button data-bs-toggle="modal" data-bs-target="#user_update_modal" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
                                             <span class="svg-icon svg-icon-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -138,7 +137,7 @@
                                             </span>
                                         </button>
                                         @endcan
-                                        @can('users_delete')
+                                        @can('users-delete')
                                         <button data-bs-toggle="modal" data-bs-target="#user_delete_modal" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
                                             <span class="svg-icon svg-icon-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -164,28 +163,7 @@
             </div>
         </div>
     @include('admin.users.update')
-    @include('admin.users.delete')
     </div>
 @endcan
 @endsection
-@push('custom-scripts')
-<script>
-    $('#search_item').on('keyup',function() {
-        var query = $(this).val();
-        $.ajax({
-            url:"{{ route('admin.users.index') }}",
-            type:"GET",
-            data:{'query':query},
-            success:function (data) {
-                $('#userList').html(data);
-            }
-        })
-    });
-    $('body').on('click', 'li', function(){
-        var value = $(this).text();
-    });
-</script>
-<script type="text/javascript">
-    jalaliDatepicker.startWatch();
-</script>
-@endpush
+

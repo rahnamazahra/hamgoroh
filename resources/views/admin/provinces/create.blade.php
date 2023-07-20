@@ -1,21 +1,13 @@
-<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#province_create_modal">جدید +</button>
-<!--begin::Modal-->
-<div class="modal fade" id="province_create_modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-650px">
-        <div class="modal-content rounded">
-            <div class="modal-header pb-0 border-0 justify-content-between">
-                <h5 class="modal-title">اطلاعات را وارد نمایید</h5>
-                <!--begin::Close-->
-                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                    <span class="svg-icon svg-icon-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <rect opaProvince="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
-                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
-                        </svg>
-                    </span>
-                </div>
-                <!--end::Close-->
+@extends('layouts.admin.master')
+@section('title', 'ویرایش استان')
+@section('content')
+@can('provinces-update')
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-13 text-center">
+                <h1 class="mb-3">ایجاد استان جدید</h1>
             </div>
+            @include('admin.errors.error_message')
             <form class="form" role="form" autocomplete="off" id="add_province_form">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
@@ -24,15 +16,18 @@
                         <input type="text" class="form-control form-control-solid" name="title" id="title" value="{{ old('title') }}"/>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" data-form-id="add_province_form" data-url="{{ route('admin.provinces.store') }}" class="btn btn-primary btn_create_form" data-bs-dismiss="modal" id="btn_add_province">ذخیره</button>
-                    <button type="button" class="btn btn-light"  data-bs-dismiss="modal">انصراف</button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-lg btn-primary btn-submit w-100 mb-5">
+                        <span class="indicator-label">ثبت</span>
+                        <span class="indicator-progress">لطفا چندلحظه صبر کنید ...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                    <a href="{{ rout('admin.users.index')}}" type="button" class="btn btn-light">برگشت</button>
                 </div>
-        </form>
+            </form>
         </div>
     </div>
-</div>
-<!--end::Modal-->
-
-
+@endcan
+@endsection
 
