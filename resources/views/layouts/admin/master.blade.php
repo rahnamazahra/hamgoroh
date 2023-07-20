@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-	<title>@yield('title')|پنل‌مدیریت</title>
+	<title>پنل‌مدیریت - @yield('title')</title>
     <meta charset="utf-8" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />

@@ -22,123 +22,172 @@ class PermissionRoleSeeder extends Seeder
 
         $permission_admin_index = Permission::create([
             'title'       => 'داشبورد',
-            'slug'        => 'admin_index',
+            'slug'        => 'admin-index',
             'description' => 'امکان مشاهده داشبورد',
         ]);
 
         $permission_roles_index = Permission::create([
             'title'       => 'لیست نقش‌ها',
-            'slug'        => 'roles_index',
+            'slug'        => 'roles-index',
             'description' => 'امکان مشاهده لسیت نقش‌ها',
         ]);
 
         $permission_permissions_index = Permission::create([
             'title'       => 'لیست دسترسی‌ها',
-            'slug'        => 'permissions_index',
+            'slug'        => 'permissions-index',
             'description' => 'امکان مشاهده لسیت دسترسی‌ها',
         ]);
 
         $permission_permissions_create = Permission::create([
             'title'       => 'ایجاد دسترسی جدید',
-            'slug'        => 'permissions_create',
+            'slug'        => 'permissions-create',
             'description' => 'امکان ایجاد دسترسی جدید',
         ]);
 
         $permission_permissions_update = Permission::create([
             'title'       => 'ویرایش دسترسی',
-            'slug'        => 'permissions_update',
+            'slug'        => 'permissions-update',
             'description' => 'امکان ویرایش دسترسی',
         ]);
 
         $permission_permissions_delete = Permission::create([
             'title'       => 'حذف دسترسی',
-            'slug'        => 'permissions_delete',
+            'slug'        => 'permissions-delete',
             'description' => 'امکان حذف دسترسی',
         ]);
 
         $permission_users_index = Permission::create([
             'title'       => 'لیست کاربران',
-            'slug'        => 'users_index',
+            'slug'        => 'users-index',
             'description' => 'امکان مشاهده لسیت کاربران',
         ]);
 
         $permission_users_create = Permission::create([
             'title'       => 'ایجاد کاربر جدید',
-            'slug'        => 'users_create',
+            'slug'        => 'users-create',
             'description' => 'امکان ایجاد کاربر جدید',
         ]);
 
         $permission_users_update = Permission::create([
             'title'       => 'ویرایش کاربر',
-            'slug'        => 'users_update',
+            'slug'        => 'users-update',
             'description' => 'امکان ویرایش کاربر',
         ]);
 
         $permission_users_delete = Permission::create([
             'title'       => 'حذف کاربر',
-            'slug'        => 'users_delete',
+            'slug'        => 'users-delete',
             'description' => 'امکان حذف کاربر',
         ]);
         $permission_users_meta_create = Permission::create([
             'title'       => 'ایجاد اطلاعات تکمیلی کاربر',
-            'slug'        => 'users_meta_create',
+            'slug'        => 'users-meta-create',
             'description' =>  'امکان ایجاد اطلاعات تکمیلی کاربر',
         ]);
         $permission_users_meta_update = Permission::create([
             'title'       => 'ویرایش اطلاعات تکمیلی کاربر',
-            'slug'        => 'users_meta_update',
+            'slug'        => 'users-meta-update',
             'description' =>  'امکان ویرایش اطلاعات تکمیلی کاربر',
         ]);
         $permission_users_meta_delete = Permission::create([
             'title'       => 'حذف اطلاعات تکمیلی کاربر',
-            'slug'        => 'users_meta_delete',
+            'slug'        => 'users-meta-delete',
             'description' =>  'امکان حذف اطلاعات تکمیلی کاربر',
         ]);
         $permission_provinces_index = Permission::create([
             'title'       => 'لیست اسـتان ها',
-            'slug'        => 'provinces_index',
+            'slug'        => 'provinces-index',
             'description' => 'امکان مشاهده لسیت اسـتان ها',
         ]);
 
         $permission_provinces_create = Permission::create([
             'title'       => 'ایجاد اسـتان  جدید',
-            'slug'        => 'provinces_create',
+            'slug'        => 'provinces-create',
             'description' => 'امکان ایجاد اسـتان  جدید',
         ]);
 
         $permission_provinces_update = Permission::create([
             'title'       => 'ویرایش اسـتان',
-            'slug'        => 'provinces_update',
+            'slug'        => 'provinces-update',
             'description' => 'امکان ویرایش اسـتان',
         ]);
 
         $permission_provinces_delete = Permission::create([
             'title'       => 'حذف اسـتان',
-            'slug'        => 'provinces_delete',
+            'slug'        => 'provinces-delete',
             'description' => 'امکان حذف اسـتان',
         ]);
+
         $permission_cities_index = Permission::create([
             'title'       => 'لیست شـهر ها',
-            'slug'        => 'cities_index',
+            'slug'        => 'cities-index',
             'description' => 'امکان مشاهده لسیت شـهر ها',
         ]);
 
         $permission_cities_create = Permission::create([
             'title'       => 'ایجاد شـهر  جدید',
-            'slug'        => 'cities_create',
+            'slug'        => 'cities-create',
             'description' => 'امکان ایجاد شـهر  جدید',
         ]);
 
         $permission_cities_update = Permission::create([
             'title'       => 'ویرایش شـهر',
-            'slug'        => 'cities_update',
+            'slug'        => 'cities-update',
             'description' => 'امکان ویرایش شـهر',
         ]);
 
         $permission_cities_delete = Permission::create([
             'title'       => 'حذف شـهر',
-            'slug'        => 'cities_delete',
+            'slug'        => 'cities-delete',
             'description' => 'امکان حذف شـهر',
+        ]);
+
+        $permission_fields_index = Permission::create([
+            'title'       => 'لیست رشته ها',
+            'slug'        => 'fields-index',
+            'description' => 'امکان مشاهده لسیت رشته ها',
+        ]);
+
+        $permission_fields_create = Permission::create([
+            'title'       => 'ایجاد رشته  جدید',
+            'slug'        => 'fields-create',
+            'description' => 'امکان ایجاد رشته  جدید',
+        ]);
+
+        $permission_fields_update = Permission::create([
+            'title'       => 'ویرایش رشته',
+            'slug'        => 'fields-update',
+            'description' => 'امکان ویرایش رشته',
+        ]);
+
+        $permission_fields_delete = Permission::create([
+            'title'       => 'حذف رشته',
+            'slug'        => 'fields-delete',
+            'description' => 'امکان حذف رشته',
+        ]);
+
+        $permission_competitions_index = Permission::create([
+            'title'       => 'لیست رشته ها',
+            'slug'        => 'competitions-index',
+            'description' => 'امکان مشاهده لسیت رشته ها',
+        ]);
+
+        $permission_competitions_create = Permission::create([
+            'title'       => 'ایجاد رشته  جدید',
+            'slug'        => 'competitions-create',
+            'description' => 'امکان ایجاد رشته  جدید',
+        ]);
+
+        $permission_competitions_update = Permission::create([
+            'title'       => 'ویرایش رشته',
+            'slug'        => 'competitions-update',
+            'description' => 'امکان ویرایش رشته',
+        ]);
+
+        $permission_competitions_delete = Permission::create([
+            'title'       => 'حذف رشته',
+            'slug'        => 'competitions-delete',
+            'description' => 'امکان حذف رشته',
         ]);
 
         $permission_admin_index->roles()->attach([$developer, $admin, $general_manager]);
@@ -162,5 +211,13 @@ class PermissionRoleSeeder extends Seeder
         $permission_cities_create->roles()->attach([$developer, $admin, $general_manager]);
         $permission_cities_update->roles()->attach([$developer, $admin, $general_manager]);
         $permission_cities_delete->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_fields_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_fields_create->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_fields_update->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_fields_delete->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_competitions_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_competitions_create->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_competitions_update->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_competitions_delete->roles()->attach([$developer, $admin, $general_manager]);
     }
 }
