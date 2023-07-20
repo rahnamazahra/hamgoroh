@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
+use Illuminate\Http\Request;
 use App\Http\Requests\CityRequest;
 use App\Models\City;
 use App\Models\Province;
-use Illuminate\Http\Request;
-use Throwable;
+
 
 class CityController extends Controller
 {
