@@ -2,8 +2,21 @@
 
 @section('title', 'دسترسی‌ها')
 
+@section('breadcrumb')
+    <h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">دسترسی‌ها</h1>
+    <span class="h-20px border-gray-300 border-start mx-4"></span>
+    <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('admin.dashboard') }}" class="text-muted text-hover-primary">داشبورد</a>
+        </li>
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <li class="breadcrumb-item text-dark">دسترسی‌ها</li>
+    </ul>
+@endsection
+
 @section('content')
-    @include('admin.toast.errortoast')
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="card-title">
@@ -33,6 +46,7 @@
                             <th class="text-center">ردیف</th>
                             <th class="text-center">عنوان</th>
                             <th class="text-center">اسلاگ</th>
+                            <th class="text-center">نقش‌ها</th>
                             <th class="text-center">توضیحات</th>
                             <th class="text-center">اقدامات</th>
                         </tr>
@@ -43,11 +57,30 @@
                                 <td class="text-center">{{ $key + 1 }}</td>
                                 <td class="text-center">{{ $permission->title }}</td>
                                 <td class="text-center">{{ $permission->slug }}</td>
+                                <td class="text-center">
+                                    @foreach ($permission->roles as $role)
+                                        @if ($role->id == 1)        <!--Developer Role-->
+                                            <span class="badge badge-light-dark">{{ $role->title }}</span>
+                                        @elseif ($role->id == 2)    <!--Admin Role-->
+                                            <span class="badge badge-secondary">{{ $role->title }}</span>
+                                        @elseif ($role->id == 3)    <!--GeneralManager Role-->
+                                            <span class="badge badge-light-info">{{ $role->title }}</span>
+                                        @elseif ($role->id == 4)    <!--ProvincialManager Role-->
+                                            <span class="badge badge-light-primary">{{ $role->title }}</span>
+                                        @elseif ($role->id == 5)    <!--Referee Role-->
+                                            <span class="badge badge-light-success">{{ $role->title }}</span>
+                                        @elseif ($role->id == 6)    <!--Teacher Role-->
+                                            <span class="badge badge-light-white">{{ $role->title }}</span>
+                                        @else                       <!--User Role-->
+                                            <span class="badge badge-light-warning">{{ $role->title }}</span>
+                                        @endif
+                                    @endforeach
+                                </td>
                                 <td class="text-center">{{ $permission->description }}</td>
                                 <td class="text-center">
                                     <div class="btn btn-group-sm">
                                         @can('permissions-update')
-                                            <a href="{{ route('admin.permissions.edit') }}" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="up" title="ویرایش">
+                                            <a href="{{ route('admin.permissions.edit', ['permission' => $permission->id]) }}" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
                                                 <span class="svg-icon svg-icon-3">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                         <path opacity="0.3"d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path>
@@ -57,7 +90,7 @@
                                             </a>
                                         @endcan
                                         @can('permissions-delete')
-                                            <button  class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
+                                            <button class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
                                                 <span class="svg-icon svg-icon-3">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                         <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path>
@@ -80,7 +113,7 @@
             </div>
         </div>
         <div class="card-footer">
-           {{ $permission->links() }}
+           {{-- {{ $permission->links() }} --}}
         </div>
     </div>
 @endsection

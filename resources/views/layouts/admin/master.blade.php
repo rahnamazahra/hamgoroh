@@ -26,7 +26,15 @@
 				@include('layouts.admin.header')
 				<!--begin::breadcrumb-->
 				<div class="toolbar" id="kt_toolbar">
-					@include('layouts.admin.breadcrumb')
+					<!--begin::Container-->
+					<div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+						<!--begin::Page title-->
+						<div data-kt-swapper="true" data-kt-swapper-mode="prepend" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+							@yield('breadcrumb')
+						</div>
+						<!--end::Page title-->
+					</div>
+					<!--end::Container-->
 				</div>
 				<!--end::breadcrumb-->
 				<!--end::Header-->
@@ -47,6 +55,8 @@
 	</div>
 	<!--begin::Javascript-->
 	@include('layouts.admin.scripts')
+	@include('layouts.admin.alert')
+    @yield('custom-scripts')
 	<!--end::Javascript-->
 </body>
 </html>

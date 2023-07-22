@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PermissionRequest extends FormRequest
@@ -12,7 +11,7 @@ class PermissionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -20,7 +19,7 @@ class PermissionRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules(Request $request): array
+    public function rules(): array
     {
         switch ($this->method())
         {

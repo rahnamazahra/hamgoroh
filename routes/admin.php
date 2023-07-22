@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\ProvinceController;
+use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FieldController;
+use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CompetitionController;
 
@@ -28,7 +29,9 @@ Route::get('/', function () {
 // permissions
 Route::controller(PermissionController::class)->group(function () {
     Route::get('/permissions', 'index')->name('admin.permissions.index');
+    Route::get('/permissions/create', 'create')->name('admin.permissions.create');
     Route::post('/permissions', 'store')->name('admin.permissions.store');
+    Route::get('/permissions/{permission}/edit', 'edit')->name('admin.permissions.edit');
     Route::patch('/permissions/{permission}', 'update')->name('admin.permissions.update');
     Route::delete('/permissions/{permission}/delete', 'delete')->name('admin.permissions.delete');
 });
@@ -36,7 +39,9 @@ Route::controller(PermissionController::class)->group(function () {
 // users
 Route::controller(UserController::class)->group(function () {
     Route::get('/users', 'index')->name('admin.users.index');
+    Route::get('/users/create', 'create')->name('admin.users.create');
     Route::post('/users', 'store')->name('admin.users.store');
+    Route::get('/users/{user}/edit', 'edit')->name('admin.users.edit');
     Route::patch('/users/{user}', 'update')->name('admin.users.update');
     Route::delete('/users/{user}/delete', 'delete')->name('admin.users.delete');
 });
@@ -75,5 +80,8 @@ Route::controller(CompetitionController::class)->group(function () {
 
 // Ajax
 Route::controller(AjaxController::class)->group(function () {
-    Route::post('/cities', 'showCitiesByProvince')->name('ajax.cities');
+    Route::post('/province/cities', 'showCitiesByProvince')->name('admin.ajax.cities');
 });
+
+//Export excel
+Route::get('co/data/export', 'ExportController@export')->middleware('auth')->name('export.excel');

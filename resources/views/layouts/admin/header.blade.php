@@ -28,12 +28,7 @@
         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
             <!--begin::Navbar-->
             <div class="d-flex align-items-stretch" id="kt_header_nav">
-                <!--begin::Menu wrapper-->
-                <!--begin::User account menu-->
-                <div class="btn-group btn-breadcrumb">
-                    @yield('breadcrumb')
-                </div>
-                <!--end::Menu wrapper-->
+
             </div>
             <!--end::Navbar-->
             <!--begin::Toolbar wrapper-->
@@ -83,7 +78,7 @@
                                         <span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">فعال</span>
                                     </div>
                                     <a href="#" class="fw-bold text-muted text-hover-primary fs-7">{{ \Auth::user()->first_name }} {{ \Auth::user()->last_name}}</a>
-                                    <span> {{ \Auth::user()->phone }} </span>
+                                    <span> {{ Auth::user()->phone }} </span>
                                 </div>
                                 <!--end::Username-->
                             </div>
