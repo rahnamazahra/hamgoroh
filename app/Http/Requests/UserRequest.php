@@ -32,8 +32,13 @@ class UserRequest extends FormRequest
                 $rules = [
                     'first_name'    => 'required|string|min:3',
                     'last_name'     => 'required|string|min:3',
-                    'phone'         => 'required|unique:users,phone',
-                    'national_code' => 'nullable|integer|unique:users,national_code',
+                    'is_active'     => 'required',
+                    'phone'         => 'required|min:11|max:11|unique:users,phone',
+                    'national_code' => 'required|min:10|max:10|unique:users,national_code',
+                    'gender'        => 'required',
+                    'city_id'       => 'required',
+                    'birthday_date' => 'required|date_format:Y/m/d',
+                    'roles'         => 'required',
                 ];
                 return $rules;
             case 'PUT':
@@ -42,8 +47,13 @@ class UserRequest extends FormRequest
                 return [
                     'first_name'    => 'required|string|min:3',
                     'last_name'     => 'required|string|min:3',
-                    'phone'         => 'required|unique:users,phone,'.$user->id,
-                    'national_code' => 'nullable|unique:users,national_code,'.$user->id,
+                    'is_active'     => 'required',
+                    'phone'         => 'required|min:11|max:11|unique:users,phone,'.$user->id,
+                    'national_code' => 'required|min:10|max:10|unique:users,national_code,'.$user->id,
+                    'gender'        => 'required',
+                    'city_id'       => 'required',
+                    'birthday_date' => 'required|date_format:Y/m/d',
+                    'roles'         => 'required',
                 ];
             default:break;
         }

@@ -3,15 +3,6 @@
 @section('title', 'ورود')
 
 @section('content')
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 <div class="d-flex flex-column flex-root">
 	<div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url(assets/media/illustrations/sketchy-1/14.png">
 		<div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
@@ -29,7 +20,7 @@
 					</div>
 					<div class="fv-row mb-10">
 						<label class="form-label fs-6 fw-bolder text-dark">تلفن‌همراه</label>
-						<input class="form-control form-control-lg form-control-solid" type="text" name="phone" autocomplete="off" />
+						<input class="form-control form-control-lg form-control-solid input-just-number" type="text" name="phone" autocomplete="off" />
 					</div>
 					<div class="text-center">
 						<button type="submit" class="btn btn-lg btn-primary btn-submit w-100 mb-5">

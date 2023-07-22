@@ -10,8 +10,7 @@ class AjaxController extends Controller
 {
     public function showCitiesByProvince(Request $request)
     {
-        $cities = City::where('provnce_id', $request->province_id)->get(['id', 'title']);
-
+        $cities = City::where('province_id', $request->province_id)->get(['id', 'title']);
         return ['cities' => $cities];
     }
 

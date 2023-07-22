@@ -45,8 +45,8 @@
                     </div>
                 @endcan
                 @canany(['permissions-index', 'permissions-create', 'permissions-update', 'permissions-delete', 'roles-index'])
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::routeIs('admin.permissions.index') ? 'hover show' : '' }}">
-                        <a class="menu-link {{ Request::routeIs('admin.permissions') ? 'active' : '' }}" href="{{ route('admin.permissions.index') }}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
+                    <div class="menu-item">
+                        <a class="menu-link {{ Request::routeIs('admin.permissions.index') ? 'active' : '' }}" href="{{ route('admin.permissions.index') }}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
                             <span class="menu-icon">
                                 <span class="svg-icon svg-icon-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -61,7 +61,7 @@
                 @endcanany
                 @canany(['users-index', 'users-create', 'users-update', 'users-delete'])
                     <div class="menu-item">
-                        <a class="menu-link {{ Request::routeIs('admin.users.index') ? 'active' : '' }}" href="{{ route('admin.users.index')}}">
+                            <a class="menu-link {{ Request::routeIs('admin.users.index') ? 'active' : '' }}" href="{{ route('admin.users.index') }}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
                             <span class="menu-icon">
                                 <span class="svg-icon svg-icon-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

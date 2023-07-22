@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'provience_id'];
+    protected $fillable = ['title', 'province_id'];
 
-    public function provience()
+    public function province()
     {
-        return $this->belongsTo(Provience::class);
+        return $this->belongsTo(Province::class, 'province_id');
     }
     public function users()
     {
-        return $this->hasMany(User::class, 'city_id');
+        return $this->hasMany(User::class);
     }
 }

@@ -8,25 +8,16 @@
                 <div class="d-flex flex-stack flex-wrap gap-4">
                     <div class="position-relative my-1">
                         <div class="input-group">
-                            <form action="{{ route('admin.users.index') }}" method="get">
-                                <div class="row">
-                                    <div class="col-md-10">
-                                        <input type="text" class="form-control mb-3" placeholder="جست‌و‌جو ..." name="search_item" id="search_item"/>
-                                        <span id="userList"></span>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="submit" class="form-control mb-3" value="جست‌و‌جو">
-                                    </div>
-                                </div>
+                            <form method="GET" action="{{ route('admin.users.index') }}" id="sort_users_form" name="sort_users_form" class="mx-auto w-100 fv-plugins-bootstrap5 fv-plugins-framework">
                                 <div class="d-flex align-items-center fw-bolder" data-select2-id="select2-data-122-u471">
-                                <div class="text-gray-400 fs-7 me-2">نقش</div>
-                                <select name="item_roles" id="item_roles" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="لطفا انتخاب کنید" tabindex="-1" aria-hidden="true">
-                                    <option value="all" @if (request()->query('item_roles') == 'all') selected @endif>همه</option>
-                                    @foreach($roles as $role)
-                                        <option value="{{ $role->id }}" @if(request()->query('item_roles') == $role->id ) selected @endif>{{ $role->title }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                                    <div class="text-gray-400 fs-7 me-2">نقش</div>
+                                    <select name="item_roles" id="item_roles" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="لطفا انتخاب کنید" tabindex="-1" aria-hidden="true">
+                                        <option value="all" @if (request()->query('item_roles') == 'all') selected @endif>همه</option>
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role->id }}" @if(request()->query('item_roles') == $role->id ) selected @endif>{{ $role->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -36,9 +27,12 @@
                 <div class="d-flex justify-content-start bd-highlight mb-8 mt-8">
                     @can('users-create')
                         <div class="p-2 bd-highlight">
-                            <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary" >جدید +</button>
+                            <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary" >جدید +</a>
                         </div>
                     @endcan
+                    <div class="p-2 bd-highlight">
+                        <a href="{{ route('export.excel') }}" class="btn btn-sm btn-primary" >خروجی Excel</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,14 +53,12 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                    @if(is_countable($users))
-                        @foreach($users as $user)
+                    @forelse($users as $user)
                             <tr>
                                 <td class="text-center">{{ $loop->index+1 }}</td>
                                 <td class="text-center">
                                     <div class="position-relative ps-6 pe-3 py-2">
-                                        <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder"> {{ $user->first_name }}</a>
+                                        <a href="#" class="mb-1 text-dark text-hover-primary"> {{ $user->first_name }}</a>
                                     </div>
                                 </td>
                                 <td class="text-center">
@@ -86,7 +78,10 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="position-relative ps-6 pe-3 py-2">
-                                        <span class="mb-1 text-dark"> نام شهر</span>
+                                        <span class="mb-1 text-dark">{{ $user->city->province->title }}</span>
+                                        <div class="text-muted">
+                                            <span>{{ $user->city->title }}</span>
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="text-center">
@@ -128,17 +123,17 @@
                                                 </span>
                                         </button>
                                         @can('users-update')
-                                        <button data-bs-toggle="modal" data-bs-target="#user_update_modal" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
+                                        <a href="{{ route('admin.users.edit', ['user' => $user->id]) }}" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
                                             <span class="svg-icon svg-icon-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                     <path opacity="0.3"d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path>
                                                     <path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"fill="currentColor"></path>
                                                 </svg>
                                             </span>
-                                        </button>
+                                        </a>
                                         @endcan
                                         @can('users-delete')
-                                        <button data-bs-toggle="modal" data-bs-target="#user_delete_modal" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
+                                        <button class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1 btn_delete_item" data-id="{{ $user->id }}" data-url="{{ route('admin.users.delete', ['user' => $user->id]) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
                                             <span class="svg-icon svg-icon-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                     <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path>
@@ -151,19 +146,25 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
-                    @else
-                        <td colspan="5" class="text-center">  ثبت نشده است.</td>
-                    @endif
+                    @empty
+                        <td colspan="9" class="text-center">  ثبت نشده است.</td>
+                    @endforelse
                     </tbody>
                 </table>
             </div>
             <div class="mt-5">
-                {{ $users->links('admin.partials.pagination') }}
+                {{--  {{ $users->links('admin.partials.pagination') }}  --}}
             </div>
         </div>
-    @include('admin.users.update')
     </div>
 @endcan
 @endsection
-
+@section('custom-scripts')
+<script>
+    $(document).ready(function() {
+        $('#item_roles').on('change', function() {
+            document.forms['sort_users_form'].submit();
+        });
+    });
+</script>
+@endsection

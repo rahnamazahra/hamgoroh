@@ -3,15 +3,7 @@
 @section('title', 'اعتبارسنجی')
 
 @section('content')
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+
 <div class="d-flex flex-column flex-root">
     <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url(assets/media/illustrations/sketchy-1/14.png">
         <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
@@ -33,7 +25,7 @@
                     <div class="mb-10 px-md-10">
                         <div class="fw-bolder text-start text-dark fs-6 mb-1 ms-1">کد 6 رقمی را وارد کنید:</div>
                         <div class="d-flex flex-wrap flex-stack">
-                            <input type="text" class="form-control form-control-lg form-control-solid" name="password" autocomplete="off" />
+                            <input type="text" class="form-control form-control-lg form-control-solid input-just-number" name="password" autocomplete="off" />
                         </div>
                     </div>
                     <div class="d-flex flex-center">

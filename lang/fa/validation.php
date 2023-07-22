@@ -208,5 +208,6 @@ return [
         'city_id'               => 'شهر',
         'country_id'            => 'کشور',
         'is_active'             => 'وضعیت فعال',
+        'birthday_date'         => 'تاریخ تولد',
     ],
 ];

@@ -11,9 +11,9 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "league/csv": "^9.8",
+        "maatwebsite/excel": "^1.1",
         "morilog/jalali": "3.*",
         "nesbot/carbon": "^2.63"
-
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

@@ -29,8 +29,8 @@
 		<!--end::Main-->
 		<!--begin::Javascript-->
 		<!--begin::Global Javascript Bundle(used by all pages)-->
-		<script src="{{ asset('admin/assets/plugins/global/plugins.bundle.js') }}"></script>
-		<script src="{{ asset('admin/assets/js/scripts.bundle.js') }}"></script>
+		@include('layouts.admin.scripts')
+        @include('layouts.admin.alert')
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Page Custom Javascript(used by this page)-->
 		@yield('scripts')

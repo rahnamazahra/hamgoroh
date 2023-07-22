@@ -1,6 +1,14 @@
 import './bootstrap';
 
-$("#btn_delete_item").on("click", function () {
+$(".input-just-number").keypress(function (evt) {
+    const charCode = evt.which ? evt.which : event.keyCode;
+
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        evt.preventDefault();
+    }
+});
+
+$(".btn_delete_item").on("click", function () {
     var url   = $(this).data("url");
     var id    = $(this).data('id');
     var token = $("meta[name='csrf-token']").attr("content");
@@ -31,9 +39,11 @@ $("#btn_delete_item").on("click", function () {
                         text: "آیتم باموفقیت حذف شد",
                         type: "success",
                         icon: "success",
-                        timer: 7000,
-                        showCancelButton: false,
+                        toast: true,
+                        position: "top-end",
+                        timerProgressBar: true,
                         showConfirmButton: false,
+                        timer: 7000,
                     });
                     window.location.reload();
                 },
@@ -43,9 +53,11 @@ $("#btn_delete_item").on("click", function () {
                         text: "متاسفیم،اشکالی ناشناخته به وجود آمده است",
                         type: "error",
                         icon: "error",
-                        timer: 7000,
-                        showCancelButton: false,
+                        toast: true,
+                        position: "top-end",
+                        timerProgressBar: true,
                         showConfirmButton: false,
+                        timer: 7000,
                     });
                     window.location.reload();
                 },

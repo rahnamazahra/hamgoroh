@@ -9,4 +9,9 @@ class Province extends Model
 {
     use HasFactory;
     protected $fillable = ['title'];
+
+    public function cities()
+    {
+        return $this->belongsToMany(City::class);
+    }
 }
