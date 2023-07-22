@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompetitionRequest;
 use App\Models\Competition;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Morilog\Jalali\Jalalian;
 use Throwable;
 
 class CompetitionController extends Controller
@@ -16,9 +18,20 @@ class CompetitionController extends Controller
      */
     public function index()
     {
-        $competitions = Competition::paginate(10);
+//        $competitions = Competition::paginate(10);
+        $competitions = Competition::get();
 
         return view('admin.competitions.index', ['competitions' => $competitions]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $users = User::get();
+
+        return view('admin.competitions.create', ['users' => $users]);
     }
 
     /**
@@ -30,8 +43,10 @@ class CompetitionController extends Controller
             Competition::create([
                 'title' => $request->input('title'),
                 'is_active' => $request->input('is_active'),
-                'registration_start_time' => Carbon::parse($request->input('registration_start_time'))->toDateTimeString(),
-                'registration_finish_time' => $request->input('registration_finish_time'),
+                'registration_start_time' => Jalalian::fromFormat('Y/m/d H:i:s', $request->input('registration_start_time'))->toCarbon(),
+//                'registration_start_time' => $request->input('registration_start_time'),
+                'registration_finish_time' => Jalalian::fromFormat('Y/m/d H:i:s', $request->input('registration_finish_time'))->toCarbon(),
+//                'registration_finish_time' => $request->input('registration_finish_time'),
                 'registration_description' => $request->input('registration_description'),
                 'rules_description' => $request->input('rules_description'),
                 'letter_method' => $request->input('letter_method'),
@@ -39,12 +54,26 @@ class CompetitionController extends Controller
                 'creator' => $request->input('creator'),
             ]);
 
-        } catch (Throwable $th) {
-            // throw $th;
+        } catch (\Exception $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], 500);
         }
 
         return redirect()->route('admin.competitions.index');
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Competition $competition)
+    {
+        $users = User::get();
+
+        return view('admin.competitions.edit', ['competition' => $competition, 'users' => $users]);
+    }
+
 
     /**
      * Update the specified resource in storage.
@@ -55,16 +84,21 @@ class CompetitionController extends Controller
             $competition->update([
                 'title' => $request->input('title'),
                 'is_active' => $request->input('is_active'),
-                'registration_start_time' => $request->input('registration_start_time'),
-                'registration_finish_time' => $request->input('registration_finish_time'),
+                'registration_start_time' => Jalalian::fromFormat('Y/m/d H:i:s', $request->input('registration_start_time'))->toCarbon(),
+//                'registration_start_time' =>  $request->input('registration_start_time'),
+//                'registration_finish_time' => $request->input('registration_finish_time'),
+                'registration_finish_time' => Jalalian::fromFormat('Y/m/d H:i:s', $request->input('registration_finish_time'))->toCarbon(),
                 'registration_description' => $request->input('registration_description'),
                 'rules_description' => $request->input('rules_description'),
                 'letter_method' => $request->input('letter_method'),
                 'banner' => $request->input('banner'),
                 'creator' => $request->input('creator'),
             ]);
-        } catch (Throwable $th) {
-            // throw $th;
+        } catch (\Exception $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], 500);
         }
 
         return redirect()->route('admin.competitions.index');
