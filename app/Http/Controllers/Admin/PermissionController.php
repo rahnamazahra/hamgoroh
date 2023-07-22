@@ -2,20 +2,29 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PermissionRequest;
-use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\PermissionRequest;
 
 class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = Permission::get();
+        $item = $request->query('search_item');
+        $permissions = Permission::with(['roles'])
+            ->when($item, function (Builder $builder) use ($item) {
+                $builder->where('title', 'LIKE', "%{$item}%")
+                        ->orWhere('slug', 'LIKE', "%{$item}%")
+                        ->orWhere('description', 'LIKE', "%{$item}%")
+                        ->orWhereRelation('roles', 'title', 'LIKE', "%{$item}%");
+            })
+            ->paginate(10);
 
         return view('admin.permissions.index', ['permissions' => $permissions]);
     }
