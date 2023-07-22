@@ -8,16 +8,16 @@ $(".input-just-number").keypress(function (evt) {
     }
 });
 
-$(".btn_delete_item").on("click", function () {
+$('button[name="btn_delete_item"]').on("click", function () {
     var url   = $(this).data("url");
-    var id    = $(this).data('id');
+    var id    = $(this).data("id");
     var token = $("meta[name='csrf-token']").attr("content");
     Swal.fire({
         html: `آیتم موردنظر حذف می‌شود، آیا ادامه می‌دهید؟`,
         icon: "error",
         buttonsStyling: false,
         showCancelButton: true,
-        confirmButtonText: 'بله',
+        confirmButtonText: "بله",
         cancelButtonText: "لغو",
         customClass: {
             confirmButton: "btn btn-danger",
@@ -28,7 +28,7 @@ $(".btn_delete_item").on("click", function () {
             $.ajax({
                 url: url,
                 type: "POST",
-                headers: { 'X-CSRF-TOKEN' : token },
+                headers: { "X-CSRF-TOKEN": token },
                 data: {
                     _method: "DELETE",
                     id: id,

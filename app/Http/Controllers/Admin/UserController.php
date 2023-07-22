@@ -58,7 +58,7 @@ class UserController extends Controller
         $provinces = Province::get();
         $cities    = City::where('province_id', $user->city->province->id)->get();
 
-        return view('admin.users.update', ['user' => $user, 'roles' => $roles, 'provinces' => $provinces, 'cities' => $cities]);
+        return view('admin.users.edit', ['user' => $user, 'roles' => $roles, 'provinces' => $provinces, 'cities' => $cities]);
     }
 
     public function update(UserRequest $request, User $user)

@@ -1,10 +1,9 @@
-<button type="button" class="btn btn-sm btn-primary" onclick="openAddProvinceModal()">استان جدید + </button>
 <!--begin::Modal-->
-<div class="modal fade" id="province_create_modal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="province_update_modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
         <div class="modal-content rounded">
             <div class="modal-header pb-0 border-0 justify-content-between">
-                <h5 class="modal-title">اطلاعات را وارد نمایید</h5>
+                <h5 class="modal-title">ویرایش استان</h5>
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                     <span class="svg-icon svg-icon-2">
@@ -17,13 +16,14 @@
                 <!--end::Close-->
             </div>
             <!--begin::Alert Errors-->
-            <div id="add_errors_div"></div>
+            <div id="update_errors_div"></div>
             <!--end::Alert Errors-->
-            <div id="add_content_div"></div>
+            <div id="update_content_div"></div>
         </div>
     </div>
 </div>
 <!--end::Modal-->
+
 
 
 

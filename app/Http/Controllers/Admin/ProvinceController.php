@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProvinceRequest;
 use App\Models\Province;
+use Database\Seeders\ProvinceSeeder;
 use Illuminate\Http\Request;
 use Throwable;
 
@@ -14,15 +16,14 @@ class ProvinceController extends Controller
      */
     public function index(Request $request)
     {
-        $query = $request->get('query');
-        $provinces = Province::where('title', 'LIKE', '%' . $query . '%')->paginate(15);
+        $provinces = Province::get();
         return view('admin.provinces.index', ['provinces' => $provinces]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProvinceRequest $request)
     {
         try {
             Province::create($request->all());
@@ -36,7 +37,7 @@ class ProvinceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Province $province)
+    public function update(ProvinceRequest $request, Province $province)
     {
         try {
             $province->update($request->all());

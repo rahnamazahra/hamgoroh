@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="CrudHandler.createEntry('{{ route('admin.cities.store') }}','#add_city_form')">ذخیره</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">ذخیره</button>
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">انصراف</button>
                 </div>
             </form>

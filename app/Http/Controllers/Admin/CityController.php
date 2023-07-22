@@ -16,24 +16,6 @@ class CityController extends Controller
      */
     public function index(Request $request)
     {
-        $query = trim($request->get('query'));
-        if ($request->ajax()) {
-            $data = City::where('title', 'LIKE', $query . '%')->limit(15)->get();
-            $output = '';
-            if (count($data) > 0) {
-                $output = '<ul class="list-group">';
-                foreach ($data as $row) {
-                    $output .= '<li class="list-group-item">' . $row->title . '</li>';
-                }
-                $output .= '</ul>';
-            } else {
-                $output .= '<li class="list-group-item">' . 'یافت نشد' . '</li>';
-            }
-            return $output;
-        }
-        $cities      = City::where('title', 'LIKE', '%' . $query . '%')->paginate(15);
-        $provinces   = Province::all();
-        return view('admin.cities.index', ['provinces' => $provinces, 'cities' => $cities]);
     }
 
     /**
@@ -45,7 +27,7 @@ class CityController extends Controller
             City::create($request->all());
             return redirect()->route('admin.cities.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
         }
-        catch (Throwable $th) {
+        catch (\Exception $e) {
             return redirect()->route('admin.cities.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
     }
@@ -56,7 +38,7 @@ class CityController extends Controller
             $city->update($request->all());
             return redirect()->route('admin.cities.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
         }
-        catch (Throwable $th) {
+        catch (\Exception $e) {
             return redirect()->route('admin.cities.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
     }
@@ -67,11 +49,11 @@ class CityController extends Controller
     public function delete(City $city)
     {
         try {
-           $city->delete();
-            return redirect()->route('admin.cities.index')->with('success', 'حذف اطلاعات  باموفقیت انجام شد.');
+            $city->delete();
+            return response()->json(['success' => true], 200);
         }
-        catch (Throwable $th) {
-            return redirect()->route('admin.cities.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        catch (\Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
 }

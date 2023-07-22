@@ -75,8 +75,8 @@
                     </div>
                 @endcan
                 @canany(['provinces-index', 'provinces-create', 'provinces-update', 'provinces-delete', 'cities-index', 'cities-create', 'cities-update', 'cities-delete'])
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                        <span class="menu-link">
+                    <div class="menu-item">
+                        <a class="menu-link {{ Request::routeIs('admin.provinces.index') ? 'active' : '' }}" href="{{ route('admin.provinces.index') }}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
                             <span class="menu-icon">
                                 <span class="svg-icon svg-icon-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -86,32 +86,9 @@
                                 </span>
                             </span>
                             <span class="menu-title">استان / شهرستان</span>
-                            <span class="menu-arrow"></span>
-                        </span>
-                        <div class="menu-sub menu-sub-accordion">
-                            @can(['provinces-index', 'provinces-create', 'provinces-update', 'provinces-delete'])
-                                <div class="menu-item">
-                                    <a class="menu-link {{ Request::routeIs('admin.provinces.index') ? 'active' : '' }}" href="{{ route('admin.provinces.index') }}">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">لیست استـان‌ها</span>
-                                    </a>
-                                </div>
-                            @endcan
-                            @can(['cities-index', 'cities-create', 'cities-update', 'cities-delete'])
-                                <div class="menu-item">
-                                    <a class="menu-link {{ Request::routeIs('admin.cities.index') ? 'active' : '' }}" href="{{ route('admin.cities.index') }}">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">لیست شهـر‌ها</span>
-                                    </a>
-                                </div>
-                            @endcan
-                        </div>
+                        </a>
                     </div>
-                @endcanany
+                @endcan
                 @canany(['fields-index', 'fields-create', 'fields-update', 'fields-delete'])
                     <div class="menu-item">
                         <a class="menu-link {{ Request::routeIs('admin.fields.index') ? 'active' : '' }}" href="{{ route('admin.fields.index') }}" title="رشته‌ها" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="رشته‌ها">
