@@ -131,18 +131,47 @@
 {{--<script type="text/javascript">--}}
 {{--    jalaliDatepicker.startWatch();--}}
 {{--</script>--}}
+
+{{--<script type="text/javascript">--}}
+{{--    jalaliDatepicker.attachDatepicker(document.getElementById('registration_start_time'), {--}}
+{{--        timePicker: true,--}}
+{{--        observer: true,--}}
+{{--        formatter: (inputValue, date, instance) => {--}}
+{{--            const formattedDate = moment(date).format('YYYY/MM/DD HH:mm:ss');--}}
+{{--            return formattedDate;--}}
+{{--        }--}}
+{{--    });--}}
+{{--</script>--}}
+
+{{--<script type="text/javascript">--}}
+{{--    // آغاز کار با تقویم--}}
+{{--    $(document).ready(function() {--}}
+{{--        $("#registration_start_time").click(function() {--}}
+{{--            var calendar = $.JalaliDatePicker({--}}
+{{--                timePicker: {--}}
+{{--                    enabled: true--}}
+{{--                },--}}
+{{--                clearButton: true,--}}
+{{--                showTodayButton: true,--}}
+{{--                showEmptyButton: true,--}}
+{{--                todayButton: true,--}}
+{{--                emptyButton: true,--}}
+{{--                clearButton: true,--}}
+{{--                theme: 'light'--}}
+{{--            });--}}
+{{--            calendar.show(this);--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
+
 <script type="text/javascript">
-    jalaliDatepicker.startWatch();
-
-    jalaliDatepicker.attachDatepicker(document.getElementById('your-datepicker-element'), {
-        time: true,
-        observer: true,
-        formatter: (inputValue, date, instance) => {
-
-            const formattedDate = moment(date).format('YYYY-MM-DD HH:mm:ss');
-            return formattedDate;
-        }
+    // آغاز کار با تقویم
+    $(document).ready(function() {
+        $("#registration_start_time").emoji({
+            dateFormat: "YYYY/MM/DD HH:mm:ss",
+            time: true,
+            timezone: "Asia/Tehran"
+        });
     });
 </script>
-
 @endsection

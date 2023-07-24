@@ -2,21 +2,34 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Throwable;
-use App\Models\Field;
-use App\Http\Requests\FieldRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FieldRequest;
+use App\Models\Field;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class FieldController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fields = Field::paginate(10);
+        $item = $request->query('search_item');
+        $fields = Field::when($item, function (Builder $builder) use ($item) {
+            $builder->where('title', 'LIKE', "%{$item}%");
+        })
+            ->paginate(10);
 
         return view('admin.fields.index', ['fields' => $fields]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('admin.fields.create');
     }
 
     /**
@@ -24,15 +37,19 @@ class FieldController extends Controller
      */
     public function store(FieldRequest $request)
     {
-        try {
-            Field::create([
-                'title' => $request->input('title'),
-            ]);
-        } catch (Throwable $th) {
-            // throw $th;
-        }
+        Field::create([
+            'title' => $request->input('title'),
+        ]);
 
-        return redirect()->route('admin.field.index');
+        return redirect()->route('admin.fields.index');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Field $field)
+    {
+        return view('admin.fields.edit', ['field' => $field]);
     }
 
     /**
@@ -40,15 +57,11 @@ class FieldController extends Controller
      */
     public function update(FieldRequest $request, Field $field)
     {
-        try {
-            $field->update([
-                'title' => $request->input('title'),
-            ]);
-        } catch (Throwable $th) {
-            // throw $th;
-        }
+        $field->update([
+            'title' => $request->input('title'),
+        ]);
 
-        return redirect()->route('admin.field.index');
+        return redirect()->route('admin.fields.index');
     }
 
     /**
@@ -58,9 +71,9 @@ class FieldController extends Controller
     {
         try {
             $field->delete();
-        } catch (Throwable $th) {
+            return response()->json(['success' => true], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
         }
-
-        return redirect()->route('admin.field.index');
     }
 }

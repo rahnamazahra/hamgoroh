@@ -3,7 +3,7 @@
 @section('title', 'رشته‌ها')
 
 @section('breadcrumb')
-    <h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">ایجاد رشته</h1>
+    <h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">رشته‌ها</h1>
     <span class="h-20px border-gray-300 border-start mx-4"></span>
     <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
         <li class="breadcrumb-item text-muted">
@@ -18,23 +18,23 @@
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-dark">ایجاد رشته</li>
+        <li class="breadcrumb-item text-dark">ویرایش رشته</li>
     </ul>
 @endsection
 
 @section('content')
-    {{-- @include('admin.errors.error-message') --}}
     <div class="card shadow-sm">
-        <form method="POST" action="{{ route('admin.fields.store') }}">
+        <form method="POST" action="{{ route('admin.fields.update', ['field' => $field->id]) }}">
+            @method('PATCH')
             @csrf
             <div class="card-header">
-                <div class="card-title">ایجاد رشته</div>
+                <div class="card-title">ویرایش دوره {{ $field->title }}</div>
             </div>
             <div class="card-body">
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label for="title" class="required form-label">عنوان</label>
-                        <input type="text" class="form-control form-control-solid" name="title" value="{{ old('title') }}" />
+                        <input type="text" class="form-control form-control-solid" name="title" value="{{ old('title', $field->title) }}" />
                     </div>
                 </div>
             </div>

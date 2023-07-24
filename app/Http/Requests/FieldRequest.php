@@ -23,8 +23,23 @@ class FieldRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'title' => 'required|string|unique:fields,title',
-        ];
+        switch ($this->method())
+        {
+            case 'GET':
+            case 'DELETE':
+                return [];
+            case 'POST':
+                $rules = [
+                    'title' => 'required|string|unique:fields,title',
+                ];
+                return $rules;
+            case 'PUT':
+            case 'PATCH':
+                $field= $this->route()->parameter('field');
+                return [
+                    'title' => 'required|string|unique:fields,title,'.$field->id,
+                ];
+            default:break;
+        }
     }
 }

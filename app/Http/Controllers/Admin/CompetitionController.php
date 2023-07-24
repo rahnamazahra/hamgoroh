@@ -7,6 +7,7 @@ use App\Http\Requests\CompetitionRequest;
 use App\Models\Competition;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
 use Throwable;
@@ -16,10 +17,20 @@ class CompetitionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-//        $competitions = Competition::paginate(10);
-        $competitions = Competition::get();
+        $item = $request->query('search_item');
+        $competitions = Competition::with(['user'])
+            ->when($item, function (Builder $builder) use ($item) {
+                $builder->where('title', 'LIKE', "%{$item}%")
+                    ->orWhere('registration_description', 'LIKE', "%{$item}%")
+                    ->orWhere('rules_description', 'LIKE', "%{$item}%")
+                    ->orWhere('letter_method', 'LIKE', "%{$item}%")
+                    ->orWhere('banner', 'LIKE', "%{$item}%")
+                    ->orWhereRelation('user', 'first_name', 'LIKE', "%{$item}%")
+                    ->orWhereRelation('user', 'last_name', 'LIKE', "%{$item}%");
+            })
+            ->paginate(10);
 
         return view('admin.competitions.index', ['competitions' => $competitions]);
     }
@@ -74,6 +85,11 @@ class CompetitionController extends Controller
         return view('admin.competitions.edit', ['competition' => $competition, 'users' => $users]);
     }
 
+    public function show(Competition $competition)
+    {
+        return view('admin.competitions.show', ['competition' => $competition]);
+    }
+
 
     /**
      * Update the specified resource in storage.
@@ -111,9 +127,10 @@ class CompetitionController extends Controller
     {
         try {
             $competition->delete();
-        } catch (Throwable $th) {
+            return response()->json(['success' => true], 200);
         }
-
-        return redirect()->route('admin.competitions.index');
+        catch (\Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
+        }
     }
 }
