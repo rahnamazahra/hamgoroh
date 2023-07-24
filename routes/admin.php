@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\FieldController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CompetitionController;
+use App\Http\Controllers\Admin\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,17 @@ Route::get('/', function () {
     return view('admin.index');
 })->name('admin.dashboard');
 
-// permissions
+// Roles
+Route::controller(RoleController::class)->group(function () {
+    Route::get('/roles', 'index')->name('admin.roles.index');
+    Route::get('/roles/create', 'create')->name('admin.roles.create');
+    Route::post('/roles', 'store')->name('admin.roles.store');
+    Route::get('/roles/{role}/edit', 'edit')->name('admin.roles.edit');
+    Route::patch('/roles/{role}', 'update')->name('admin.roles.update');
+    Route::delete('/roles/{role}/delete', 'delete')->name('admin.roles.delete');
+});
+
+// Permissions
 Route::controller(PermissionController::class)->group(function () {
     Route::get('/permissions', 'index')->name('admin.permissions.index');
     Route::get('/permissions/create', 'create')->name('admin.permissions.create');
@@ -36,7 +47,7 @@ Route::controller(PermissionController::class)->group(function () {
     Route::delete('/permissions/{permission}/delete', 'delete')->name('admin.permissions.delete');
 });
 
-// users
+// Users
 Route::controller(UserController::class)->group(function () {
     Route::get('/users', 'index')->name('admin.users.index');
     Route::get('/users/create', 'create')->name('admin.users.create');
@@ -46,7 +57,7 @@ Route::controller(UserController::class)->group(function () {
     Route::delete('/users/{user}/delete', 'delete')->name('admin.users.delete');
 });
 
-// provinces
+// Provinces
 Route::controller(ProvinceController::class)->group(function () {
     Route::get('/provinces', 'index')->name('admin.provinces.index');
     Route::post('/provinces', 'store')->name('admin.provinces.store');
@@ -57,7 +68,7 @@ Route::controller(ProvinceController::class)->group(function () {
 // cities
 Route::controller(CityController::class)->group(function () {
     Route::get('/cities', 'index')->name('admin.cities.index');
-    Route::post('/cities', 'store')->name('admkn.cities.store');
+    Route::post('/cities', 'store')->name('admin.cities.store');
     Route::patch('/cities/{city}', 'update')->name('admin.cities.update');
     Route::delete('/cities/{city}/delete', 'delete')->name('admin.cities.delete');
 });
@@ -65,16 +76,19 @@ Route::controller(CityController::class)->group(function () {
 // Fields
 Route::controller(FieldController::class)->group(function () {
     Route::get('/fields', 'index')->name('admin.fields.index');
+    Route::get('/fields/create', 'create')->name('admin.fields.create');
     Route::post('/fields', 'store')->name('admin.fields.store');
+    Route::get('/fields/{field}/edit', 'edit')->name('admin.fields.edit');
     Route::patch('/fields/{field}', 'update')->name('admin.fields.update');
     Route::delete('/fields/{field}/delete', 'delete')->name('admin.fields.delete');
 });
 
-// Conpetitions
+// Competitions
 Route::controller(CompetitionController::class)->group(function () {
     Route::get('/competitions', 'index')->name('admin.competitions.index');
     Route::get('/competitions/create', 'create')->name('admin.competitions.create');
     Route::post('/competitions', 'store')->name('admin.competitions.store');
+    Route::get('/competitions/{competition}/show', 'show')->name('admin.competitions.show');
     Route::get('/competitions/{competition}/edit', 'edit')->name('admin.competitions.edit');
     Route::patch('/competitions/{competition}', 'update')->name('admin.competitions.update');
     Route::delete('/competitions/{competition}/delete', 'delete')->name('admin.competitions.delete');
@@ -86,4 +100,4 @@ Route::controller(AjaxController::class)->group(function () {
 });
 
 //Export excel
-Route::get('co/data/export', 'ExportController@export')->middleware('auth')->name('export.excel');
+// Route::get('co/data/export', 'ExportController@export')->middleware('auth')->name('export.excel');

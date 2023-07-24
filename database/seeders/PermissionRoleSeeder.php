@@ -32,6 +32,24 @@ class PermissionRoleSeeder extends Seeder
             'description' => 'امکان مشاهده لسیت نقش‌ها',
         ]);
 
+        $permission_roles_create = Permission::create([
+            'title'       => 'ایجاد نقش جدید',
+            'slug'        => 'roles-create',
+            'description' => 'امکان ایجاد نقش جدید',
+        ]);
+
+        $permission_roles_update = Permission::create([
+            'title'       => 'ویرایش نقش',
+            'slug'        => 'roles-update',
+            'description' => 'امکان ویرایش نقش',
+        ]);
+
+        $permission_roles_delete = Permission::create([
+            'title'       => 'حذف نقش',
+            'slug'        => 'roles-delete',
+            'description' => 'امکان حذف نقش',
+        ]);
+
         $permission_permissions_index = Permission::create([
             'title'       => 'لیست دسترسی‌ها',
             'slug'        => 'permissions-index',
@@ -192,6 +210,9 @@ class PermissionRoleSeeder extends Seeder
 
         $permission_admin_index->roles()->attach([$developer, $admin, $general_manager]);
         $permission_roles_index->roles()->attach([$developer, $admin]);
+        $permission_roles_create->roles()->attach([$developer, $admin]);
+        $permission_roles_update->roles()->attach([$developer, $admin]);
+        $permission_roles_delete->roles()->attach([$developer, $admin]);
         $permission_permissions_index->roles()->attach([$developer, $admin]);
         $permission_permissions_create->roles()->attach([$developer, $admin]);
         $permission_permissions_update->roles()->attach([$developer, $admin]);

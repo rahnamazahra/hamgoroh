@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Exception;
 use App\Models\Role;
-use Illuminate\Http\Request;
+use App\Http\Requests\RoleRequest;
+use App\Http\Controllers\Controller;
 
 class RoleController extends Controller
 {
@@ -13,7 +14,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::get();
+
+        return redirect()->route('admin.roles.index', ['roles' => $roles]);
     }
 
     /**
@@ -21,23 +24,22 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return redirect()->route('admin.roles.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
-        //
-    }
+        try {
+            Role::create($request->all());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Role $role)
-    {
-        //
+            return redirect()->route('admin.roles.index');
+        }
+        catch (Exception $e) {
+            return redirect()->route('admin.roles.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        }
     }
 
     /**
@@ -45,22 +47,36 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        return redirect()->route('admin.roles.edit', ['role' => $role]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
+    public function update(RoleRequest $request, Role $role)
     {
-        //
+        try {
+            $role->update($request->all());
+
+            return redirect()->route('admin.roles.index');
+        }
+        catch (Exception $e) {
+            return redirect()->route('admin.roles.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Role $role)
+    public function delete(Role $role)
     {
-        //
+        try {
+            $role->delete();
+
+            return response()->json(['success' => true], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
+        }
     }
 }

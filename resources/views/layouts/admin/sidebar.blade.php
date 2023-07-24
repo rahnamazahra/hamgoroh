@@ -43,10 +43,15 @@
                             <span class="menu-title">داشبورد‌</span>
                         </a>
                     </div>
-                @endcan
-                @canany(['permissions-index', 'permissions-create', 'permissions-update', 'permissions-delete', 'roles-index'])
                     <div class="menu-item">
-                        <a class="menu-link {{ Request::routeIs('admin.permissions.index') ? 'active' : '' }}" href="{{ route('admin.permissions.index') }}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
+                        <div class="menu-content">
+                            <div class="separator mx-1 my-4"></div>
+                        </div>
+                    </div>
+                @endcan
+                @canany(['permissions-index', 'permissions-create', 'permissions-update', 'permissions-delete', 'roles-index', 'roles-create', 'roles-update', 'roles-delete'])
+                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::routeIs('admin.permissions.index') || Request::routeIs('admin.roles.index') ? 'hover show' : '' }}">
+                        <span class="menu-link">
                             <span class="menu-icon">
                                 <span class="svg-icon svg-icon-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -55,8 +60,31 @@
                                     </svg>
                                 </span>
                             </span>
-                            <span class="menu-title">نقش ها و دسترسی ها</span>
-                        </a>
+                            <span class="menu-title">نقش‌ها و دسترسی‌ها</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                        <div class="menu-sub menu-sub-accordion">
+                            @can('roles-index')
+                                <div class="menu-item">
+                                    <a class="menu-link {{ Request::routeIs('admin.roles.index') ? 'active' : '' }}" href="{{ route('admin.roles.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">لیست نقش‌ها</span>
+                                    </a>
+                                </div>
+                            @endcan
+                            @can('permissions-index')
+                                <div class="menu-item">
+                                    <a class="menu-link {{ Request::routeIs('admin.permissions.index') ? 'active' : '' }}" href="{{ route('admin.permissions.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">لیست دسترسی‌ها</span>
+                                    </a>
+                                </div>
+                            @endcan
+                        </div>
                     </div>
                 @endcanany
                 @canany(['users-index', 'users-create', 'users-update', 'users-delete'])
@@ -112,8 +140,8 @@
                             <span class="menu-icon">
                                 <span class="svg-icon svg-icon-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z" fill="currentColor"></path>
-                                        <rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4" fill="currentColor"></rect>
+                                        <path d="M14 18V16H10V18L9 20H15L14 18Z" fill="currentColor"/>
+                                        <path opacity="0.3" d="M20 4H17V3C17 2.4 16.6 2 16 2H8C7.4 2 7 2.4 7 3V4H4C3.4 4 3 4.4 3 5V9C3 11.2 4.8 13 7 13C8.2 14.2 8.8 14.8 10 16H14C15.2 14.8 15.8 14.2 17 13C19.2 13 21 11.2 21 9V5C21 4.4 20.6 4 20 4ZM5 9V6H7V11C5.9 11 5 10.1 5 9ZM19 9C19 10.1 18.1 11 17 11V6H19V9ZM17 21V22H7V21C7 20.4 7.4 20 8 20H16C16.6 20 17 20.4 17 21ZM10 9C9.4 9 9 8.6 9 8V5C9 4.4 9.4 4 10 4C10.6 4 11 4.4 11 5V8C11 8.6 10.6 9 10 9ZM10 13C9.4 13 9 12.6 9 12V11C9 10.4 9.4 10 10 10C10.6 10 11 10.4 11 11V12C11 12.6 10.6 13 10 13Z" fill="currentColor"/>
                                     </svg>
                                 </span>
                             </span>

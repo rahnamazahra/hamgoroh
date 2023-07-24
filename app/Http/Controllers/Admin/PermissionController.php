@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\PermissionRequest;
+use Exception;
 
 class PermissionController extends Controller
 {
@@ -24,7 +25,7 @@ class PermissionController extends Controller
                         ->orWhere('description', 'LIKE', "%{$item}%")
                         ->orWhereRelation('roles', 'title', 'LIKE', "%{$item}%");
             })
-            ->paginate(10);
+            ->paginate(10)->withQueryString(); // It shows an error but it works correctly
 
         return view('admin.permissions.index', ['permissions' => $permissions]);
     }
@@ -44,18 +45,15 @@ class PermissionController extends Controller
      */
     public function store(PermissionRequest $request)
     {
-        $permission = Permission::create($request->all());
-        $permission->roles()->attach($request->input('roles'));
+        try {
+            $permission = Permission::create($request->all());
+            $permission->roles()->attach($request->input('roles'));
 
-        return redirect()->route('admin.permissions.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Permission $permission)
-    {
-        //
+            return redirect()->route('admin.permissions.index');
+        }
+        catch (Exception $e) {
+            return redirect()->route('admin.permissions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        }
     }
 
     /**
@@ -73,19 +71,29 @@ class PermissionController extends Controller
      */
     public function update(PermissionRequest $request, Permission $permission)
     {
-        $permission->update($request->all());
-        $permission->roles()->sync($request->input('roles'));
+        try {
+            $permission->update($request->all());
+            $permission->roles()->sync($request->input('roles'));
 
-        return redirect()->route('admin.permissions.index');
+            return redirect()->route('admin.permissions.index');
+        }
+        catch (Exception $e) {
+            return redirect()->route('admin.permissions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Permission $permission)
+    public function delete(Permission $permission)
     {
-        $permission->delete();
+        try {
+            $permission->delete();
 
-        return redirect()->route('admin.permissions.index');
+            return response()->json(['success' => true], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
+        }
     }
 }
