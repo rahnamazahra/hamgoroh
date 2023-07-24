@@ -15,7 +15,10 @@
                 </div>
                 <!--end::Close-->
             </div>
-            <div id="content_div"></div>
+            <!--begin::Alert Errors-->
+            <div id="city_update_errors"></div>
+            <!--end::Alert Errors-->
+            <div id="city_update_content"></div>
         </div>
     </div>
 </div>

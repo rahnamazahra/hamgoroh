@@ -63,11 +63,11 @@
                     <div class="col-md-6 fv-row">
                         <label class="required form-label">وضعیت کاربر</label>
                         <div class="d-flex align-items-center my-5">
-                            <label class="form-check form-check-custom form-check-solid me-10">
+                            <label for="user_active" class="form-check form-check-custom form-check-solid me-10">
                                 <input class="form-check-input h-20px w-20px" type="radio" name="is_active" id="user_active" value="1" @if ($user->is_active == "1") checked @endif/>
                                 <span class="form-check-label fw-bold">فعال</span>
                             </label>
-                            <label class="form-check form-check-custom form-check-solid">
+                            <label for="user_deactive" class="form-check form-check-custom form-check-solid">
                                 <input class="form-check-input h-20px w-20px" type="radio" name="is_active" id="user_deactive" value="0" @if ($user->is_active == "0") checked @endif/>
                                 <span class="form-check-label fw-bold">غیرفعال</span>
                             </label>
@@ -94,12 +94,12 @@
                     <div class="col-md-6 fv-row">
                         <label class="required form-label">جنسیت</label>
                         <div class="d-flex align-items-center my-5">
-                            <label class="form-check form-check-custom form-check-solid me-10">
-                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_fmale" value="0" @if ($user->is_active == "0") checked @endif/>
+                            <label for="gender_fmale" class="form-check form-check-custom form-check-solid me-10">
+                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_fmale" value="0" @if ($user->gender == "0") checked @endif/>
                                 <span class="form-check-label fw-bold">خـانم</span>
                             </label>
-                            <label class="form-check form-check-custom form-check-solid">
-                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_male" value="1" @if ($user->is_active == "1") checked @endif/>
+                            <label for="gender_male" class="form-check form-check-custom form-check-solid">
+                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_male" value="1" @if ($user->gender == "1") checked @endif/>
                                 <span class="form-check-label fw-bold">آقـا</span>
                             </label>
                         </div>

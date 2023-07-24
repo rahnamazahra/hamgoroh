@@ -15,39 +15,13 @@
                 </div>
                 <!--end::Close-->
             </div>
-            <form class="form" role="form" autocomplete="off" id="add_city_form">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                <div class="modal-body">
-                    <!--begin::Alert Errors-->
-                    <div id="add_errors_div"></div>
-                    <!--end::Alert Errors-->
-                    <div class="col-md-12 fv-row">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <label for="province_id" class="required d-flex align-items-center fs-6 fw-bold mb-2">نام اسـتان </label>
-                                <select class="form-select form-select-solid" style="width: 100%;" tabindex="-1" aria-hidden="true" name="province_id" id="province_id">
-                                    <option value=""></option>
-                                    @foreach($provinces as $title=>$id)
-                                    <option value="{{ $id }}">{{ $title }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 fv-row">
-                        <label for="title" class="required d-flex align-items-center fs-6 fw-bold mb-2">نام شهر</label>
-                        <input type="text" class="form-control form-control-solid" name="title" id="title" value="{{ old('title') }}"/>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">ذخیره</button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">انصراف</button>
-                </div>
-            </form>
+            <!--begin::Alert Errors-->
+            <div id="city_create_errors"></div>
+            <!--end::Alert Errors-->
+            <div id="city_create_content"></div>
         </div>
     </div>
 </div>
 <!--end::Modal-->
-
 
 

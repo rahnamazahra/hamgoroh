@@ -7,7 +7,7 @@ use App\Http\Requests\ProvinceRequest;
 use App\Models\Province;
 use Database\Seeders\ProvinceSeeder;
 use Illuminate\Http\Request;
-use Throwable;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProvinceController extends Controller
 {
@@ -16,7 +16,19 @@ class ProvinceController extends Controller
      */
     public function index(Request $request)
     {
-        $provinces = Province::get();
+        $query = Province::with(['cities']);
+
+        if ($request->query('search_item'))
+        {
+            $search_item = $request->query('search_item');
+            $query->when($search_item, function (Builder $builder) use ($search_item) {
+                $builder->where('title', $search_item)
+                        ->orWhereRelation('cities', 'title',$search_item);
+            });
+        }
+
+        $provinces = $query->paginate(10)->withQueryString();
+
         return view('admin.provinces.index', ['provinces' => $provinces]);
     }
 

@@ -12,12 +12,6 @@
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-muted">
-            <a href="{{ route('admin.users.index') }}" class="text-muted text-hover-primary">کاربران</a>
-        </li>
-        <li class="breadcrumb-item">
-            <span class="bullet bg-gray-300 w-5px h-2px"></span>
-        </li>
         <li class="breadcrumb-item text-dark">کاربران</li>
     </ul>
 @endsection
@@ -28,38 +22,75 @@
         <div class="card-header">
             <div class="card-title">
                 <div class="position-relative my-1">
-                    <div class="input-group input-group-solid">
-
-                    </div>
-                    <div class="input-group input-group-solid">
-                        <form method="GET" action="{{ route('admin.users.index') }}" id="sort_users_form" name="sort_users_form" class="mx-auto w-100 fv-plugins-bootstrap5 fv-plugins-framework">
-                            <div class="d-flex align-items-center fw-bolder" data-select2-id="select2-data-122-u471">
-                                <div class="text-gray-400 fs-7 me-2">نقش</div>
-                                <select name="item_roles" id="item_roles" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="لطفا انتخاب کنید" tabindex="-1" aria-hidden="true">
-                                    <option value="all" @if (request()->query('item_roles') == 'all') selected @endif>همه</option>
-                                    @foreach($roles as $role)
-                                        <option value="{{ $role->id }}" @if(request()->query('item_roles') == $role->id ) selected @endif>{{ $role->title }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </form>
-                    </div>
+                    <form method="GET" action="{{ route('admin.users.index') }}">
+                        <div class="input-group input-group-sm input-group-solid">
+                            <button type="submit" class="input-group-text btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M21.7 18.9L18.6 15.8C17.9 16.9 16.9 17.9 15.8 18.6L18.9 21.7C19.3 22.1 19.9 22.1 20.3 21.7L21.7 20.3C22.1 19.9 22.1 19.3 21.7 18.9Z" fill="currentColor" />
+                                    <path opacity="0.3" d="M11 20C6 20 2 16 2 11C2 6 6 2 11 2C16 2 20 6 20 11C20 16 16 20 11 20ZM11 4C7.1 4 4 7.1 4 11C4 14.9 7.1 18 11 18C14.9 18 18 14.9 18 11C18 7.1 14.9 4 11 4ZM8 11C8 9.3 9.3 8 11 8C11.6 8 12 7.6 12 7C12 6.4 11.6 6 11 6C8.2 6 6 8.2 6 11C6 11.6 6.4 12 7 12C7.6 12 8 11.6 8 11Z" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <input type="text" class="form-control form-control-solid" placeholder="جست و جو ..." name="search_item" />
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="card-toolbar">
-                @can('users-create')
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary">کابر جدید +</a>
-                @endcan
+                <div class="p-2 align-items-center gap-4">
+                    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="collapse" data-bs-target="#filter_search">جست‌وجوی‌پیشرفته</button>
+                    @can('users-create')
+                        <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary">کابر جدید +</a>
+                    @endcan
+                </div>
             </div>
         </div>
         <div class="card-body">
+            <div id="filter_search" class="collapse">
+                <form method="GET" action="{{ route('admin.users.index') }}" class="mx-auto w-100 fv-plugins-bootstrap5 fv-plugins-framework">
+                    <div class="row mb-8">
+                        <div class="col-md-3 fv-row">
+                            <div class="d-flex align-items-center fw-bolder" data-select2-id="select2-data-122-u471">
+                                <div class="text-gray-400 fs-7 me-2">نقش</div>
+                                <select name="roles_item" id="roles_item" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="لطفا انتخاب کنید" tabindex="-1" aria-hidden="true">
+                                    <option value="all" @if (request()->query('roles_item') == 'all') selected @endif>همه</option>
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}" @if(request()->query('roles_item') == $role->id ) selected @endif>{{ $role->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 fv-row">
+                            <div class="d-flex align-items-center fw-bolder" data-select2-id="select2-data-122-u471">
+                                <div class="text-gray-400 fs-7 me-2">وضعیت</div>
+                                <select name="status_item" id="status_item" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="لطفا انتخاب کنید" tabindex="-1" aria-hidden="true">
+                                    <option value="all" @if (request()->query('status_item') == 'all') selected @endif>همه</option>
+                                    <option value="1" @if (request()->query('status_item') == '1') selected @endif>فعال</option>
+                                    <option value="0" @if (request()->query('status_item') == '0') selected @endif>غیرفعال</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 fv-row">
+                            <div class="d-flex align-items-center fw-bolder" data-select2-id="select2-data-122-u471">
+                                <div class="text-gray-400 fs-7 me-2">جنسیت</div>
+                                <select name="gender_item" id="gender_item" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="لطفا انتخاب کنید" tabindex="-1" aria-hidden="true">
+                                    <option value="all" @if (request()->query('gender_item') == 'all') selected @endif>همه</option>
+                                    <option value="1"  @if (request()->query('gender_item') == '1') selected @endif>مرد</option>
+                                    <option value="0"  @if (request()->query('gender_item') == '0') selected @endif>زن</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 fv-row">
+                            <button type="submit" class="btn btn-sm btn-primary">جست‌و‌جو</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <div class="table-responsive">
                 <table id="users_list" class="table table-striped gy-7 gs-7">
                     <thead>
                         <tr>
                             <th class="text-center">ردیف</th>
-                            <th class="text-center">نام</th>
-                            <th class="text-center">نام خانوادگی</th>
+                            <th class="text-center">نام و نام خانوادگی</th>
                             <th class="text-center">کدملی</th>
                             <th class="text-center">تلفن همراه</th>
                             <th class="text-center">شهر</th>
@@ -74,12 +105,7 @@
                             <td class="text-center">{{ $key + 1 }}</td>
                             <td class="text-center">
                                 <div class="position-relative ps-6 pe-3 py-2">
-                                    <a href="#" class="mb-1 text-dark text-hover-primary"> {{ $user->first_name }}</a>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <div class="position-relative ps-6 pe-3 py-2">
-                                    <span class="mb-1 text-dark"> {{ $user->last_name }}</span>
+                                    <a href="#" class="mb-1 text-dark text-hover-primary"> {{ $user->first_name }} {{ $user->last_name }} </a>
                                 </div>
                             </td>
                             <td class="text-center">
@@ -130,13 +156,12 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn btn-group-sm">
-                                    <button data-bs-toggle="modal" data-bs-target="" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اطلاعات تکمیلی">
+                                    <button class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom"  title="اطلاعات تکمیلی">
                                             <span class="svg-icon svg-icon-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z" fill="currentColor"/>
-                                                    <path opacity="0.3" d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z" fill="currentColor"/>
-                                                </svg>
-                                            </span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z" fill="currentColor"/>
+                                            <path opacity="0.3" d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z" fill="currentColor"/>
+                                            </svg></span>
                                     </button>
                                     @can('users-update')
                                     <a href="{{ route('admin.users.edit', ['user' => $user->id]) }}" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
@@ -163,24 +188,18 @@
                             </td>
                         </tr>
                     @empty
-                        <td colspan="9" class="text-center">  ثبت نشده است.</td>
+                        <td class="text-center" colspan="9">‌آیتمی برای نمایش وجود ندارد.</td>
                     @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="card-footer">
-           {{--  {{ $users->links('admin.partials.pagination') }}  --}}
+            {{ $users->withQueryString()->links('pagination::bootstrap-5') }}
         </div>
     </div>
 @endcan
 @endsection
 @section('custom-scripts')
-<script>
-    $(document).ready(function() {
-        $('#item_roles').on('change', function() {
-            document.forms['sort_users_form'].submit();
-        });
-    });
-</script>
+
 @endsection

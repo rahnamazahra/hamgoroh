@@ -16,6 +16,7 @@ class CityController extends Controller
      */
     public function index(Request $request)
     {
+        //
     }
 
     /**
@@ -25,10 +26,10 @@ class CityController extends Controller
     {
         try {
             City::create($request->all());
-            return redirect()->route('admin.cities.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+            return response()->json(['success' => true], 200);
         }
         catch (\Exception $e) {
-            return redirect()->route('admin.cities.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
 
@@ -36,10 +37,10 @@ class CityController extends Controller
     {
         try {
             $city->update($request->all());
-            return redirect()->route('admin.cities.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
+            return response()->json(['success' => true], 200);
         }
         catch (\Exception $e) {
-            return redirect()->route('admin.cities.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
 

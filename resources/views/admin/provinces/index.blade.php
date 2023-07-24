@@ -3,7 +3,7 @@
 @section('title', 'استان ها')
 
 @section('breadcrumb')
-    <h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">استان ها</h1>
+    <h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">استان</h1>
     <span class="h-20px border-gray-300 border-start mx-4"></span>
     <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
         <li class="breadcrumb-item text-muted">
@@ -12,13 +12,7 @@
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-muted">
-            <a href="{{ route('admin.users.index') }}" class="text-muted text-hover-primary">استان ها</a>
-        </li>
-        <li class="breadcrumb-item">
-            <span class="bullet bg-gray-300 w-5px h-2px"></span>
-        </li>
-        <li class="breadcrumb-item text-dark">استان ها</li>
+        <li class="breadcrumb-item text-dark">استان</li>
     </ul>
 @endsection
 
@@ -28,9 +22,17 @@
     <div class="card-header">
         <div class="card-title">
             <div class="position-relative my-1">
-                <div class="input-group input-group-solid">
-
-                </div>
+                <form method="GET" action="{{ route('admin.provinces.index') }}">
+                    <div class="input-group input-group-sm input-group-solid">
+                        <button type="submit" class="input-group-text btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M21.7 18.9L18.6 15.8C17.9 16.9 16.9 17.9 15.8 18.6L18.9 21.7C19.3 22.1 19.9 22.1 20.3 21.7L21.7 20.3C22.1 19.9 22.1 19.3 21.7 18.9Z" fill="currentColor" />
+                                <path opacity="0.3" d="M11 20C6 20 2 16 2 11C2 6 6 2 11 2C16 2 20 6 20 11C20 16 16 20 11 20ZM11 4C7.1 4 4 7.1 4 11C4 14.9 7.1 18 11 18C14.9 18 18 14.9 18 11C18 7.1 14.9 4 11 4ZM8 11C8 9.3 9.3 8 11 8C11.6 8 12 7.6 12 7C12 6.4 11.6 6 11 6C8.2 6 6 8.2 6 11C6 11.6 6.4 12 7 12C7.6 12 8 11.6 8 11Z" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <input type="text" class="form-control form-control-solid" placeholder="جست و جو ..." name="search_item" />
+                    </div>
+                </form>
             </div>
         </div>
         <div class="card-toolbar">
@@ -40,16 +42,16 @@
         </div>
     </div>
     <div class="card-body">
-            <div class="table-responsive">
-                <table id="province_list" class="table table-striped gy-7 gs-7">
-                    <thead>
-                        <tr>
-                            <th class="text-center"></th>
-                            <th class="text-center">نام استان</th>
-                            <th class="text-center">تعداد شهرها</th>
-                            <th class="text-center">اقدامات</th>
-                        </tr>
-                    </thead>
+        <div class="table-responsive">
+            <table id="province_list" class="table table-striped gy-7 gs-7">
+                <thead>
+                    <tr>
+                        <th class="text-center"></th>
+                        <th class="text-center">نام استان</th>
+                        <th class="text-center">تعداد شهرها</th>
+                        <th class="text-center">اقدامات</th>
+                    </tr>
+                </thead>
                 <tbody>
                     @forelse($provinces as $province)
                         <tr>
@@ -74,7 +76,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="position-relative ps-6 pe-3 py-2">
-                                    <span class="mb-1 text-dark fw-bolder"> {{ $province->title ?? '-' }}</span>
+                                    <span class="mb-1 text-dark"> {{ $province->title ?? '-' }}</span>
                                 </div>
                             </td>
                             <td class="text-center"> {{ $province->cities->count() }} </td>
@@ -101,6 +103,11 @@
                                             </span>
                                         </button>
                                     @endcan
+                                    @can('cities-create')
+                                        <button type="button" class="btn btn-sm btn-primary" onclick="openAddCityModal({{ $province->id }})" data-bs-toggle="tooltip" data-bs-placement="bottom" title="افزودن شهر">
+                                          شهر جدید +
+                                        </button>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>
@@ -111,15 +118,15 @@
                                         <div class="text-gray-800 fs-7 me-3"></div>
                                         <div class="text-muted fs-7 fw-bolder"> {{ $key+1 }} </div>
                                     </td>
-                                    <td class="p-4 text-center" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $city->title }}">
-                                        <div class="text-gray-800 fs-7 me-3 text-center">نام شهر</div>
-                                        <div class="text-muted fs-7 fw-bolder text-center">  {{ $city->title ?? '-' }} </div>
+                                    <td class="p-4 text-center">
+                                        <div class="text-gray-800 fs-7 me-3 text-center fw-bolder">نام شهر</div>
+                                        <div class="text-muted fs-7 text-center">  {{ $city->title ?? '-' }} </div>
                                     </td>
                                     <td></td>
                                     <td class="text-center">
                                         <div class="btn btn-group-sm">
                                             @can('cities-update')
-                                                <button onclick="" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
+                                                <button onclick="openUpdateCityModal({{ $city }})" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
                                                     <span class="svg-icon svg-icon-3">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                             <path opacity="0.3"d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path>
@@ -145,18 +152,18 @@
                             @endforeach
                         @endcan
                     @empty
-                        <td colspan="4" class="text-center">  ثبت نشده است.</td>
+                        <td class="text-center" colspan="4">‌آیتمی برای نمایش وجود ندارد.</td>
                     @endforelse
                 </tbody>
             </table>
         </div>
-
     </div>
     <div class="card-footer">
-           {{--  {{ $provinces->links('admin.partials.pagination') }}  --}}
-        </div>
+        {{ $provinces->withQueryString()->links('pagination::bootstrap-5') }}
     </div>
     @include('admin.provinces.edit')
+    @include('admin.cities.create')
+    @include('admin.cities.edit')
 @endcan
 @endsection
 
@@ -167,7 +174,6 @@
         $('.x'+province_id).toggle();
     }
 </script>
-
 <script>
     function openAddProvinceModal()
     {
@@ -208,7 +214,6 @@
         });
     }
 </script>
-
 <script>
     function openUpdateProvinceModal(province)
     {
@@ -223,9 +228,10 @@
             var url = "{{ route('admin.provinces.update', ['province' => ':province_id']) }}";
             url = url.replace(':province_id', province.id);
             $.ajax({
-                type: "PATCH",
+                type: "POST",
+                method: "PATCH",
                 url: url,
-                data: $("#add_province_form").serialize(),
+                data: $("#update_province_form").serialize(),
                 success: function () {
                     Swal.fire({
                         type: "success",
@@ -241,13 +247,124 @@
                     window.location.reload();
                 },
                 error: function (xhr) {
-                    $('#add_errors_div').empty();
+                    $('#update_errors_div').empty();
                     var errors = '<div class="alert alert-danger alert-dismissible d-flex flex-column flex-sm-row p-5 mb-10"><span class="svg-icon svg-icon-2hx svg-icon-danger me-4 mb-5 mb-sm-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path opacity="0.3" d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z" fill="currentColor"/><path d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z" fill="currentColor"/></svg></span><div class="d-flex flex-column"><h4 class="mb-1 text-danger">مشکلی رخ داده است</h4>';
                     $.each(xhr.responseJSON.errors, function(key,value) {
                         errors += '<span class="text-dark">'+value+'</span>';
                     });
                     errors += '</div></div>';
-                    $('#add_errors_div').append(errors);
+                    $('#update_errors_div').append(errors);
+                }
+            });
+        });
+    }
+</script>
+<script>
+    function openAddCityModal(province_id)
+    {
+        $('#city_create_errors').empty();
+        var content ='<form class="form" role="form" autocomplete="off" id="city_create_form"><input type="hidden" name="_token" value="{{csrf_token()}}"/> <div class="modal-body"> <div class="col-md-12 fv-row"> <div class="form-group"> <div class="input-group"> <label for="city_create_select" class="required d-flex align-items-center fs-6 fw-bold mb-2">نام اسـتان </label> <select class="form-select form-select-solid" style="width: 100%;" tabindex="-1" aria-hidden="true" name="province_id" id="city_create_select"> <option value=""></option> @foreach($provinces as $province)<option value="{{ $province->id }}">{{ $province->title }}</option> @endforeach </select></div></div></div><div class="col-md-12 fv-row"> <label for="title" class="required d-flex align-items-center fs-6 fw-bold mb-2">نام شهر</label> <input type="text" class="form-control form-control-solid" name="title" id="title" value=""/> </div></div><div class="modal-footer"> <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">ذخیره</button> <button type="button" class="btn btn-light" data-bs-dismiss="modal">انصراف</button> </div></form>';
+        $('#city_create_content').html(content);
+        $('#city_create_select').val(province_id);
+        var selectElement = $('#city_create_select');
+        $("#city_create_select").select2({
+            dropdownParent: $("#city_create_form")
+        });
+        selectElement.prop('disabled', true);
+
+        $('#city_create_modal').modal('show');
+        $('#city_create_form').on('submit', function (e) {
+
+            e.preventDefault();
+            var token = $("meta[name='csrf-token']").attr("content");
+            if (selectElement.prop('disabled')) {
+                selectElement.prop('disabled', false);
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('admin.cities.store') }}",
+                data: $("#city_create_form").serialize(),
+                success: function () {
+                    Swal.fire({
+                        type: "success",
+                        icon: "success",
+                        title: "موفقیت‌آمیز",
+                        text: "ثبت اطلاعات با‌موفقیت اتجام شد",
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        timer: 7000
+                    });
+                    window.location.reload();
+                    selectElement.prop('disabled', true);
+                },
+                error: function (xhr) {
+                    $('#city_create_errors').empty();
+                    var errors = '<div class="alert alert-danger alert-dismissible d-flex flex-column flex-sm-row p-5 mb-10"><span class="svg-icon svg-icon-2hx svg-icon-danger me-4 mb-5 mb-sm-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path opacity="0.3" d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z" fill="currentColor"/><path d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z" fill="currentColor"/></svg></span><div class="d-flex flex-column"><h4 class="mb-1 text-danger">مشکلی رخ داده است</h4>';
+                    $.each(xhr.responseJSON.errors, function(key,value) {
+                        errors += '<span class="text-dark">'+value+'</span>';
+                    });
+                    errors += '</div></div>';
+                    $('#city_create_errors').append(errors);
+                }
+            });
+        });
+    }
+</script>
+<script>
+    function openUpdateCityModal(city)
+    {
+        $('#city_update_errors').empty();
+        var content ='<form class="form" role="form" autocomplete="off" id="city_update_form"><input type="hidden" name="_token" value="{{csrf_token()}}"/> <div class="modal-body"> <div class="col-md-12 fv-row"> <div class="form-group"> <div class="input-group"> <label for="city_update_select" class="required d-flex align-items-center fs-6 fw-bold mb-2">نام اسـتان </label> <select class="form-select form-select-solid" style="width: 100%;" tabindex="-1" aria-hidden="true" name="province_id" id="city_update_select"> <option value=""></option> @foreach($provinces as $province)<option value="{{ $province->id }}">{{ $province->title }}</option> @endforeach </select></div></div></div><div class="col-md-12 fv-row"> <label for="title" class="required d-flex align-items-center fs-6 fw-bold mb-2">نام شهر</label> <input type="text" class="form-control form-control-solid" name="title" id="title" value="'+city.title+'"/> </div></div><div class="modal-footer"> <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">ذخیره</button> <button type="button" class="btn btn-light" data-bs-dismiss="modal">انصراف</button> </div></form>';
+        $('#city_update_content').html(content);
+        $('#city_update_select').val(city.province_id);
+        var selectElement = $('#city_update_select');
+        $("#city_update_select").select2({
+            dropdownParent: $("#city_update_form")
+        });
+        selectElement.prop('disabled', true);
+
+        $('#city_update_modal').modal('show');
+
+        $('#city_update_form').on('submit', function (e) {
+
+            e.preventDefault();
+
+            if (selectElement.prop('disabled')) {
+                selectElement.prop('disabled', false);
+            }
+            var url = "{{ route('admin.cities.update', ['city' => ':city_id']) }}";
+            url = url.replace(':city_id', city.id);
+            $.ajax({
+                type: "POST",
+                method: "PATCH",
+                url: url,
+                data: $("#city_update_form").serialize(),
+                success: function () {
+                    Swal.fire({
+                        type: "success",
+                        icon: "success",
+                        title: "موفقیت‌آمیز",
+                        text: "ویرایش اطلاعات با‌موفقیت انجام شد",
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        timer: 7000
+                    });
+                    window.location.reload();
+                    selectElement.prop('disabled', true);
+                },
+                error: function (xhr) {
+                    $('#city_update_errors').empty();
+                    var errors = '<div class="alert alert-danger alert-dismissible d-flex flex-column flex-sm-row p-5 mb-10"><span class="svg-icon svg-icon-2hx svg-icon-danger me-4 mb-5 mb-sm-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path opacity="0.3" d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z" fill="currentColor"/><path d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z" fill="currentColor"/></svg></span><div class="d-flex flex-column"><h4 class="mb-1 text-danger">مشکلی رخ داده است</h4>';
+                    $.each(xhr.responseJSON.errors, function(key,value) {
+                        errors += '<span class="text-dark">'+value+'</span>';
+                    });
+                    errors += '</div></div>';
+                    $('#city_update_errors').append(errors);
                 }
             });
         });

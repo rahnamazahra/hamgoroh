@@ -2,30 +2,54 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use Morilog\Jalali\Jalalian;
-use App\Http\Requests\UserRequest;
 use App\Models\City;
-use App\Models\Province;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Province;
 use Illuminate\Http\Request;
+use Morilog\Jalali\Jalalian;
+use App\Http\Requests\UserRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $roles = Role::select('id', 'title')->get();
+        $query = User::with(['roles', 'city.province']);
 
-        if ($item = $request->query('item_roles') and $item != 'all')
+        if ($request->query('search_item'))
         {
-            $users = Role::find($item)->users;
-        } else
-        {
-            $users = User::with(['roles', 'city.province'])->orderBy('last_name')->orderBy('first_name')->get();
+            $search_item = $request->query('search_item');
+            $query->when($search_item, function (Builder $builder) use ($search_item) {
+                $builder->where('first_name', 'LIKE', "%{$search_item}%")
+                        ->orWhere('last_name', 'LIKE', "%{$search_item}%")
+                        ->orWhere('phone', 'LIKE', "%{$search_item}%")
+                        ->orWhere('national_code', 'LIKE', "%{$search_item}%")
+                        ->orWhereRelation('city', 'title', 'LIKE', "%{$search_item}%");
+            });
         }
+        if($request->query('status_item') && $request->query('status_item') != 'all')
+        {
+            $status_item = $request->query('status_item');
+            $query->where('is_active', $status_item);
+        }
+        if($request->query('gender_item') && $request->query('gender_item') != 'all')
+        {
+            $gender_item = $request->query('gender_item');
+            $query->where('gender', $gender_item);
+        }
+        if($request->query('roles_item') && $request->query('roles_item') != 'all')
+        {
+            $roles_item  = $request->query('roles_item');
+            $query->whereHas('roles', function ($q) use ($roles_item ) {
+                $q->where('role_id', $roles_item);
+            });
+        }
+        $users = $query->orderBy('last_name')->orderBy('first_name')->paginate(10)->withQueryString();
+        $roles = Role::select('id', 'title')->get();
         return view('admin.users.index', ['users' => $users, 'roles' => $roles]);
     }
 
