@@ -14,9 +14,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::get();
+        $roles = Role::paginate(10);
 
-        return redirect()->route('admin.roles.index', ['roles' => $roles]);
+        return view('admin.roles.index', ['roles' => $roles]);
     }
 
     /**
