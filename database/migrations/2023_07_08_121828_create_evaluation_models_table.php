@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('forms', function (Blueprint $table) {
+        Schema::create('evaluation_models', function (Blueprint $table) {
             $table->id()->comment('شناسه');
             $table->string('title')->comment('عنوان');
             $table->timestamps();
 
-            $table->comment('مدل های ارزیابی');
+            $table->comment('مدل‌های ارزیابی');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('forms');
+        Schema::dropIfExists('evaluation_models');
     }
 };

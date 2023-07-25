@@ -53,7 +53,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($provinces as $province)
+                    @forelse($provinces as $key => $province)
+                        @php
+                            $row_number = ($provinces->currentPage() -1) * ($provinces->perPage()) + ($key + 1);
+                        @endphp
                         <tr>
                             <td class="text-center">
                                 <button type="button" onclick="toggle_inventories({{ $province->id }})" class="btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px">
@@ -113,7 +116,7 @@
                         </tr>
                         @can('cities-index')
                             @foreach($province->cities as $key => $city)
-                                <tr class="x{{ $city->province_id }} table-light m-4" style="display: none;">
+                                <tr class="x{{ $city->province_id }} m-4" style="display: none;">
                                     <td class="p-4 text-center">
                                         <div class="text-gray-800 fs-7 me-3"></div>
                                         <div class="text-muted fs-7 fw-bolder"> {{ $key+1 }} </div>
@@ -188,27 +191,11 @@
                 url: "{{ route('admin.provinces.store') }}",
                 data: $("#add_province_form").serialize(),
                 success: function () {
-                    Swal.fire({
-                        type: "success",
-                        icon: "success",
-                        title: "موفقیت‌آمیز",
-                        text: "ثبت اطلاعات با‌موفقیت اتجام شد",
-                        toast: true,
-                        position: 'top-end',
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                        timer: 7000
-                    });
+                    //
                     window.location.reload();
                 },
                 error: function (xhr) {
-                    $('#add_errors_div').empty();
-                    var errors = '<div class="alert alert-danger alert-dismissible d-flex flex-column flex-sm-row p-5 mb-10"><span class="svg-icon svg-icon-2hx svg-icon-danger me-4 mb-5 mb-sm-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path opacity="0.3" d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z" fill="currentColor"/><path d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z" fill="currentColor"/></svg></span><div class="d-flex flex-column"><h4 class="mb-1 text-danger">مشکلی رخ داده است</h4>';
-                    $.each(xhr.responseJSON.errors, function(key,value) {
-                        errors += '<span class="text-dark">'+value+'</span>';
-                    });
-                    errors += '</div></div>';
-                    $('#add_errors_div').append(errors);
+                    //
                 }
             });
         });
@@ -290,7 +277,7 @@
                         type: "success",
                         icon: "success",
                         title: "موفقیت‌آمیز",
-                        text: "ثبت اطلاعات با‌موفقیت اتجام شد",
+                        text: "ثبت اطلاعات با‌موفقیت انجام شد",
                         toast: true,
                         position: 'top-end',
                         timerProgressBar: true,

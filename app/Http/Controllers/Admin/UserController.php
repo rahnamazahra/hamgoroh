@@ -7,13 +7,14 @@ use App\Models\City;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Province;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-
+use Exception;
 class UserController extends Controller
 {
     public function index(Request $request)
@@ -31,25 +32,30 @@ class UserController extends Controller
                         ->orWhereRelation('city', 'title', 'LIKE', "%{$search_item}%");
             });
         }
-        if($request->query('status_item') && $request->query('status_item') != 'all')
+
+        if($request->has('status_item') && $request->query('status_item') != 'all')
         {
             $status_item = $request->query('status_item');
             $query->where('is_active', $status_item);
         }
-        if($request->query('gender_item') && $request->query('gender_item') != 'all')
+
+        if($request->has('gender_item') && $request->query('gender_item') != 'all')
         {
             $gender_item = $request->query('gender_item');
             $query->where('gender', $gender_item);
         }
-        if($request->query('roles_item') && $request->query('roles_item') != 'all')
+
+        if($request->has('roles_item') && $request->query('roles_item') != 'all')
         {
             $roles_item  = $request->query('roles_item');
             $query->whereHas('roles', function ($q) use ($roles_item ) {
                 $q->where('role_id', $roles_item);
             });
         }
+
         $users = $query->orderBy('last_name')->orderBy('first_name')->paginate(10)->withQueryString();
         $roles = Role::select('id', 'title')->get();
+
         return view('admin.users.index', ['users' => $users, 'roles' => $roles]);
     }
 
@@ -71,7 +77,7 @@ class UserController extends Controller
             $user->roles()->attach($request->input('roles'));
             return redirect()->route('admin.users.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return redirect()->route('admin.users.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
     }
@@ -87,6 +93,8 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
+        $user->is_active = 0;
+
         try {
             $user->update($request->except(['birthday_date']));
             $user->birthday_date = Jalalian::fromFormat('Y/m/d', $request->input('birthday_date'))->toCarbon();
@@ -95,7 +103,7 @@ class UserController extends Controller
             return redirect()->route('admin.users.index')->with('success', 'ویرایش اطلاعات  با‌موفقیت انجام شد.');
 
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return redirect()->route('admin.users.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
     }
@@ -106,7 +114,7 @@ class UserController extends Controller
             $user->delete();
             return response()->json(['success' => true], 200);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }

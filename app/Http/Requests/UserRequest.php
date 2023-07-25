@@ -3,8 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
-class UserRequest extends FormRequest
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+class UserRequest extends CustomRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,18 +23,17 @@ class UserRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules(Request $request)
+    public function  rules(): array
     {
         switch ($this->method())
         {
             case 'GET':
-            case 'DELETE':
-                return [];
+
             case 'POST':
+
                 $rules = [
                     'first_name'    => 'required|string|min:3',
                     'last_name'     => 'required|string|min:3',
-                    'is_active'     => 'required',
                     'phone'         => 'required|min:11|max:11|unique:users,phone',
                     'national_code' => 'required|min:10|max:10|unique:users,national_code',
                     'gender'        => 'required',
@@ -40,14 +41,16 @@ class UserRequest extends FormRequest
                     'birthday_date' => 'required|date_format:Y/m/d',
                     'roles'         => 'required',
                 ];
+
                 return $rules;
+
             case 'PUT':
+
             case 'PATCH':
                 $user= $this->route()->parameter('user');
                 return [
                     'first_name'    => 'required|string|min:3',
                     'last_name'     => 'required|string|min:3',
-                    'is_active'     => 'required',
                     'phone'         => 'required|min:11|max:11|unique:users,phone,'.$user->id,
                     'national_code' => 'required|min:10|max:10|unique:users,national_code,'.$user->id,
                     'gender'        => 'required',
@@ -55,8 +58,18 @@ class UserRequest extends FormRequest
                     'birthday_date' => 'required|date_format:Y/m/d',
                     'roles'         => 'required',
                 ];
-            default:break;
-        }
 
+           case 'DELETE':
+
+           default:break;
+        }
     }
+
+    // protected function failedValidation(Validator $validator)
+    // {
+    //     throw new HttpResponseException(
+    //         redirect()->back()->withErrors($validator->errors())->withInput()
+    //     );
+    // }
+   
 }

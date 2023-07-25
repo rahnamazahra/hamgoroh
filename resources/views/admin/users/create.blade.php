@@ -53,24 +53,19 @@
                         <input type="text" class="form-control form-control-solid input-just-number" id="phone" name="phone" value="{{ old('phone') }}"/>
                     </div>
                     <div class="col-md-6 fv-row">
-                        <label class="required form-label">وضعیت کاربر</label>
-                        <div class="d-flex align-items-center my-5">
-                            <label for="user_active" class="form-check form-check-custom form-check-solid me-10">
-                                <input class="form-check-input h-20px w-20px" type="radio" name="is_active" id="user_active" value="1" @if(old('is_active')=="1") checked='checked' @endif checked/>
-                                <span class="form-check-label fw-bold">فعال</span>
-                            </label>
-                            <label for="user_deactive" class="form-check form-check-custom form-check-solid">
-                                <input class="form-check-input h-20px w-20px" type="radio" name="is_active" id="user_deactive" value="0" @if(old('is_active')=="0") checked='checked' @endif/>
-                                <span class="form-check-label fw-bold">غیرفعال</span>
-                            </label>
+                        <label>وضعیت</label>
+                        <input type="hidden" name="is_active" value="0">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" @if(old('is_active') == 1) checked @endif checked>
+                            <label class="form-check-label" for="is_active">فعال</label>
                         </div>
                     </div>
                     <div class="col-md-6 fv-row">
-                        <label for="provinces_list" class="required form-label">استان</label>
-                        <select class="form-select form-select-solid" id="provinces_list" name="province_id" onchange="getCities(this.value)" data-control="select2" data-allow-clear="true" data-placeholder="استان را انتخاب کنید">
+                        <label for="province_id" class="required form-label">استان</label>
+                        <select class="form-select form-select-solid" id="province_id" name="province_id" onchange="getCities(this.value)" data-control="select2" data-allow-clear="true" data-placeholder="استان را انتخاب کنید">
                             <option></option>
                             @foreach($provinces as $province)
-                                <option value="{{ $province->id }}"  @if (old('province_id') == $province->id) selected @endif>{{ $province->title }}</option>
+                                <option value="{{ $province->id }}" @selected(old('province_id') and in_array($province->id, old('province_id')))>{{ $province->title }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -97,10 +92,10 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <label for="roles_list" class="required form-label">نقش(ها)</label>
-                                <select class="form-select form-select-solid" data-control="select2" data-placeholder="لطفا انتخاب کنید" id="roles_list" name="roles[]" multiple="multiple">
+                                <select class="form-select form-select-solid" data-control="select2" data-placeholder="لطفا انتخاب کنید" id="roles" name="roles[]" multiple="multiple">
                                     <option></option>
                                     @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}">{{ $role->title }}</option>
+                                        <option value="{{ $role->id }}" @selected(old('roles') and in_array($role->id, old('roles')))>{{ $role->title }}</option>
                                     @endforeach
                                 </select>
                             </div>

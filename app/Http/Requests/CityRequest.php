@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 class CityRequest extends FormRequest
 {
     /**
@@ -21,26 +23,39 @@ class CityRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules(Request $request)
+    public function rules(): array
     {
         switch ($this->method())
         {
             case 'GET':
-            case 'DELETE':
-                return [];
+
             case 'POST':
                 $rules = [
                     'title' => 'required|string|unique:cities,title',
                 ];
+
                 return $rules;
+
             case 'PUT':
+
             case 'PATCH':
                 $city = $this->route()->parameter('city');
                 return [
                     'title' => 'required|string|unique:cities,title,'.$city->id,
                 ];
-            default:break;
+
+            case 'DELETE':
+
+           default:break;
         }
 
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            redirect()->back()->withErrors($validator->errors())->withInput()
+        );
+    }
 }
+

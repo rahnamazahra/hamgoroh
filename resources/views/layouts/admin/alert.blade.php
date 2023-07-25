@@ -1,4 +1,5 @@
 
+
 @if(session('success'))
     <script>
         Swal.fire({
@@ -15,12 +16,16 @@
     </script>
 @endif
 
-@if(session('error'))
+{{--  @if(session('errors'))
     <script>
         Swal.fire({
             icon: 'error',
             title: 'خطا',
-            text: '{{ session('error') }}',
+             html: '<ul class="list-disc pl-5">' +
+            '@foreach ($errors->all() as $error)' +
+                '<li>{!! $error !!}</li>' +
+            '@endforeach' +
+          '</ul>',
             toast: true,
             position: 'top-end',
             timerProgressBar: true,
@@ -28,6 +33,6 @@
             timer: 7000
         });
     </script>
-@endif
+@endif  --}}
 
 

@@ -22,8 +22,8 @@ class ProvinceController extends Controller
         {
             $search_item = $request->query('search_item');
             $query->when($search_item, function (Builder $builder) use ($search_item) {
-                $builder->where('title', $search_item)
-                        ->orWhereRelation('cities', 'title',$search_item);
+                $builder->where('title', 'LIKE', "%{$search_item}%")
+                        ->orWhereRelation('cities', 'title', 'LIKE', "%{$search_item}%");
             });
         }
 
@@ -37,13 +37,14 @@ class ProvinceController extends Controller
      */
     public function store(ProvinceRequest $request)
     {
-        try {
-            Province::create($request->all());
-            return response()->json(['success' => true], 200);
-        }
-        catch (\Exception $e) {
-            return response()->json(['success' => false, 'errors' => $e], 400);
-        }
+        $validatedData = $request->validated();
+
+            try {
+                Province::create($validatedData);
+                return response()->json(['success' => true], 200);
+            } catch (\Exception $e) {
+                return response()->json(['success' => false, 'errors' => [$e->getMessage()]], 400);
+            }
     }
 
     /**

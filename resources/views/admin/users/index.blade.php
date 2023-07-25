@@ -101,8 +101,11 @@
                     </thead>
                     <tbody>
                     @forelse($users as $key => $user)
+                        @php
+                            $row_number = ($users->currentPage() -1) * ($users->perPage()) + ($key + 1);
+                        @endphp
                         <tr>
-                            <td class="text-center">{{ $key + 1 }}</td>
+                            <td class="text-center">{{ $row_number }}</td>
                             <td class="text-center">
                                 <div class="position-relative ps-6 pe-3 py-2">
                                     <a href="#" class="mb-1 text-dark text-hover-primary"> {{ $user->first_name }} {{ $user->last_name }} </a>
