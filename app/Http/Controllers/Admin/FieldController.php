@@ -37,11 +37,16 @@ class FieldController extends Controller
      */
     public function store(FieldRequest $request)
     {
-        Field::create([
-            'title' => $request->input('title'),
-        ]);
+        try {
+            Field::create([
+                'title' => $request->input('title'),
+            ]);
 
-        return redirect()->route('admin.fields.index');
+            return redirect()->route('admin.fields.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+
+        } catch (\Exception $e) {
+            return redirect()->route('admin.fields.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        }
     }
 
     /**
@@ -57,11 +62,16 @@ class FieldController extends Controller
      */
     public function update(FieldRequest $request, Field $field)
     {
-        $field->update([
-            'title' => $request->input('title'),
-        ]);
+        try {
 
-        return redirect()->route('admin.fields.index');
+            $field->update([
+                'title' => $request->input('title'),
+            ]);
+
+            return redirect()->route('admin.fields.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.fields.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        }
     }
 
     /**

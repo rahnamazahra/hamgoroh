@@ -36,6 +36,15 @@
                         <label for="title" class="required form-label">عنوان</label>
                         <input type="text" class="form-control form-control-solid" name="title" value="{{ old('title', $competition->title) }}" />
                     </div>
+                    <div class="col-md-6 fv-row">
+                        <label for="cities_list" class="required fs-6 fw-bold mb-2">ایجادکننده</label>
+                        <select class="form-select form-select-solid" id="creator" name="creator" data-control="select2" data-allow-clear="true" data-placeholder="لطفا را انتخاب کنید">
+                            <option></option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}" @if ($competition->creator == $user->id) selected @endif>{{ $user->first_name . ' ' . $user->last_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 {{--                    <div class="col-md-6 fv-row">--}}
 {{--                        <label for="registration_start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان شروع</label>--}}
 {{--                        <input type="text"  class="form-control form-control-solid" data-jdp data-jdp-min-date="today" id="registration_start_time" name="registration_start_time"--}}
@@ -48,35 +57,63 @@
 {{--                        <span id="calendar"></span>--}}
 {{--                    </div>--}}
                     <div class="col-md-6 fv-row">
-                        <label for="registration_start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان شروع</label>
-                        <input type="text" class="form-control form-control-solid" id="registration_start_time" name="registration_start_time"
-                               @if (!$competition->registration_start_time)
+                        <label for="registration_start_date" class="required d-flex align-items-center fs-6 fw-bold mb-2">تاریخ شروع</label>
+                        <input type="text" class="form-control form-control-solid" id="registration_start_date" name="registration_start_date"
+                               @if (!$competition->registration_start_date)
                                    value=""
                                @else
-                                   value="{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($competition->registration_start_time))->format('Y/m/d H:i:s') }}"
+                                   value="{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($competition->registration_start_date))->format('Y/m/d') }}"
                                @endif
-                               data-jdp data-jdp-min-date="today" data-jdp-time-picker="true" />
+                               data-jdp data-jdp-min-date="today"/>
                         <span id="calendar"></span>
                     </div>
 
                     <div class="col-md-6 fv-row">
-                        <label for="registration_finish_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان پایان</label>
-                        <input type="text"  class="form-control form-control-solid" data-jdp data-jdp-min-date="today" id="registration_finish_time" name="registration_finish_time"
-                               @if (!$competition->registration_finish_time)
+                        <label for="registration_finish_date" class="required d-flex align-items-center fs-6 fw-bold mb-2">تاریخ پایان</label>
+                        <input type="text"  class="form-control form-control-solid" data-jdp data-jdp-min-date="today" id="registration_finish_date" name="registration_finish_date"
+                               @if (!$competition->registration_finish_date)
                                    value=""
                                @else
-                                   value="{{\Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($competition->registration_finish_time))->format('Y/m/d H:i:s')}}"
+                                   value="{{\Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($competition->registration_finish_date))->format('Y/m/d')}}"
                                @endif
                                data-jdp/>
                         <span id="calendar"></span>
                     </div>
+
+                    <div class="col-md-6 fv-row">
+                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">ساعت و دقیقه شروع</label>
+                        <input type="time" class="form-control form-control-solid" id="start_time" name="start_time"
+                               value="{{ old('start_time') }}" step="1">
+                    </div>
+
+
+
+                    <div class="col-md-6 fv-row">
+                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان شروع</label>
+                        <div class="d-flex">
+                            <select class="form-select form-select-solid" id="start_time2" name="start_time2">
+                                @for ($minute = 0; $minute <= 45; $minute += 15)
+                                    <option value="{{ $minute }}" @if (old('start_time2') == $minute) selected @endif>{{ sprintf("%02d", $minute) }}</option>
+                                @endfor
+                            </select>
+                            <select class="form-select form-select-solid me-2" id="start_time1" name="start_time1">
+                                @for ($hour = 0; $hour <= 23; $hour++)
+                                    <option value="{{ $hour }}" @if (old('start_time1') == $hour) selected @endif>{{ $hour }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+
+
                     <div class="col-md-6 fv-row">
                         <label for="registration_description" class="required form-label">توضیحات</label>
-                        <textarea class="form-control form-control-solid" name="registration_description">{{ old('registration_description', $competition->registration_description) }}</textarea>
+{{--                        <textarea class="form-control form-control-solid" name="registration_description">{{ old('registration_description', $competition->registration_description) }}</textarea>--}}
+                        <textarea class="form-control" rows="3" id="textarea" name="registration_description">{{ old('registration_description', $competition->registration_description) }}</textarea>
                     </div>
                     <div class="col-md-6 fv-row">
                         <label for="rules_description" class="required form-label">قوانین</label>
-                        <textarea class="form-control form-control-solid" name="rules_description">{{ old('rules_description', $competition->rules_description) }}</textarea>
+{{--                        <textarea class="form-control form-control-solid" name="rules_description">{{ old('rules_description', $competition->rules_description) }}</textarea>--}}
+                        <textarea class="form-control" rows="3" id="textarea2" name="rules_description">{{ old('rules_description', $competition->rules_description) }}</textarea>
                     </div>
                     <div class="col-md-6 fv-row">
                         <label for="letter_method" class="required form-label">شیوه نامه</label>
@@ -86,15 +123,7 @@
                         <label for="banner" class="required form-label">بنر</label>
                         <textarea class="form-control form-control-solid" name="banner">{{ old('banner', $competition->banner) }}</textarea>
                     </div>
-                    <div class="col-md-6 fv-row">
-                        <label for="cities_list" class="required fs-6 fw-bold mb-2">ایجادکننده</label>
-                        <select class="form-select form-select-solid" id="creator" name="creator" data-control="select2" data-allow-clear="true" data-placeholder="لطفا را انتخاب کنید">
-                            <option></option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" @if ($competition->creator == $user->id) selected @endif>{{ $user->first_name . ' ' . $user->last_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+
                     <div class="col-md-12 fv-row">
                         <label>وضعیت</label>
                         <input type="hidden" name="is_active" value="0">
@@ -128,50 +157,23 @@
     </div>
 @endsection
 @section('custom-scripts')
-{{--<script type="text/javascript">--}}
-{{--    jalaliDatepicker.startWatch();--}}
-{{--</script>--}}
-
-{{--<script type="text/javascript">--}}
-{{--    jalaliDatepicker.attachDatepicker(document.getElementById('registration_start_time'), {--}}
-{{--        timePicker: true,--}}
-{{--        observer: true,--}}
-{{--        formatter: (inputValue, date, instance) => {--}}
-{{--            const formattedDate = moment(date).format('YYYY/MM/DD HH:mm:ss');--}}
-{{--            return formattedDate;--}}
-{{--        }--}}
-{{--    });--}}
-{{--</script>--}}
-
-{{--<script type="text/javascript">--}}
-{{--    // آغاز کار با تقویم--}}
-{{--    $(document).ready(function() {--}}
-{{--        $("#registration_start_time").click(function() {--}}
-{{--            var calendar = $.JalaliDatePicker({--}}
-{{--                timePicker: {--}}
-{{--                    enabled: true--}}
-{{--                },--}}
-{{--                clearButton: true,--}}
-{{--                showTodayButton: true,--}}
-{{--                showEmptyButton: true,--}}
-{{--                todayButton: true,--}}
-{{--                emptyButton: true,--}}
-{{--                clearButton: true,--}}
-{{--                theme: 'light'--}}
-{{--            });--}}
-{{--            calendar.show(this);--}}
-{{--        });--}}
-{{--    });--}}
-{{--</script>--}}
-
 <script type="text/javascript">
-    // آغاز کار با تقویم
-    $(document).ready(function() {
-        $("#registration_start_time").emoji({
-            dateFormat: "YYYY/MM/DD HH:mm:ss",
-            time: true,
-            timezone: "Asia/Tehran"
-        });
+    jalaliDatepicker.startWatch();
+</script>
+
+<script src='https://gitcdn.ir/library/ckeditor/4.13.0/ckeditor.js' type='text/javascript'></script>
+
+<script>
+    CKEDITOR.replace('textarea', {
+        language: 'fa',
+        contentsLangDirection : 'rtl',
+    });
+</script>
+
+<script>
+    CKEDITOR.replace('textarea2', {
+        language: 'fa',
+        contentsLangDirection : 'rtl',
     });
 </script>
 @endsection

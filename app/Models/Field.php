@@ -10,4 +10,9 @@ class Field extends Model
     use HasFactory;
 
     protected $fillable = ['title'];
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'field_group');
+    }
 }

@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GroupRequest;
+use App\Models\Competition;
+use App\Models\Field;
 use App\Models\Group;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Throwable;
 
@@ -13,11 +16,26 @@ class GroupController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $groups = Group::paginate(10);
+        $item = $request->query('search_item');
+        $groups = Group::with(['competition', 'fields'])
+            ->when($item, function (Builder $builder) use ($item) {
+                $builder->where('title', 'LIKE', "%{$item}%")
+                    ->orWhereRelation('competition', 'title', 'LIKE', "%{$item}%")
+                    ->orWhereRelation('fields', 'title', 'LIKE', "%{$item}%");
+            })
+            ->paginate(10);
 
         return view('admin.groups.index', ['groups' => $groups]);
+    }
+
+    public function create()
+    {
+        $fields = Field::get();
+        $competitions = Competition::get();
+
+        return view('admin.groups.create', ['fields' => $fields, 'competitions' => $competitions]);
     }
 
     /**
@@ -26,16 +44,28 @@ class GroupController extends Controller
     public function store(GroupRequest $request)
     {
         try {
-            Group::create([
+            $group = Group::create([
                 'title' => $request->input('title'),
+                'image' => $request->input('image'),
                 'competition_id' => $request->input('competition_id'),
             ]);
 
-        } catch (Throwable $th) {
-            // throw $th;
+            $group->fields()->attach($request->input('fields'));
+
+            return redirect()->route('admin.groups.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+
+        } catch (\Exception $e) {
+            return redirect()->route('admin.groups.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
 
-        return redirect()->route('admin.groups.index');
+    }
+
+    public function edit(Group $group)
+    {
+        $fields = Field::get();
+        $competitions = Competition::get();
+
+        return view('admin.groups.edit', ['group' => $group, 'fields' => $fields, 'competitions' => $competitions]);
     }
 
     /**
@@ -46,13 +76,16 @@ class GroupController extends Controller
         try {
             $group->update([
                 'title' => $request->input('title'),
+                'image' => $request->input('image'),
                 'competition_id' => $request->input('competition_id'),
             ]);
-        } catch (Throwable $th) {
-            // throw $th;
+            $group->fields()->sync($request->input('fields'));
+
+            return redirect()->route('admin.groups.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.groups.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
 
-        return redirect()->route('admin.groups.index');
     }
 
     /**
@@ -62,9 +95,10 @@ class GroupController extends Controller
     {
         try {
             $group->delete();
-        } catch (Throwable $th) {
+            return response()->json(['success' => true], 200);
         }
-
-        return redirect()->route('admin.groups.index');
+        catch (\Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
+        }
     }
 }

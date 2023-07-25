@@ -23,7 +23,8 @@ class GroupRequest extends FormRequest
     {
         return [
             'title' => 'required|string|min:3',
-            'competition_id' => 'required'
+            'image' => 'nullable',
+            'competition_id' => 'required',
         ];
     }
 }

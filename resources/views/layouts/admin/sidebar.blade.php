@@ -160,8 +160,41 @@
                                 </div>
                             @endcanany
                         </div>
+
+                        <div class="menu-sub menu-sub-accordion">
+                            @canany(['groups-index', 'groups-create', 'groups-update', 'groups-delete'])
+                                <div class="menu-item">
+                                    <a class="menu-link {{ Request::routeIs('admin.groups.index') ? 'active' : '' }}" href="{{ route('admin.groups.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">لیست گروه‌های مسابقات</span>
+                                    </a>
+                                </div>
+                            @endcanany
+
+                        </div>
+
+
                     </div>
                 @endcanany
+                    @can('evaluation-models-index')
+                        <div class="menu-item">
+                            <a class="menu-link {{ Request::routeIs('admin.evaluation_models.index') ? 'active' : '' }}" href="{{ route('admin.evaluation_models.index') }}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: assets/media/icons/duotune/maps/map008.svg-->
+                            <span class="svg-icon svg-icon-muted svg-icon-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M16.925 3.90078V8.00077L12.025 10.8008V5.10078L15.525 3.10078C16.125 2.80078 16.925 3.20078 16.925 3.90078ZM2.525 13.5008L6.025 15.5008L10.925 12.7008L6.025 9.90078L2.525 11.9008C1.825 12.3008 1.825 13.2008 2.525 13.5008ZM18.025 19.7008V15.6008L13.125 12.8008V18.5008L16.625 20.5008C17.225 20.8008 18.025 20.4008 18.025 19.7008Z" fill="currentColor" />
+                                    <path opacity="0.3" d="M8.52499 3.10078L12.025 5.10078V10.8008L7.125 8.00077V3.90078C7.125 3.20078 7.92499 2.80078 8.52499 3.10078ZM7.42499 20.5008L10.925 18.5008V12.8008L6.02499 15.6008V19.7008C6.02499 20.4008 6.82499 20.8008 7.42499 20.5008ZM21.525 11.9008L18.025 9.90078L13.125 12.7008L18.025 15.5008L21.525 13.5008C22.225 13.2008 22.225 12.3008 21.525 11.9008Z" fill="currentColor" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                                <span class="menu-title">مدل‌های ارزیابی</span>
+                            </a>
+                        </div>
+                    @endcan
             </div>
         </div>
         <!--end::Aside menu-->

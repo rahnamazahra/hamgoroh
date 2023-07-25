@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\GroupController;
+use App\Http\Controllers\Admin\EvaluationModelController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\CityController;
@@ -99,5 +101,18 @@ Route::controller(AjaxController::class)->group(function () {
     Route::post('/province/cities', 'showCitiesByProvince')->name('admin.ajax.cities');
 });
 
+// Groups
+Route::controller(GroupController::class)->group(function () {
+    Route::get('/groups', 'index')->name('admin.groups.index');
+    Route::get('/groups/create', 'create')->name('admin.groups.create');
+    Route::post('/groups', 'store')->name('admin.groups.store');
+    Route::get('/groups/{group}/show', 'show')->name('admin.groups.show');
+    Route::get('/groups/{group}/edit', 'edit')->name('admin.groups.edit');
+    Route::patch('/groups/{group}', 'update')->name('admin.groups.update');
+    Route::delete('/groups/{group}/delete', 'delete')->name('admin.groups.delete');
+});
+
+
+Route::get('/evaluationModels', [EvaluationModelController::class, 'index'])->middleware('auth')->name('admin.evaluation_models.index');
 //Export excel
 // Route::get('co/data/export', 'ExportController@export')->middleware('auth')->name('export.excel');

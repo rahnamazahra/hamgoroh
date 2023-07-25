@@ -208,6 +208,36 @@ class PermissionRoleSeeder extends Seeder
             'description' => 'امکان حذف رشته',
         ]);
 
+        $permission_groups_index = Permission::create([
+            'title'       => 'لیست گروه ها',
+            'slug'        => 'groups-index',
+            'description' => 'امکان مشاهده لسیت گروه ها',
+        ]);
+
+        $permission_groups_create = Permission::create([
+            'title'       => 'ایجاد گروه  جدید',
+            'slug'        => 'groups-create',
+            'description' => 'امکان ایجاد گروه  جدید',
+        ]);
+
+        $permission_groups_update = Permission::create([
+            'title'       => 'ویرایش گروه',
+            'slug'        => 'groups-update',
+            'description' => 'امکان ویرایش گروه',
+        ]);
+
+        $permission_groups_delete = Permission::create([
+            'title'       => 'حذف گروه',
+            'slug'        => 'groups-delete',
+            'description' => 'امکان حذف گروه',
+        ]);
+
+        $permission_evaluation_models_index = Permission::create([
+            'title'       => 'لیست مدل‌های ارزیابی',
+            'slug'        => 'evaluation-models-index',
+            'description' => 'امکان مشاهده مدل‌های ارزیابی',
+        ]);
+
         $permission_admin_index->roles()->attach([$developer, $admin, $general_manager]);
         $permission_roles_index->roles()->attach([$developer, $admin]);
         $permission_roles_create->roles()->attach([$developer, $admin]);
@@ -240,5 +270,10 @@ class PermissionRoleSeeder extends Seeder
         $permission_competitions_create->roles()->attach([$developer, $admin, $general_manager]);
         $permission_competitions_update->roles()->attach([$developer, $admin, $general_manager]);
         $permission_competitions_delete->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_groups_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_groups_create->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_groups_update->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_groups_delete->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_evaluation_models_index->roles()->attach([$developer, $admin, $general_manager]);
     }
 }

@@ -49,6 +49,7 @@
                         <th class="text-center">ردیف</th>
                         <th class="text-center">عنوان</th>
                         <th class="text-center">وضعیت</th>
+                        <th class="text-center">وضعیت</th>
                         <th class="text-center">زمان شروع ثبت نام</th>
                         <th class="text-center">زمان پایان ثبت نام</th>
 {{--                        <th class="text-center">توضیحات</th>--}}
@@ -76,8 +77,8 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="text-center">{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($competition->registration_start_time))->format('Y/m/d H:i:s') }}</td>
-                            <td class="text-center">{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($competition->registration_finish_time))->format('Y/m/d H:i:s') }}</td>
+                            <td class="text-center">{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($competition->registration_start_date))->format('Y/m/d') . ' ' . $competition->registration_start_time }}</td>
+                            <td class="text-center">{{ \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($competition->registration_finish_date))->format('Y/m/d') . ' ' . $competition->registration_finish_time}}</td>
 {{--                            <td class="text-center">{{ $competition->registration_description }}</td>--}}
 {{--                            <td class="text-center">{{ $competition->rules_description }}</td>--}}
 {{--                            <td class="text-center">{{ $competition->letter_method }}</td>--}}

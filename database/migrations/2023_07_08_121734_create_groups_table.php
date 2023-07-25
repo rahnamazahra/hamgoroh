@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id()->comment('شناسه');
             $table->string('title')->comment('عنوان');
+            $table->string('image')->comment('تصویر سبد');
             $table->unsignedBigInteger('competition_id')->comment('شناسه دوره‌مسابقه');
             $table->timestamps();
 

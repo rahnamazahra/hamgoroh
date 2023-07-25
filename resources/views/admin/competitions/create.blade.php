@@ -40,49 +40,87 @@
                         <input type="text" class="form-control form-control-solid" name="title"
                                value="{{ old('title') }}"/>
                     </div>
+
                     <div class="col-md-6 fv-row">
-                        <label for="registration_start_time" class="required form-label">زمان شروع</label>
+                        <label for="creator" class="required form-label">ایجادکننده</label>
+                        <select class="form-select form-select-solid" name="creator" data-control="select2"
+                                data-placeholder="لطفا انتخاب کنید">
+                            @foreach($users as $user)
+                                <option value='{{ $user->id }}'>{{ $user->first_name . ' ' . $user->last_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 fv-row">
+                        <label for="registration_start_date" class="required form-label">تاریخ شروع</label>
                         <input type="txt" class="form-control form-control-solid" data-jdp data-jdp-min-date="today"
-                               id="registration_start_time" name="registration_start_time"
-                               value="{{ old('registration_start_time') }}"/>
+                               id="registration_start_date" name="registration_start_date"
+                               value="{{ old('registration_start_date') }}"/>
                         <span id="calendar"></span>
                     </div>
+
                     <div class="col-md-6 fv-row">
-                        <label for="registration_finish_time"
-                               class="required d-flex align-items-center fs-6 fw-bold mb-2"> زمان پایان</label>
+                        <label for="registration_finish_date"
+                               class="required d-flex align-items-center fs-6 fw-bold mb-2"> تاریخ پایان</label>
                         <input type="text" class="form-control form-control-solid" data-jdp data-jdp-min-date="today"
-                               id="registration_finish_time" name="registration_finish_time"
-                               value="{{ old('registration_finish_time') }}"/>
+                               id="registration_finish_date" name="registration_finish_date"
+                               value="{{ old('registration_finish_date') }}"/>
                         <span id="calendar"></span>
                     </div>
+
+
+{{--                    <div class="col-md-6 fv-row">--}}
+{{--                        <label for="start_time1"--}}
+{{--                               class="required d-flex align-items-center fs-6 fw-bold mb-2"> ساعت شروع</label>--}}
+{{--                        <input type="number" class="form-control form-control-solid"--}}
+{{--                               id="start_time1" name="start_time1"--}}
+{{--                               value="{{ old('start_time1') }}"/>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-6 fv-row">--}}
+{{--                        <label for="start_time2"--}}
+{{--                               class="required d-flex align-items-center fs-6 fw-bold mb-2">دقیقه شروع</label>--}}
+{{--                        <input type="number" class="form-control form-control-solid"--}}
+{{--                               id="start_time2" name="start_time2"--}}
+{{--                               value="{{ old('start_time2') }}"/>--}}
+{{--                    </div>--}}
+
+                    <div class="col-md-6 fv-row">
+                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">ساعت و دقیقه شروع</label>
+                        <input type="time" class="form-control form-control-solid" id="start_time" name="start_time"
+                               value="{{ old('start_time') }}" step="1">
+                    </div>
+
+
+
+                    <div class="col-md-6 fv-row">
+                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان شروع</label>
+                        <div class="d-flex">
+                            <select class="form-select form-select-solid" id="start_time2" name="start_time2">
+                                @for ($minute = 0; $minute <= 45; $minute += 15)
+                                    <option value="{{ $minute }}" @if (old('start_time2') == $minute) selected @endif>{{ sprintf("%02d", $minute) }}</option>
+                                @endfor
+                            </select>
+                            <select class="form-select form-select-solid me-2" id="start_time1" name="start_time1">
+                                @for ($hour = 0; $hour <= 23; $hour++)
+                                    <option value="{{ $hour }}" @if (old('start_time1') == $hour) selected @endif>{{ $hour }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+
+
+
+
                     <div class="col-md-6 fv-row">
                         <label for="registration_description" class="required form-label">توضیحات</label>
 {{--                        <textarea class="form-control form-control-solid" name="registration_description">{{ old('registration_description') }}</textarea>--}}
-                        <textarea name="content" id="editor"></textarea>
-
-{{--                        <div id="kt_docs_ckeditor_document">--}}
-{{--                            <h1>Quick and simple CKEditor 5 Integration</h1>--}}
-{{--                            <p>Here goes the <a href="#">Minitial content of the editor</a>. Lorem Ipsum is simply dummy text of the <em>printing and typesetting</em> industry.</p>--}}
-{{--                            <blockquote>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled. Lorem Ipsum is simply dummy text of the printing and typesetting industry.</blockquote>--}}
-{{--                            <ul>--}}
-{{--                                <li>List item 1</li>--}}
-{{--                                <li>List item 2</li>--}}
-{{--                                <li>List item 3</li>--}}
-{{--                                <li>List item 4</li>--}}
-{{--                            </ul>--}}
-{{--                            <figure class="image"><img src="assets/media/stock/600x400/img-1.jpg" alt="CKEditor Demo"/></figure>--}}
-{{--                            Here goes the <a href="#">Minitial content of the editor</a>. Lorem Ipsum is simply dummy text of the <em>printing and typesetting</em> industry.--}}
-{{--                            <h1>Easy Media Embeds</h1>--}}
-{{--                            <figure class="symbol">--}}
-{{--                                <oembed url="https://www.youtube.com/watch?v=d-pSVf8Xazk"></oembed>--}}
-{{--                            </figure>--}}
-{{--                            <p>Lorem ipsum dolor sit amet,consectetuer edipiscing elit,sed diam nonummy nibh euismod tinciduntut laoreet doloremagna aliquam erat volutpat.Ut wisi enim ad minim veniam,quis nostrud exerci tation ullamcorper. Lorem ipsum dolor sit amet,consectetuer edipiscing elit,sed diam nonummy nibh euismod tinciduntut laoreet doloremagna aliquam erat volutpat.Ut wisi enim ad minim veniam,quis nostrud exerci tation ullamcorper.</p>--}}
-{{--                        </div>--}}
+                        <textarea class="form-control" rows="3" id="textarea" name="registration_description">{{ old('registration_description') }}</textarea>
                     </div>
+
                     <div class="col-md-6 fv-row">
                         <label for="rules_description" class="required form-label">قوانین</label>
-                        <textarea class="form-control form-control-solid"
-                                  name="rules_description">{{ old('rules_description') }}</textarea>
+{{--                        <textarea class="form-control form-control-solid" name="rules_description">{{ old('rules_description') }}</textarea>--}}
+                        <textarea class="form-control" rows="3" id="textarea2" name="rules_description">{{ old('rules_description') }}</textarea>
                     </div>
                     <div class="col-md-6 fv-row">
                         <label for="letter_method" class="required form-label">شیوه نامه</label>
@@ -93,15 +131,8 @@
                         <label for="banner" class="required form-label">بنر</label>
                         <textarea class="form-control form-control-solid" name="banner">{{ old('banner') }}</textarea>
                     </div>
-                    <div class="col-md-12 fv-row">
-                        <label for="creator" class="required form-label">ایجادکننده</label>
-                        <select class="form-select form-select-solid" name="creator" data-control="select2"
-                                data-placeholder="لطفا انتخاب کنید">
-                            @foreach($users as $user)
-                                <option value='{{ $user->id }}'>{{ $user->first_name . ' ' . $user->last_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+
+
                     <div class="col-md-12 fv-row">
                         <label>وضعیت</label>
                         <input type="hidden" name="is_active" value="0">
@@ -111,23 +142,6 @@
                             <label class="form-check-label" for="is_active">فعال</label>
                         </div>
                     </div>
-
-                    {{--                    <div class="col-md-12 fv-row">--}}
-                    {{--                        <label>وضعیت</label>--}}
-                    {{--                        <div class="form-check">--}}
-                    {{--                            <input class="form-check-input" type="radio" name="is_active" id="is_active1" value="1" @if(old('is_active') == 1) checked @endif>--}}
-                    {{--                            <label class="form-check-label" for="is_active1">فعال</label>--}}
-                    {{--                        </div>--}}
-                    {{--                        <div class="form-check">--}}
-                    {{--                            <input class="form-check-input" type="radio" name="is_active" id="is_active2" value="0" @if(old('is_active') == 0) checked @endif>--}}
-                    {{--                            <label class="form-check-label" for="is_active2">غیرفعال</label>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
-
-                    {{--                    <div class="col-md-12 fv-row">--}}
-                    {{--                        <label for="description" class="form-label">توضیحات</label>--}}
-                    {{--                        <textarea class="form-control form-control-solid" name="description">{{ old('description') }}</textarea>--}}
-                    {{--                    </div>--}}
                 </div>
             </div>
             <div class="card-footer">
@@ -149,34 +163,40 @@
     <script>
         jalaliDatepicker.startWatch();
     </script>
-{{--    <script src="//cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>--}}
-    <script src="//cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
-{{--    <script src="{{ asset('assets/plugins/custom/ckeditor/ckeditor-classic.bundle.js') }}"></script>--}}
-{{--    <script src="{{ asset('assets/plugins/custom/ckeditor/ckeditor-inline.bundle.js')}}"></script>--}}
-{{--    <script src="{{ asset('assets/plugins/custom/ckeditor/ckeditor-balloon.bundle.js')}}"></script>--}}
-{{--    <script src="{{ asset('assets/plugins/custom/ckeditor/ckeditor-balloon-block.bundle.js')}}"></script>--}}
-{{--    <script src="{{ asset('assets/plugins/custom/ckeditor/ckeditor-document.bundle.js')}}"></script>--}}
-{{--    <script>--}}
 
-{{--        BalloonEditor--}}
-{{--            .create(document.querySelector('#kt_docs_ckeditor_balloon'))--}}
+    <script src='https://gitcdn.ir/library/ckeditor/4.13.0/ckeditor.js' type='text/javascript'></script>
+
+    <script>
+        CKEDITOR.replace('textarea', {
+            language: 'fa',
+            contentsLangDirection : 'rtl',
+        });
+    </script>
+
+    <script>
+        CKEDITOR.replace('textarea2', {
+            language: 'fa',
+            contentsLangDirection : 'rtl',
+        });
+    </script>
+{{--    <script src="https://gitcdn.ir/library/ckeditor/5/ckeditor5-build-classic/ckeditor.js"></script>--}}
+{{--    <script src="//cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>--}}
+{{--    <script src="{{ asset('admin/assets/plugins/custom/ckeditor/ckeditor-classic.bundle.js') }}"></script>--}}
+{{--    <script src="{{ asset('admin/assets/plugins/custom/')}}"></script>--}}
+{{--    <script src="{{ asset('admin/assets/plugins/custom/ckeditor/ckeditor-balloon.bundle.js')}}"></script>--}}
+{{--    <script src="{{ asset('admin/assets/plugins/custom/ckeditor/ckeditor-balloon-block.bundle.js')}}"></script>--}}
+{{--    <script src="{{ asset('admin/assets/plugins/custom/ckeditor/ckeditor-document.bundle.js')}}"></script>--}}
+
+{{--    <script>--}}
+{{--        InlineEditor--}}
+{{--            .create(document.querySelector('#kt_docs_ckeditor_inline'))--}}
 {{--            .then(editor => {--}}
 {{--                console.log(editor);--}}
 {{--            })--}}
 {{--            .catch(error => {--}}
 {{--                console.error(error);--}}
-{{--            });DecoupledEditor--}}
-{{--            .create(document.querySelector('#kt_docs_ckeditor_document'))--}}
-{{--            .then(editor => {--}}
-{{--                const toolbarContainer = document.querySelector( '#kt_docs_ckeditor_document_toolbar' );--}}
-
-{{--                toolbarContainer.appendChild( editor.ui.view.toolbar.element );--}}
-{{--            })--}}
-{{--            .catch(error => {--}}
-{{--                console.error(error);--}}
 {{--            });--}}
-
-    {{--    </script>--}}
+{{--    </script>--}}
 
 {{--<script src="./node_modules/ckeditor4/ckeditor.js"></script>--}}
 {{--    <script>--}}
@@ -196,7 +216,7 @@
 {{--    </script>--}}
 
 {{--    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>--}}
-    <script>
-        CKEDITOR.replace('editor');
-    </script>
+{{--    <script>--}}
+{{--        CKEDITOR.replace('editor');--}}
+{{--    </script>--}}
 @endsection
