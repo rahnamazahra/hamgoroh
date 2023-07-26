@@ -1,39 +1,37 @@
 <?php
 
+//Alert message For Handle Failed Validation
 if (! function_exists('handleFailedValidation'))
 {
     function handleFailedValidation($validator)
     {
-
-        $errorMessages = '';
-
-        foreach ($validator->all() as $error) {
-            $errorMessages .= $error . '\n';
-        }
-
-      echo generateScriptTag();
-      echo '<script>
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "' . $errorMessages . '",
-                toast: true,
-                position: "top-end"
-            });
-        </script>';
-
+       // $validatorErrors = session()->flash('validatorErrors', $validator->errors->all());
         throw new \Illuminate\Http\Exceptions\HttpResponseException(
             redirect()->back()->withErrors($validator)->withInput()
         );
     }
 }
 
-function generateScriptTag()
-{
-    $scriptTag = '<script>
-        alert("Hello, I\'m a script running from a helper file!");
-    </script>';
-
-    return $scriptTag;
+//Alert message For Handle Store/Update
+if (! function_exists('Alert')) {
+    function Alert($type)
+    {
+        if ($type == 'success')
+        {
+            session()->flash('swal', [
+                'title' => 'موفقیت آمیز!',
+                'text' => 'اطلاعات باموفقیت ثبت شد.',
+                'icon' => $type,
+            ]);
+        }
+        else
+        {
+            session()->flash('swal', [
+                'title' => 'خطا',
+                'text' => 'اشکالی ناشناخته به وجود آمده است.',
+                'icon' => $type,
+            ]);
+        }
+    }
 }
 ?>

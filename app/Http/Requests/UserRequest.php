@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Requests\CustomRequest;
+
 class UserRequest extends CustomRequest
 {
     /**
@@ -65,11 +63,4 @@ class UserRequest extends CustomRequest
         }
     }
 
-    // protected function failedValidation(Validator $validator)
-    // {
-    //     throw new HttpResponseException(
-    //         redirect()->back()->withErrors($validator->errors())->withInput()
-    //     );
-    // }
-   
 }

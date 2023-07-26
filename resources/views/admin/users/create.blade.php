@@ -65,7 +65,7 @@
                         <select class="form-select form-select-solid" id="province_id" name="province_id" onchange="getCities(this.value)" data-control="select2" data-allow-clear="true" data-placeholder="استان را انتخاب کنید">
                             <option></option>
                             @foreach($provinces as $province)
-                                <option value="{{ $province->id }}" @selected(old('province_id') and in_array($province->id, old('province_id')))>{{ $province->title }}</option>
+                                <option value="{{ $province->id }}" @selected(old('province_id') == $province->id)>{{ $province->title }}</option>
                             @endforeach
                         </select>
                     </div>

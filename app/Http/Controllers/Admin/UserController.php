@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Exception;
+
 class UserController extends Controller
 {
     public function index(Request $request)
@@ -75,10 +76,17 @@ class UserController extends Controller
             $user->creator       = Auth::id();
             $user->save();
             $user->roles()->attach($request->input('roles'));
-            return redirect()->route('admin.users.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+
+            Alert('success');
+
+            return redirect()->route('admin.users.index');
         }
-        catch (Exception $e) {
-            return redirect()->route('admin.users.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        catch (Exception $e)
+        {
+
+            Alert('error');
+
+            return redirect()->route('admin.users.index');
         }
     }
 
@@ -100,11 +108,19 @@ class UserController extends Controller
             $user->birthday_date = Jalalian::fromFormat('Y/m/d', $request->input('birthday_date'))->toCarbon();
             $user->creator       = Auth::id();
             $user->roles()->sync($request->input('roles'));
-            return redirect()->route('admin.users.index')->with('success', 'ویرایش اطلاعات  با‌موفقیت انجام شد.');
+
+            Alert('success');
+
+            return redirect()->route('admin.users.index');
 
         }
-        catch (Exception $e) {
-            return redirect()->route('admin.users.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        catch (Exception $e)
+        {
+
+            Alert('error');
+
+            return redirect()->route('admin.users.index');
+
         }
     }
 
@@ -112,6 +128,7 @@ class UserController extends Controller
     {
         try {
             $user->delete();
+
             return response()->json(['success' => true], 200);
         }
         catch (Exception $e) {
