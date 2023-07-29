@@ -25,7 +25,7 @@
 @section('content')
 @can('users-update')
     <div class="card shadow-sm">
-        <form method="POST" action="{{ route('admin.users.update', ['user' => $user->id]) }}">
+        <form method="POST" action="{{ route('admin.users.update', ['user' => $user->id]) }}" enctype="multipart/form-data">
             @method('PATCH')
             @csrf
             <div class="card-header">

@@ -1,4 +1,3 @@
-//Alert message For Handle Store/Update
 @if(session('swal'))
     <script>
         Swal.fire({
@@ -15,7 +14,6 @@
 @endif
 
 
-//Alert message For Handle Failed Validation
 @if(session('errors'))
     <script>
         Swal.fire({

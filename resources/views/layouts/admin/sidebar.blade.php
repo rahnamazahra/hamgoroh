@@ -171,7 +171,7 @@
                             @endcan
                         </div>
 
-                        <div class="menu-sub menu-sub-accordion">
+                        {{--  <div class="menu-sub menu-sub-accordion">
                             @canany(['groups-index', 'groups-create', 'groups-update', 'groups-delete'])
                                 <div class="menu-item">
                                     <a class="menu-link {{ Request::routeIs('admin.groups.index') ? 'active' : '' }}" href="{{ route('admin.groups.index') }}">
@@ -183,7 +183,7 @@
                                 </div>
                             @endcanany
 
-                        </div>
+                        </div>  --}}
 
 
                     </div>

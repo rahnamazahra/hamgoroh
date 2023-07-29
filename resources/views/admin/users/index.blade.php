@@ -17,7 +17,6 @@
 @endsection
 
 @section('content')
-@can('users-index')
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="card-title">
@@ -37,10 +36,14 @@
             </div>
             <div class="card-toolbar">
                 <div class="p-2 align-items-center gap-4">
-                    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="collapse" data-bs-target="#filter_search">جست‌وجوی‌پیشرفته</button>
-                    @can('users-create')
-                        <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary">کابر جدید +</a>
-                    @endcan
+                    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="collapse" data-bs-target="#filter_search">فیلتر
+                        <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen031.svg-->
+                        <span class="svg-icon svg-icon-muted"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M19.0759 3H4.72777C3.95892 3 3.47768 3.83148 3.86067 4.49814L8.56967 12.6949C9.17923 13.7559 9.5 14.9582 9.5 16.1819V19.5072C9.5 20.2189 10.2223 20.7028 10.8805 20.432L13.8805 19.1977C14.2553 19.0435 14.5 18.6783 14.5 18.273V13.8372C14.5 12.8089 14.8171 11.8056 15.408 10.964L19.8943 4.57465C20.3596 3.912 19.8856 3 19.0759 3Z" fill="currentColor"/>
+                        </svg></span>
+                        <!--end::Svg Icon-->
+                    </button>
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary">کابر جدید +</a>
                 </div>
             </div>
         </div>
@@ -166,7 +169,6 @@
                                             <path opacity="0.3" d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z" fill="currentColor"/>
                                             </svg></span>
                                     </button>
-                                    @can('users-update')
                                     <a href="{{ route('admin.users.edit', ['user' => $user->id]) }}" class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
                                         <span class="svg-icon svg-icon-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -175,8 +177,6 @@
                                             </svg>
                                         </span>
                                     </a>
-                                    @endcan
-                                    @can('users-delete')
                                     <button name="btn_delete_item" class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1" data-id="{{ $user->id }}" data-url="{{ route('admin.users.delete', ['user' => $user->id]) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">
                                         <span class="svg-icon svg-icon-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -186,7 +186,6 @@
                                             </svg>
                                         </span>
                                     </button>
-                                    @endcan
                                 </div>
                             </td>
                         </tr>
@@ -201,8 +200,5 @@
             {{ $users->withQueryString()->links('pagination::bootstrap-5') }}
         </div>
     </div>
-@endcan
 @endsection
-@section('custom-scripts')
 
-@endsection

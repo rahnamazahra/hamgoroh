@@ -101,6 +101,7 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
+
         $user->is_active = 0;
 
         try {

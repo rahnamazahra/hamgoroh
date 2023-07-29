@@ -43,4 +43,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Competition::class);
     }
+
+    public function files()
+    {
+        return $this->morphOne(File::class, 'fileable');
+    }
 }
