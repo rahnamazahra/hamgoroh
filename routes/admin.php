@@ -67,7 +67,7 @@ Route::controller(ProvinceController::class)->group(function () {
     Route::delete('/provinces/{province}/delete', 'delete')->name('admin.provinces.delete');
 });
 
-// cities
+// Cities
 Route::controller(CityController::class)->group(function () {
     Route::get('/cities', 'index')->name('admin.cities.index');
     Route::post('/cities', 'store')->name('admin.cities.store');
@@ -96,23 +96,28 @@ Route::controller(CompetitionController::class)->group(function () {
     Route::delete('/competitions/{competition}/delete', 'delete')->name('admin.competitions.delete');
 });
 
+// Groups
+Route::controller(GroupController::class)->group(function () {
+    // Route::get('/groups', 'index')->name('admin.groups.index');
+    Route::get('/competition/{competition?}/groups/create', 'create')->name('admin.groups.create');
+    Route::post('/competition/{competition?}/groups', 'store')->name('admin.groups.store');
+    // Route::get('/groups/{group}/show', 'show')->name('admin.groups.show');
+    // Route::get('/groups/{group}/edit', 'edit')->name('admin.groups.edit');
+    // Route::patch('/groups/{group}', 'update')->name('admin.groups.update');
+    // Route::delete('/groups/{group}/delete', 'delete')->name('admin.groups.delete');
+});
+
+// Challenges
+Route::controller(ChallengeController::class)->group(function () {
+    Route::get('/competition/{competition?}/challenges/create', 'create')->name('admin.challenges.create');
+    Route::post('/competition/{competition?}/challenges/store', 'store')->name('admin.challenges.store');
+    Route::get('/competition/{competition?}/challenges/edit', 'edit')->name('admin.challenges.edit');
+    Route::patch('/competition/{competition?}/challenges/update', 'update')->name('admin.challenges.update');
+});
+
 // Ajax
 Route::controller(AjaxController::class)->group(function () {
     Route::post('/province/cities', 'showCitiesByProvince')->name('admin.ajax.cities');
 });
 
-// Groups
-Route::controller(GroupController::class)->group(function () {
-    Route::get('/groups', 'index')->name('admin.groups.index');
-    Route::get('/groups/create', 'create')->name('admin.groups.create');
-    Route::post('/groups', 'store')->name('admin.groups.store');
-    Route::get('/groups/{group}/show', 'show')->name('admin.groups.show');
-    Route::get('/groups/{group}/edit', 'edit')->name('admin.groups.edit');
-    Route::patch('/groups/{group}', 'update')->name('admin.groups.update');
-    Route::delete('/groups/{group}/delete', 'delete')->name('admin.groups.delete');
-});
-
-
 Route::get('/evaluationModels', [EvaluationModelController::class, 'index'])->middleware('auth')->name('admin.evaluation_models.index');
-//Export excel
-// Route::get('co/data/export', 'ExportController@export')->middleware('auth')->name('export.excel');

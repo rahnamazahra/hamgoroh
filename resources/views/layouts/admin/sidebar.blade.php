@@ -98,7 +98,7 @@
                                     </svg>
                                 </span>
                             </span>
-                            <span class="menu-title">مدیریت کاربران</span>
+                            <span class="menu-title">کاربران</span>
                         </a>
                     </div>
                 @endcan
@@ -149,7 +149,7 @@
                             <span class="menu-arrow"></span>
                         </span>
                         <div class="menu-sub menu-sub-accordion">
-                            @canany(['competitions-index', 'competitions-create', 'competitions-update', 'competitions-delete'])
+                            @can('competitions-index')
                                 <div class="menu-item">
                                     <a class="menu-link {{ Request::routeIs('admin.competitions.index') ? 'active' : '' }}" href="{{ route('admin.competitions.index') }}">
                                         <span class="menu-bullet">
@@ -158,7 +158,17 @@
                                         <span class="menu-title">لیست دوره‌های مسابقات</span>
                                     </a>
                                 </div>
-                            @endcanany
+                            @endcan
+                            @can('competitions-create')
+                                <div class="menu-item">
+                                    <a class="menu-link {{ Request::routeIs('admin.competitions.create') ? 'active' : '' }}" href="{{ route('admin.competitions.create') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">ایجاد دوره‌ی مسابقه</span>
+                                    </a>
+                                </div>
+                            @endcan
                         </div>
 
                         <div class="menu-sub menu-sub-accordion">
