@@ -14,13 +14,13 @@ if (! function_exists('handleFailedValidation'))
 
 //Alert message For Handle Store/Update
 if (! function_exists('Alert')) {
-    function Alert($type)
+    function Alert($type, $message)
     {
         if ($type == 'success')
         {
             session()->flash('swal', [
                 'title' => 'موفقیت آمیز!',
-                'text' => 'اطلاعات باموفقیت ثبت شد.',
+                'text' => $message,
                 'icon' => $type,
             ]);
         }
@@ -28,7 +28,7 @@ if (! function_exists('Alert')) {
         {
             session()->flash('swal', [
                 'title' => 'خطا',
-                'text' => 'اشکالی ناشناخته به وجود آمده است.',
+                'text' => $message,
                 'icon' => $type,
             ]);
         }

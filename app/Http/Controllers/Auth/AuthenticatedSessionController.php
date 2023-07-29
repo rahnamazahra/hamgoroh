@@ -32,7 +32,9 @@ class AuthenticatedSessionController extends Controller
         $code = 123456;
         $user  = User::where('phone', $phone)->update(['password' => Hash::make($code)]);   // Save code in database
         // $this->sendCode($phone, $code);  // Send SMS
-        return redirect()->route('verify.show', ['phone' => $phone])->with('success', 'کدپیامکی برای شما ارسال شد.');
+        Alert('success', 'کدپیامکی برای شما ارسال شد.');
+        
+        return redirect()->route('verify.show', ['phone' => $phone]);
     }
 
     public function showVerify($phone): View
@@ -49,12 +51,16 @@ class AuthenticatedSessionController extends Controller
             $request->session()->regenerate();
             if ($user->roles->contains(2))
             {
-                return redirect()->intended(RouteServiceProvider::ADMIN)->with('success', 'خوش آمدید');
+                Alert('success', 'خوش آمدید');
+                return redirect()->intended(RouteServiceProvider::ADMIN);
             }
 
             return redirect()->intended(RouteServiceProvider::SITE);
         }
-        return redirect()->route('verify.show', ['phone' => $request->phone])->with('error', 'کد فعال سازی وارد شده اشتباه است.');
+
+        Alert('error',  'کد فعال سازی وارد شده اشتباه است.');
+
+        return redirect()->route('verify.show', ['phone' => $request->phone]);
     }
 
     /**

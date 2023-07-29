@@ -32,8 +32,8 @@ class UserRequest extends CustomRequest
                 $rules = [
                     'first_name'    => 'required|string|min:3',
                     'last_name'     => 'required|string|min:3',
-                    'phone'         => 'required|min:11|max:11|unique:users,phone',
-                    'national_code' => 'required|min:10|max:10|unique:users,national_code',
+                    'phone'         => 'required|size:11|unique:users,phone',
+                    'national_code' => 'required|size:10|unique:users,national_code',
                     'gender'        => 'required',
                     'city_id'       => 'required',
                     'birthday_date' => 'required|date_format:Y/m/d',
@@ -49,8 +49,8 @@ class UserRequest extends CustomRequest
                 return [
                     'first_name'    => 'required|string|min:3',
                     'last_name'     => 'required|string|min:3',
-                    'phone'         => 'required|min:11|max:11|unique:users,phone,'.$user->id,
-                    'national_code' => 'required|min:10|max:10|unique:users,national_code,'.$user->id,
+                    'phone'         => 'required|size:11|unique:users,phone,'.$user->id,
+                    'national_code' => 'required|size:10|unique:users,national_code,'.$user->id,
                     'gender'        => 'required',
                     'city_id'       => 'required',
                     'birthday_date' => 'required|date_format:Y/m/d',

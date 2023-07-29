@@ -14,6 +14,7 @@
     </script>
 @endif
 
+
 //Alert message For Handle Failed Validation
 @if(session('errors'))
     <script>
@@ -35,25 +36,62 @@
     </script>
 @endif
 
-{{--  const errors = {!! json_encode(session('errors')->all()) !!};
+{{--  @if(session('errors'))
+    <script>
+       const errors = {!! json_encode(session('errors')->all()) !!};
+
+        function displayToast(error) {
+            swal.fire({
+                icon: 'error',
+                title: 'خطا',
+                text: error,
+                toast: true,
+                position: 'top-end',
+                showCloseButton: true,
+                timerProgressBar: true,
+                showConfirmButton: false,
+            })
+        }
+
+        const errorQueue = [];
+
+        errors.forEach(error => {
+            errorQueue.push(() => displayToast(error));
+        });
+
+        function displayQueue() {
+            if (errorQueue.length > 0) {
+                const nextError = errorQueue.shift();
+                nextError();
+                setTimeout(displayQueue, 1000);
+            }
+        }
+
+        displayQueue();
+
+    </script>
+@endif  --}}
+{{--
 @if(session('errors'))
 <script>
-function displayToast(errors) {
-  let errorMessage = '';
-  errors.forEach(error => {
-    errorMessage += `${error}\n`;
-  });
+const errors = {!! json_encode(session('errors')->all()) !!};
 
-  swal.fire({
-    icon: 'error',
-    title: 'خطا',
-    text: errorMessage,
-    toast: true,
-    position: 'top-end',
-    showCloseButton: true,
-    timerProgressBar: true,
-    showConfirmButton: false,
-  });
+function displayToast(errors) {
+
+    errors.forEach(error => {
+        swal.fire({
+            icon: 'error',
+            title: 'خطا',
+            text: error,
+            toast: true,
+            position: 'top-end',
+            showCloseButton: true,
+            timerProgressBar: true,
+            showConfirmButton: false,
+        });
+    });
 }
 
 displayToast(errors);
+ </script>
+@endif  --}}

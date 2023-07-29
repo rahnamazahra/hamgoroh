@@ -77,14 +77,14 @@ class UserController extends Controller
             $user->save();
             $user->roles()->attach($request->input('roles'));
 
-            Alert('success');
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
 
             return redirect()->route('admin.users.index');
         }
         catch (Exception $e)
         {
 
-            Alert('error');
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
 
             return redirect()->route('admin.users.index');
         }
@@ -109,7 +109,7 @@ class UserController extends Controller
             $user->creator       = Auth::id();
             $user->roles()->sync($request->input('roles'));
 
-            Alert('success');
+             Alert('success', 'اطلاعات باموفقیت ثبت شد.');
 
             return redirect()->route('admin.users.index');
 
@@ -117,7 +117,7 @@ class UserController extends Controller
         catch (Exception $e)
         {
 
-            Alert('error');
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
 
             return redirect()->route('admin.users.index');
 
