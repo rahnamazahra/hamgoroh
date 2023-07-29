@@ -51,23 +51,21 @@ class CompetitionController extends Controller
     public function store(CompetitionRequest $request)
     {
         try {
-            $test = Competition::create([
-                'title' => $request->input('title'),
-                'is_active' => $request->input('is_active'),
-//                'registration_start_date' => $request->input('registration_start_time'),
-//                'registration_finish_date' => $request->input('registration_finish_time'),
-                'registration_start_date' => Jalalian::fromFormat('Y/m/d', $request->input('registration_start_date'))->toCarbon(),
-                'registration_finish_date' => Jalalian::fromFormat('Y/m/d', $request->input('registration_finish_date'))->toCarbon(),
-                'registration_start_time' => $request->input('start_time1') . ':' . $request->input('start_time2'),
-                'registration_finish_time' => $request->input('finish_time1') . ':' . $request->input('finish_time2'),
-                'registration_description' => $request->input('registration_description'),
-                'rules_description' => $request->input('rules_description'),
-                'letter_method' => $request->input('letter_method'),
-                'banner' => $request->input('banner'),
-                'creator' => $request->input('creator'),
+                $competition = Competition::create([
+//                'title' => $request->input('title'),
+//                'is_active' => $request->input('is_active'),
+//                'registration_start_date' => Jalalian::fromFormat('Y/m/d', $request->input('registration_start_date'))->toCarbon(),
+//                'registration_finish_date' => Jalalian::fromFormat('Y/m/d', $request->input('registration_finish_date'))->toCarbon(),
+//                'registration_start_time' => $request->input('start_time1') . ':' . $request->input('start_time2'),
+//                'registration_finish_time' => $request->input('finish_time1') . ':' . $request->input('finish_time2'),
+//                'registration_description' => $request->input('registration_description'),
+//                'rules_description' => $request->input('rules_description'),
+//                'letter_method' => $request->input('letter_method'),
+//                'banner' => $request->input('banner'),
+//                'creator' => $request->input('creator'),
             ]);
 
-            return redirect()->route('admin.competitions.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+            return redirect()->route('admin.competitions.edit', ['competition' => $competition])->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
         } catch (\Exception $e) {
             return redirect()->route('admin.competitions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
@@ -81,7 +79,7 @@ class CompetitionController extends Controller
     {
         $users = User::get();
 
-        return view('admin.competitions.edit', ['competition' => $competition, 'users' => $users]);
+        return view('admin.competitions.informations.edit', ['competition' => $competition, 'users' => $users]);
     }
 
     public function show(Competition $competition)
@@ -96,15 +94,15 @@ class CompetitionController extends Controller
     public function update(CompetitionRequest $request, Competition $competition)
     {
         try {
+
             $competition->update([
                 'title' => $request->input('title'),
                 'is_active' => $request->input('is_active'),
-//                'registration_start_time' =>  $request->input('registration_start_time'),
-//                'registration_finish_time' => $request->input('registration_finish_time'),
-                'registration_start_date' => Jalalian::fromFormat('Y/m/d', $request->input('registration_start_date'))->toCarbon(),
-                'registration_finish_date' => Jalalian::fromFormat('Y/m/d', $request->input('registration_finish_date'))->toCarbon(),
-                'registration_start_time' => $request->input('start_time1') . ':' . $request->input('start_time2'),
-                'registration_finish_time' => $request->input('finish_time1') . ':' . $request->input('finish_time2'),
+//                'registration_start_date' => Jalalian::fromFormat('Y/m/d', $request->input('registration_start_date'))->toCarbon(),
+                'registration_start_date' => $request->input('registration_start_date') ? Jalalian::fromFormat('Y/m/d', $request->input('registration_start_date'))->toCarbon() : null,
+                'registration_finish_date' => $request->input('registration_finish_date') ? Jalalian::fromFormat('Y/m/d', $request->input('registration_finish_date'))->toCarbon() : null,
+                'registration_start_time' => $request->input('start_time1') ? $request->input('start_time1') . ':' . $request->input('start_time2') : null,
+                'registration_finish_time' => $request->input('finish_time1') ? $request->input('finish_time1') . ':' . $request->input('finish_time2') : null,
                 'registration_description' => $request->input('registration_description'),
                 'rules_description' => $request->input('rules_description'),
                 'letter_method' => $request->input('letter_method'),
@@ -112,9 +110,14 @@ class CompetitionController extends Controller
                 'creator' => $request->input('creator'),
             ]);
             return redirect()->route('admin.competitions.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
-        } catch (\Exception $e) {
-            return redirect()->route('admin.competitions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        }catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 500);
         }
+// catch (\Exception $e) {
+//            return redirect()->route('admin.competitions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+//        }
 
     }
 

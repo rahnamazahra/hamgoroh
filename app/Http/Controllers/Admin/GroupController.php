@@ -30,12 +30,12 @@ class GroupController extends Controller
         return view('admin.groups.index', ['groups' => $groups]);
     }
 
-    public function create()
+    public function create(Competition $competition)
     {
         $fields = Field::get();
-        $competitions = Competition::get();
+//        $competitions = Competition::get();
 
-        return view('admin.groups.create', ['fields' => $fields, 'competitions' => $competitions]);
+        return view('admin.groups.create', ['fields' => $fields, 'competition' => $competition]);
     }
 
     /**

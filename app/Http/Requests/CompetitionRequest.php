@@ -26,13 +26,13 @@ class CompetitionRequest extends FormRequest
         return [
             'title' => 'nullable|string|min:3',
             'is_active' => 'nullable|boolean',
-            'registration_start_date' => 'required|date_format:Y/m/d',
-            'registration_finish_date' => 'required|date_format:Y/m/d',
+            'registration_start_date' => 'nullable|date_format:Y/m/d',
+            'registration_finish_date' => 'nullable|date_format:Y/m/d',
             'registration_description' => 'nullable|string',
             'rules_description' => 'nullable|string',
             'letter_method' => 'nullable|string',
             'banner' => 'nullable|string',
-            'creator' => 'required',
+            'creator' => 'nullable',
         ];
     }
 

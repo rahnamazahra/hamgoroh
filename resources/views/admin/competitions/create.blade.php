@@ -109,16 +109,16 @@
 
 
                     <div class="col-md-6 fv-row">
-                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان پایان</label>
+                        <label for="finish_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان پایان</label>
                         <div class="d-flex">
-                            <select class="form-select form-select-solid" id="start_time2" name="start_time2">
+                            <select class="form-select form-select-solid" id="finish_time2" name="finish_time2">
                                 @for ($minute = 0; $minute <= 45; $minute += 15)
-                                    <option value="{{ $minute }}" @if (old('start_time2') == $minute) selected @endif>{{ sprintf("%02d", $minute) }}</option>
+                                    <option value="{{ $minute }}" @if (old('finish_time2') == $minute) selected @endif>{{ sprintf("%02d", $minute) }}</option>
                                 @endfor
                             </select>
-                            <select class="form-select form-select-solid me-2" id="start_time1" name="start_time1">
+                            <select class="form-select form-select-solid me-2" id="finish_time1" name="finish_time1">
                                 @for ($hour = 0; $hour <= 23; $hour++)
-                                    <option value="{{ $hour }}" @if (old('start_time1') == $hour) selected @endif>{{ $hour }}</option>
+                                    <option value="{{ $hour }}" @if (old('finish_time1') == $hour) selected @endif>{{ $hour }}</option>
                                 @endfor
                             </select>
                         </div>
