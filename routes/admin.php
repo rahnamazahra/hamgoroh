@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CompetitionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ChallengeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,10 +110,10 @@ Route::controller(GroupController::class)->group(function () {
 
 // Challenges
 Route::controller(ChallengeController::class)->group(function () {
-    Route::get('/competition/{competition?}/challenges/create', 'create')->name('admin.challenges.create');
-    Route::post('/competition/{competition?}/challenges/store', 'store')->name('admin.challenges.store');
-    Route::get('/competition/{competition?}/challenges/edit', 'edit')->name('admin.challenges.edit');
-    Route::patch('/competition/{competition?}/challenges/update', 'update')->name('admin.challenges.update');
+    Route::get('/competition/{competition}/challenges/create', 'create')->name('admin.challenges.create');
+    Route::post('/competition/{competition}/challenges/store', 'store')->name('admin.challenges.store');
+    Route::get('/competition/{competition}/challenges/edit', 'edit')->name('admin.challenges.edit');
+    Route::patch('/competition/{competition}/challenges/update', 'update')->name('admin.challenges.update');
 });
 
 // Ajax
