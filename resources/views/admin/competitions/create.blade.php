@@ -84,16 +84,32 @@
 {{--                               value="{{ old('start_time2') }}"/>--}}
 {{--                    </div>--}}
 
+{{--                    <div class="col-md-6 fv-row">--}}
+{{--                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">ساعت و دقیقه شروع</label>--}}
+{{--                        <input type="time" class="form-control form-control-solid" id="start_time" name="start_time"--}}
+{{--                               value="{{ old('start_time') }}" step="1">--}}
+{{--                    </div>--}}
+
                     <div class="col-md-6 fv-row">
-                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">ساعت و دقیقه شروع</label>
-                        <input type="time" class="form-control form-control-solid" id="start_time" name="start_time"
-                               value="{{ old('start_time') }}" step="1">
+                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان شروع</label>
+                        <div class="d-flex">
+                            <select class="form-select form-select-solid" id="start_time2" name="start_time2">
+                                @for ($minute = 0; $minute <= 45; $minute += 15)
+                                    <option value="{{ $minute }}" @if (old('start_time2') == $minute) selected @endif>{{ sprintf("%02d", $minute) }}</option>
+                                @endfor
+                            </select>
+                            <select class="form-select form-select-solid me-2" id="start_time1" name="start_time1">
+                                @for ($hour = 0; $hour <= 23; $hour++)
+                                    <option value="{{ $hour }}" @if (old('start_time1') == $hour) selected @endif>{{ $hour }}</option>
+                                @endfor
+                            </select>
+                        </div>
                     </div>
 
 
 
                     <div class="col-md-6 fv-row">
-                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان شروع</label>
+                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان پایان</label>
                         <div class="d-flex">
                             <select class="form-select form-select-solid" id="start_time2" name="start_time2">
                                 @for ($minute = 0; $minute <= 45; $minute += 15)

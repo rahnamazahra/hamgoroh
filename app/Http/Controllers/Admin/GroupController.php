@@ -44,15 +44,30 @@ class GroupController extends Controller
     public function store(GroupRequest $request)
     {
         try {
-            $group = Group::create([
-                'title' => $request->input('title'),
-                'image' => $request->input('image'),
-                'competition_id' => $request->input('competition_id'),
-            ]);
+            dd($request->all());
+//            $group = Group::create([
+//                'title' => $request->input('title'),
+//                'image' => $request->input('image'),
+//                'competition_id' => $request->input('competition_id'),
+//            ]);
+//
+//            $group->fields()->attach($request->input('fields'));
+//
+//            return redirect()->route('admin.groups.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+            $groupData = $request->input('kt_docs_repeater_basic');
 
-            $group->fields()->attach($request->input('fields'));
+            foreach ($groupData as $item) {
+                $group = Group::create([
+                    'title' => $item['title'],
+                    'image' => $item['image'],
+                    'competition_id' => $item['competition_id'],
+                ]);
 
-            return redirect()->route('admin.groups.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+                $group->fields()->attach($item['fields']);
+            }
+
+            return redirect()->route('admin.groups.index')->with('success', 'ثبت اطلاعات با موفقیت انجام شد.');
+
 
         } catch (\Exception $e) {
             return redirect()->route('admin.groups.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
@@ -77,7 +92,8 @@ class GroupController extends Controller
             $group->update([
                 'title' => $request->input('title'),
                 'image' => $request->input('image'),
-                'competition_id' => $request->input('competition_id'),
+//                'competition_id' => $request->input('competition_id'),
+                'competition_id' => 1,
             ]);
             $group->fields()->sync($request->input('fields'));
 
