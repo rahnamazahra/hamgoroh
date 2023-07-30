@@ -37,6 +37,7 @@ class UserRequest extends CustomRequest
                     'gender'        => 'required',
                     'city_id'       => 'required',
                     'birthday_date' => 'required|date_format:Y/m/d',
+                    'avatar'        => 'nullable|max:4096|file|mimes:jpeg,png,jpg,gif,svg,jfif',
                     'roles'         => 'required',
                 ];
 
@@ -54,6 +55,7 @@ class UserRequest extends CustomRequest
                     'gender'        => 'required',
                     'city_id'       => 'required',
                     'birthday_date' => 'required|date_format:Y/m/d',
+                    'avatar'        => 'nullable|max:4096|file|mimes:jpeg,png,jpg,gif,svg,jfif',
                     'roles'         => 'required',
                 ];
 

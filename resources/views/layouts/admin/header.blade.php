@@ -60,7 +60,19 @@
                 <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
                     <!--begin::Menu wrapper-->
                     <div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                        <img src="{{ asset('admin/assets/media/avatars/man.png') }}" alt="user"/>
+                       @php
+                            $avatar = App\Models\File::where('fileable_type', 'App\Models\User')->where('fileable_id', Auth::user()->id)->where('related_field','avatar')->first();
+                            if($avatar){
+                        @endphp
+                        <img alt="Logo" src="{{ asset('/upload/'. $avatar->path) }}"/>
+                        @php
+                            }
+                            else{
+                        @endphp
+                        <img alt="Logo" src="{{ asset('admin/assets/media/avatars/man.png') }}"/>
+                        @php
+                            }
+                        @endphp
                     </div>
 
                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px" data-kt-menu="true">
@@ -69,7 +81,18 @@
                             <div class="menu-content d-flex align-items-center px-3">
                                 <!--begin::Avatar-->
                                 <div class="symbol symbol-50px me-5">
+                                    @php
+                                        if($avatar){
+                                    @endphp
+                                    <img alt="Logo" src="{{ asset('/upload/'. $avatar->path) }}"/>
+                                    @php
+                                        }
+                                        else{
+                                    @endphp
                                     <img alt="Logo" src="{{ asset('admin/assets/media/avatars/man.png') }}"/>
+                                    @php
+                                        }
+                                    @endphp
                                 </div>
                                 <!--end::Avatar-->
                                 <!--begin::Username-->

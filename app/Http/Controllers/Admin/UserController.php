@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\File;
 use Carbon\Carbon;
 use App\Models\City;
 use App\Models\Role;
@@ -71,11 +72,23 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $user                = User::create($request->except(['birthday_date']));
+
+            $user                = User::create($request->except(['birthday_date', 'avatar']));
+
             $user->birthday_date = Jalalian::fromFormat('Y/m/d', $request->input('birthday_date'))->toCarbon();
             $user->creator       = Auth::id();
             $user->save();
+
             $user->roles()->attach($request->input('roles'));
+
+            if($request->hasFile('avatar'))
+            {
+
+                $avatar  = $request->file('avatar');
+                $storage_dir = '/user';
+
+                uploadFile($storage_dir, ['avatar' => $avatar], ['fileable_id' => $user->id, 'fileable_type' => User::class]);
+            }
 
             Alert('success', 'اطلاعات باموفقیت ثبت شد.');
 
@@ -95,8 +108,9 @@ class UserController extends Controller
         $roles     = Role::get();
         $provinces = Province::get();
         $cities    = City::where('province_id', $user->city->province->id)->get();
+        $avatar    = File::where('fileable_type', User::class)->where('fileable_id', $user->id)->where('related_field','avatar')->pluck('path')->first();
 
-        return view('admin.users.edit', ['user' => $user, 'roles' => $roles, 'provinces' => $provinces, 'cities' => $cities]);
+        return view('admin.users.edit', ['user' => $user, 'avatar' => $avatar, 'roles' => $roles, 'provinces' => $provinces, 'cities' => $cities]);
     }
 
     public function update(UserRequest $request, User $user)
@@ -105,12 +119,30 @@ class UserController extends Controller
         $user->is_active = 0;
 
         try {
-            $user->update($request->except(['birthday_date']));
+            $user->update($request->except(['birthday_date', 'avatar']));
+
             $user->birthday_date = Jalalian::fromFormat('Y/m/d', $request->input('birthday_date'))->toCarbon();
             $user->creator       = Auth::id();
+
             $user->roles()->sync($request->input('roles'));
 
-             Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            if($request->hasFile('avatar'))
+            {
+                $file = File::where('fileable_type', User::class)->where('fileable_id', $user->id)->where('related_field','avatar')->first();
+
+                if($file)
+                {
+                    purge($file->path);
+                    $file->delete();
+                }
+
+                $avatar      = $request->file('avatar');
+                $storage_dir = '/user';
+
+                uploadFile($storage_dir, ['avatar' => $avatar], ['fileable_id' => $user->id, 'fileable_type' => User::class]);
+            }
+
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
 
             return redirect()->route('admin.users.index');
 

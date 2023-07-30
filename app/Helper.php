@@ -1,7 +1,8 @@
 <?php
+use Illuminate\Support\Facades\Storage;
 
 if(!defined('STATIC_DIR')){
-    define('STATIC_DIR', sprintf('%s','/../public/upload',__DIR__));
+    define('STATIC_DIR', sprintf('%s/../public/upload/',__DIR__));
 }
 
 if (! function_exists('handleFailedValidation'))
@@ -43,9 +44,8 @@ if(! function_exists('uploadFile'))
     {
         foreach ($files as $related_field => $file)
         {
-            $fileName = time().'_'.$files[$related_field]->getClientOriginalName();
-
-            $path = $file->store($storage_disk);
+            $fileName = time().'_'.$file->getClientOriginalName();
+            $path     = $file->storeAs($storage_disk, $fileName);
 
             App\Models\File::create([
                 'name'           => $fileName,
@@ -58,44 +58,26 @@ if(! function_exists('uploadFile'))
             ]);
         }
         return true;
-
-        /*
-           // in MyRequest File
-            'avatar'        => 'nullable|file|max:2048|mimes:jpg, jpeg, png',
-            'attachment'    => 'nullable|file|max:2048|mimes:jpg, jpeg, png, pdf, csv, txt, xlx, xls, doc, docx',
-        */
-
-        /*
-        // in controller
-
-        if($request->hasFile('attachment')) {
-
-            $attachment  = $request->file('attachment');
-        }
-        if($request->hasFile('attachment')) {
-        $avatar  = $request->file('avatar');
-        }
-
-        $storage_dir = '/user';
-        $uploded = uploadFile($storage_dir, ['attachment' => $attachment, 'avatar' => $avatar], ['fileable_id' => $user->id, 'fileable_type' => User::class]);
-
-
-        }
-        */
-        /*
-        //in view blade
-           <form method="POST" action="{{ route('admin.users.update', ['user' => $user->id]) }}" enctype="multipart/form-data">
-            @method('PATCH')
-            @csrf
-             //TEST
-                  <input type="file" name="attachment"/>
-                  <input type="file" name="avatar"/>
-                  <button type="submit">ok</button>
-            </form>
-
-        */
     }
 
+}
+
+if(! function_exists('purge'))
+{
+    function purge($filePath)
+    {
+        if($filePath)
+        {
+            $file_path = sprintf('%s%s', STATIC_DIR, $filePath);
+
+            if(file_exists($file_path))
+            {
+                unlink($file_path);
+
+                return true;
+            }
+        }
+    }
 }
 ?>
 
