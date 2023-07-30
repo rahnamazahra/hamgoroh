@@ -35,13 +35,13 @@ class GroupController extends Controller
         $fields = Field::get();
 //        $competitions = Competition::get();
 
-        return view('admin.groups.create', ['fields' => $fields, 'competition' => $competition]);
+        return view('admin.competitions.groups.index', ['fields' => $fields, 'competition' => $competition]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(GroupRequest $request)
+    public function store(GroupRequest $request, Competition $competition)
     {
         try {
             dd($request->all());
@@ -54,24 +54,29 @@ class GroupController extends Controller
 //            $group->fields()->attach($request->input('fields'));
 //
 //            return redirect()->route('admin.groups.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
-            $groupData = $request->input('kt_docs_repeater_basic');
+            $groupData = $request->input('groups');
 
             foreach ($groupData as $item) {
                 $group = Group::create([
                     'title' => $item['title'],
                     'image' => $item['image'],
-                    'competition_id' => $item['competition_id'],
+                    'competition_id' => $competition->id,
                 ]);
 
-                $group->fields()->attach($item['fields']);
+                $group->fields()->attach($item['fields[']);
             }
 
-            return redirect()->route('admin.groups.index')->with('success', 'ثبت اطلاعات با موفقیت انجام شد.');
+            return redirect()->route('admin.competitions.index')->with('success', 'ثبت اطلاعات با موفقیت انجام شد.');
 
 
-        } catch (\Exception $e) {
-            return redirect()->route('admin.groups.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 500);
         }
+//        catch (\Exception $e) {
+//            return redirect()->route('admin.competitions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+//        }
 
     }
 
@@ -88,6 +93,7 @@ class GroupController extends Controller
      */
     public function update(GroupRequest $request, Group $group)
     {
+        dd($request->all());
         try {
             $group->update([
                 'title' => $request->input('title'),

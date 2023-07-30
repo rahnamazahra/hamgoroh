@@ -94,22 +94,25 @@ class CompetitionController extends Controller
     public function update(CompetitionRequest $request, Competition $competition)
     {
         try {
+            $start_time = $request->input('start_time1') . ':' . $request->input('start_time2') . ':00';
+            $finish_time = $request->input('finish_time1') . ':' . $request->input('finish_time2') . ':00';
+
 
             $competition->update([
                 'title' => $request->input('title'),
                 'is_active' => $request->input('is_active'),
-//                'registration_start_date' => Jalalian::fromFormat('Y/m/d', $request->input('registration_start_date'))->toCarbon(),
-                'registration_start_date' => $request->input('registration_start_date') ? Jalalian::fromFormat('Y/m/d', $request->input('registration_start_date'))->toCarbon() : null,
-                'registration_finish_date' => $request->input('registration_finish_date') ? Jalalian::fromFormat('Y/m/d', $request->input('registration_finish_date'))->toCarbon() : null,
-                'registration_start_time' => $request->input('start_time1') ? $request->input('start_time1') . ':' . $request->input('start_time2') : null,
-                'registration_finish_time' => $request->input('finish_time1') ? $request->input('finish_time1') . ':' . $request->input('finish_time2') : null,
+                'registration_start_time' => Jalalian::fromFormat('Y/m/d', $request->input('registration_start_date'))->toCarbon()->format('Y-m-d') . ' ' . $start_time,
+                'registration_finish_time' => Jalalian::fromFormat('Y/m/d', $request->input('registration_finish_date'))->toCarbon()->format('Y-m-d') . ' ' . $finish_time,
+//                'registration_start_time' => $request->input('start_time1') ? $request->input('start_time1') . ':' . $request->input('start_time2') : null,
+//                'registration_finish_time' => $request->input('finish_time1') ? $request->input('finish_time1') . ':' . $request->input('finish_time2') : null,
                 'registration_description' => $request->input('registration_description'),
                 'rules_description' => $request->input('rules_description'),
                 'letter_method' => $request->input('letter_method'),
                 'banner' => $request->input('banner'),
                 'creator' => $request->input('creator'),
             ]);
-            return redirect()->route('admin.competitions.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
+
+            return redirect()->route('admin.groups.create', ['competition' => $competition])->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
         }catch (\Exception $exception) {
             return response()->json([
                 'message' => $exception->getMessage()
