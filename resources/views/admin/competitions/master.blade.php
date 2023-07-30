@@ -10,32 +10,18 @@
 <div class="stepper stepper-pills stepper-column d-flex flex-column flex-lg-row" id="kt_stepper_example_vertical">
     <div class="d-flex flex-row-auto w-100 w-lg-300px">
         <div class="stepper-nav flex-cente">
-            @if ($competition != null)
-                <a href="{{ route('admin.competitions.edit', ['competition' => $competition]) }}" class="stepper-item me-5 current" data-kt-stepper-element="nav">
-                    <div class="stepper-line w-40px"></div>
-                    <div class="stepper-icon w-40px h-40px">
-                        <i class="stepper-check fas fa-check"></i>
-                        <span class="stepper-number">1</span>
-                    </div>
-                    <div class="stepper-label">
-                        <h3 class="stepper-title">مرحله 1</h3>
-                        <div class="stepper-desc">اطلاعات کلی مسابقه</div>
-                    </div>
-                </a>
-            @else
-                <a href="{{ route('admin.competitions.create') }}" class="stepper-item me-5 current" data-kt-stepper-element="nav">
-                    <div class="stepper-line w-40px"></div>
-                    <div class="stepper-icon w-40px h-40px">
-                        <i class="stepper-check fas fa-check"></i>
-                        <span class="stepper-number">1</span>
-                    </div>
-                    <div class="stepper-label">
-                        <h3 class="stepper-title">مرحله 1</h3>
-                        <div class="stepper-desc">اطلاعات کلی مسابقه</div>
-                    </div>
-                </a>
-            @endif
-            <a href="{{ route('admin.groups.create', ['competition' => $competition]) }}" class="stepper-item me-5" data-kt-stepper-element="nav">
+            <a href="{{ route('admin.competitions.edit', ['competition' => $competition->id]) }}" class="stepper-item me-5 @if (Route::is('admin.competitions.edit')) current @endif" data-kt-stepper-element="nav">
+                <div class="stepper-line w-40px"></div>
+                <div class="stepper-icon w-40px h-40px">
+                    <i class="stepper-check fas fa-check"></i>
+                    <span class="stepper-number">1</span>
+                </div>
+                <div class="stepper-label">
+                    <h3 class="stepper-title">مرحله 1</h3>
+                    <div class="stepper-desc">اطلاعات کلی مسابقه</div>
+                </div>
+            </a>
+            <a href="{{ route('admin.groups.create', ['competition' => $competition->id]) }}" class="stepper-item me-5 @if (Route::is('admin.groups.create')) current @endif" data-kt-stepper-element="nav">
                 <div class="stepper-line w-40px"></div>
                 <div class="stepper-icon w-40px h-40px">
                     <i class="stepper-check fas fa-check"></i>
@@ -46,7 +32,7 @@
                     <div class="stepper-desc">سبد و رشته‌ها</div>
                 </div>
             </a>
-            <a href="{{ route('admin.challenges.create', ['competition' => $competition]) }}" class="stepper-item me-5" data-kt-stepper-element="nav">
+            <a href="{{ route('admin.challenges.create', ['competition' => $competition->id]) }}" class="stepper-item me-5 @if (Route::is('admin.challenges.create')) current @endif" data-kt-stepper-element="nav">
                 <div class="stepper-line w-40px"></div>
                 <div class="stepper-icon w-40px h-40px">
                     <i class="stepper-check fas fa-check"></i>
@@ -57,7 +43,7 @@
                     <div class="stepper-desc">تعریف زیررشته‌ها</div>
                 </div>
             </a>
-            <a href="{{ route('admin.challenges.edit', ['competition' => $competition]) }}" class="stepper-item me-5" data-kt-stepper-element="nav">
+            <a href="{{ route('admin.challenges.edit', ['competition' => $competition->id]) }}" class="stepper-item me-5 @if (Route::is('admin.challenges.edit')) current @endif" data-kt-stepper-element="nav">
                 <div class="stepper-line w-40px"></div>
                 <div class="stepper-icon w-40px h-40px">
                     <i class="stepper-check fas fa-check"></i>
@@ -118,4 +104,5 @@
         <!--end::Actions-->
     </div>
 </div>
+{{-- Route::currentRouteName(); --}}
 @endsection

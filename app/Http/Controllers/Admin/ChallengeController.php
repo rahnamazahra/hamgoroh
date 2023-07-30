@@ -28,9 +28,11 @@ class ChallengeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Competition $competition)
     {
-        //
+        // dd($request->all());
+
+        return view('admin.competitions.challenges.edit', ['competition' => $competition]);
     }
 
     /**

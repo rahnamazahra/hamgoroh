@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('challenges', function (Blueprint $table) {
             $table->id()->comment('شناسه');
-            $table->unsignedBigInteger('competition_id')->comment('مسابقه');
-            $table->unsignedBigInteger('field_id')->comment('رشته');
+            $table->unsignedBigInteger('competition_id')->comment('شناسه مسابقه');
+            $table->unsignedBigInteger('challenge_id')->comment('شناسه چالش');
+            $table->enum('gender', [-1, 0, 1])->comment('جنسیت همه/خانم/آقا');
+            $table->enum('nationality', [-1, 0, 1])->comment('جنسیت همه/خانم/آقا');
             $table->dateTime('start_time')->comment('زمان شروع');
             $table->dateTime('finish_time')->comment('زمان پایان');
-            $table->dateTime('registration_start_time')->comment('زمان شروع ثبت نام');
-            $table->dateTime('registration_finish_time')->comment('زمان پایان ثبت نام');
+            $table->dateTime('result_start_time')->comment('زمان شروع ثبت نام');
+            $table->dateTime('result_finish_time')->comment('زمان پایان ثبت نام');
             $table->timestamps();
 
             $table->foreign('competition_id')->references('id')->on('competitions')->cascadeOnDelete();

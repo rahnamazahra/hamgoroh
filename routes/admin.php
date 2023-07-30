@@ -99,12 +99,12 @@ Route::controller(CompetitionController::class)->group(function () {
 
 // Groups
 Route::controller(GroupController::class)->group(function () {
-    // Route::get('/groups', 'index')->name('admin.groups.index');
-    Route::get('/competition/{competition?}/groups/create', 'create')->name('admin.groups.create');
-    Route::post('/competition/{competition?}/groups', 'store')->name('admin.groups.store');
+    Route::get('/groups', 'index')->name('admin.groups.index');
+    Route::get('/competition/{competition}/groups/create', 'create')->name('admin.groups.create');
+    Route::post('/competition/{competition}/groups', 'store')->name('admin.groups.store');
     // Route::get('/groups/{group}/show', 'show')->name('admin.groups.show');
     // Route::get('/groups/{group}/edit', 'edit')->name('admin.groups.edit');
-    // Route::patch('/groups/{group}', 'update')->name('admin.groups.update');
+    Route::patch('/competition/{competition}/groups', 'update')->name('admin.groups.update');
     // Route::delete('/groups/{group}/delete', 'delete')->name('admin.groups.delete');
 });
 

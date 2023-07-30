@@ -15,10 +15,10 @@ return new class () extends Migration {
             $table->string('title')->comment('عنوان');
             $table->date('to_date')->comment('از تاریخ');
             $table->date('from_date')->comment('تا تاریخ');
-            $table->unsignedBigInteger('challenge_id')->comment('شناسه چالش');
+            $table->unsignedBigInteger('field_group_id')->comment('شناسه چالش');
             $table->timestamps();
 
-            $table->foreign('challenge_id')->references('id')->on('challenges')->cascadeOnDelete();
+            $table->foreign('field_group_id')->references('id')->on('field_group')->cascadeOnDelete();
 
             $table->comment('بازه‌های سنی');
         });
