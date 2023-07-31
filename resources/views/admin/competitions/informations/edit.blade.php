@@ -118,7 +118,11 @@
                             <div class="input-group input-group-solid">
                                 <span class="input-group-text">دقیقه</span>
                             <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" id="start_time2" name="start_time2">
+                                @if($competition->registration_start_time)
                                 {{ $registrationStartDateTime = \Morilog\Jalali\Jalalian::fromFormat('Y-m-d H:i:s', $competition->registration_start_time)->toCarbon()}}
+                                @else
+                                    {{ $registrationStartDateTime = null }}
+                                @endif
 {{--                                {{ $registrationStartDateTime = optional($competition->registration_start_time)->format('Y-m-d H:i:s') }}--}}
                             @foreach ([0, 15, 30, 45] as $minute)
                                     <option value="{{ $minute }}"
@@ -146,7 +150,11 @@
                             <div class="input-group input-group-solid">
 {{--                                <span class="input-group-text">دقیقه</span>--}}
                                 <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" id="finish_time2" name="finish_time2">
+                                    @if($competition->registration_finish_time)
                                     {{ $registrationFinishDateTime = \Morilog\Jalali\Jalalian::fromFormat('Y-m-d H:i:s', $competition->registration_finish_time)->toCarbon()}}
+                                    @else
+                                        {{ $registrationFinishDateTime = null }}
+                                    @endif
 {{--                                    {{ $registrationFinishDateTime = optional($competition->registration_start_time)->format('Y-m-d H:i:s')}}--}}
                                     @foreach ([0, 15, 30, 45] as $minute)
                                         <option value="{{ $minute }}"
