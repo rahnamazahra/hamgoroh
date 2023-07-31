@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Exception;
+use App\Models\AgeRange;
 use App\Models\Challenge;
 use App\Models\Competition;
-use Illuminate\Http\Request;
+use Morilog\Jalali\Jalalian;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ChallengeRequest;
 
 class ChallengeController extends Controller
 {
@@ -28,10 +31,27 @@ class ChallengeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Competition $competition)
+    public function store(ChallengeRequest $request, Competition $competition)
     {
-        // dd($request->all());
+        // dd($request->input('age_ranges'));
+        try {
+            foreach ($request->input('age_ranges') as $age)
+            {
+                AgeRange::create([
+                    'competition_id' => $competition->id,
+                    'title' => $age->title,
+                    'from_date' => Jalalian::fromFormat('Y/m/d', $age->from_date)->toCarbon(),
+                    'to_date' => Jalalian::fromFormat('Y/m/d', $age->to_date)->toCarbon(),
+                ]);
+            }
 
+            //
+
+
+        }
+        catch (Exception $e) {
+            return redirect()->route('admin.challenges.create')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        }
         return view('admin.competitions.challenges.edit', ['competition' => $competition]);
     }
 
@@ -54,7 +74,7 @@ class ChallengeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Challenge $challenge)
+    public function update(ChallengeRequest $request, Challenge $challenge)
     {
         //
     }

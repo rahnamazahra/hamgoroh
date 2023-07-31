@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('challenges', function (Blueprint $table) {
             $table->id()->comment('شناسه');
-            $table->unsignedBigInteger('competition_id')->comment('شناسه مسابقه');
-            $table->unsignedBigInteger('challenge_id')->comment('شناسه چالش');
+            $table->unsignedBigInteger('field_id')->comment('شناسه رشته');
+            $table->unsignedBigInteger('age_id')->comment('شناسه بازه‌سنی');
             $table->enum('gender', [-1, 0, 1])->comment('جنسیت همه/خانم/آقا');
             $table->enum('nationality', [-1, 0, 1])->comment('ملیت همه/خانم/آقا');
             $table->dateTime('start_time')->comment('زمان شروع');
@@ -23,8 +23,8 @@ return new class extends Migration
             $table->dateTime('result_finish_time')->comment('زمان پایان ثبت نام');
             $table->timestamps();
 
-            $table->foreign('competition_id')->references('id')->on('competitions')->cascadeOnDelete();
-            $table->foreign('challenge_id')->references('id')->on('challenges')->cascadeOnDelete();
+            $table->foreign('field_id')->references('id')->on('fields')->cascadeOnUpdate();
+            $table->foreign('age_id')->references('id')->on('age_ranges')->cascadeOnDelete();
 
             $table->comment('چالش‌ها');
         });
