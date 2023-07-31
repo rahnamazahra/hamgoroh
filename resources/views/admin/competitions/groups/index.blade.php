@@ -109,7 +109,7 @@
                             <a href="{{ route('admin.competitions.index') }}" id="add_permission_form_cancel"
                                class="btn btn-light me-3">لغو</a>
                             <button type="submit" id="add_permission_form_submit" class="btn btn-primary">
-                                <span class="indicator-label">ثبت</span>
+                                <span class="indicator-label">مرحله بعد</span>
                                 <span class="indicator-progress">لطفا چند لحظه صبر کنید ...
                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                     </span>
@@ -175,7 +175,7 @@
                             <a href="{{ route('admin.competitions.index') }}" id="add_permission_form_cancel"
                                class="btn btn-light me-3">لغو</a>
                             <button type="submit" id="add_permission_form_submit" class="btn btn-primary">
-                                <span class="indicator-label">ثبت</span>
+                                <span class="indicator-label">مرحله بعد</span>
                                 <span class="indicator-progress">لطفا چند لحظه صبر کنید ...
                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                     </span>
