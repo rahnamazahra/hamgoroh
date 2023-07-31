@@ -9,7 +9,7 @@ use App\Models\Field;
 use App\Models\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Throwable;
+use Exception;
 
 class GroupController extends Controller
 {
@@ -44,29 +44,35 @@ class GroupController extends Controller
     public function store(GroupRequest $request, Competition $competition)
     {
         try {
-            dd($request->all());
-//            $group = Group::create([
-//                'title' => $request->input('title'),
-//                'image' => $request->input('image'),
-//                'competition_id' => $request->input('competition_id'),
-//            ]);
-//
-//            $group->fields()->attach($request->input('fields'));
-//
-//            return redirect()->route('admin.groups.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+//            dd($request->all());
             $groupData = $request->input('groups');
 
+//            dd($groupData);
             foreach ($groupData as $item) {
-                $group = Group::create([
-                    'title' => $item['title'],
-                    'image' => $item['image'],
-                    'competition_id' => $competition->id,
-                ]);
+                if ($item['title']) {
+                    $group = Group::create([
+                        'title' => $item['title'],
+//                        'image' => $item['image'],
+                        'competition_id' => $competition->id,
+                    ]);
+                    if ($item['image']){
+//                        dd('ll');
+                        $file = $group->files->where('related_field','image')->first();
 
-                $group->fields()->attach($item['fields[']);
+                        if ($file){
+                            purge($file->path);
+                            $file->delete();
+                        }
+                        $image = $request->file($item['image']);
+                        $storage_dir = '/group';
+                        uploadFile($storage_dir, ['image' => $item['image']], ['fileable_id' => $group->id, 'fileable_type' => Group::class]);
+                    }
+
+                    $group->fields()->attach($item['fields']);
+                }
             }
 
-            return redirect()->route('admin.competitions.index')->with('success', 'ثبت اطلاعات با موفقیت انجام شد.');
+            return redirect()->route('admin.challenges.create', ['competition' => $competition])->with('success', 'ثبت اطلاعات با موفقیت انجام شد.');
 
 
         } catch (\Exception $exception) {
@@ -80,33 +86,47 @@ class GroupController extends Controller
 
     }
 
-    public function edit(Group $group)
+    public function edit(Competition $competition)
     {
         $fields = Field::get();
-        $competitions = Competition::get();
+//        $competitions = Competition::get();
 
-        return view('admin.groups.edit', ['group' => $group, 'fields' => $fields, 'competitions' => $competitions]);
+        return view('admin.groups.edit', ['fields' => $fields, 'competition' => $competition]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(GroupRequest $request, Group $group)
+    public function update(GroupRequest $request, Competition $competition)
     {
-        dd($request->all());
+//        dd($request->all());
         try {
-            $group->update([
-                'title' => $request->input('title'),
-                'image' => $request->input('image'),
-//                'competition_id' => $request->input('competition_id'),
-                'competition_id' => 1,
-            ]);
-            $group->fields()->sync($request->input('fields'));
+            $items = Group::where('competition_id', $competition->id)->get();
+            foreach ($items as $item) {
+                $item->find($item['id'])->delete();
+            }
+//            $groups = $request->input('groups');
+            $data = $request->all();
+            foreach ($data['groups'] as $group) {
+                $groups = new Group();
+                $groups->competition_id = $competition->id;
+                $groups->title = $group['title'];
+                $groups->image = $group['image'];
+                $groups->save();
+                $groups->fields()->attach($group['fields']);
+            }
 
-            return redirect()->route('admin.groups.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
-        } catch (\Exception $e) {
-            return redirect()->route('admin.groups.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            //            $group->fields()->sync($request->input('fields'));
+
+            return redirect()->route('admin.challenges.create', ['competition' => $competition])->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
+        } catch (Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 500);
         }
+//        catch (\Exception $e) {
+//            return redirect()->route('admin.groups.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+//        }
 
     }
 
@@ -118,8 +138,7 @@ class GroupController extends Controller
         try {
             $group->delete();
             return response()->json(['success' => true], 200);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }

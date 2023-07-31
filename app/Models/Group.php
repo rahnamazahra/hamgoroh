@@ -20,4 +20,9 @@ class Group extends Model
     {
         return $this->belongsToMany(Field::class, 'field_group');
     }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

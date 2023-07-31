@@ -30,8 +30,8 @@ class CompetitionRequest extends FormRequest
             'registration_finish_date' => 'nullable|date_format:Y/m/d',
             'registration_description' => 'nullable|string',
             'rules_description' => 'nullable|string',
-            'letter_method' => 'nullable|string',
-            'banner' => 'nullable|string',
+            'letter_method' => 'nullable|max:4096|file|mimes:pdf,png',
+            'banner' => 'nullable|max:4096|file|mimes:jpeg,png,jpg,gif,svg,jfif',
             'creator' => 'nullable',
         ];
     }
