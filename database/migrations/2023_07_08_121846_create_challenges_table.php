@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('competition_id')->comment('شناسه مسابقه');
             $table->unsignedBigInteger('challenge_id')->comment('شناسه چالش');
             $table->enum('gender', [-1, 0, 1])->comment('جنسیت همه/خانم/آقا');
-            $table->enum('nationality', [-1, 0, 1])->comment('جنسیت همه/خانم/آقا');
+            $table->enum('nationality', [-1, 0, 1])->comment('ملیت همه/خانم/آقا');
             $table->dateTime('start_time')->comment('زمان شروع');
             $table->dateTime('finish_time')->comment('زمان پایان');
             $table->dateTime('result_start_time')->comment('زمان شروع ثبت نام');
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('competition_id')->references('id')->on('competitions')->cascadeOnDelete();
-            $table->foreign('field_id')->references('id')->on('fields')->cascadeOnDelete();
+            $table->foreign('challenge_id')->references('id')->on('challenges')->cascadeOnDelete();
 
             $table->comment('چالش‌ها');
         });
