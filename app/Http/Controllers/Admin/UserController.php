@@ -108,7 +108,7 @@ class UserController extends Controller
         $roles     = Role::get();
         $provinces = Province::get();
         $cities    = City::where('province_id', $user->city->province->id)->get();
-        $avatar    = File::where('fileable_type', User::class)->where('fileable_id', $user->id)->where('related_field','avatar')->pluck('path')->first();
+        $avatar    = $user->files->where('related_field','avatar')->pluck('path')->first();
 
         return view('admin.users.edit', ['user' => $user, 'avatar' => $avatar, 'roles' => $roles, 'provinces' => $provinces, 'cities' => $cities]);
     }
@@ -128,7 +128,7 @@ class UserController extends Controller
 
             if($request->hasFile('avatar'))
             {
-                $file = File::where('fileable_type', User::class)->where('fileable_id', $user->id)->where('related_field','avatar')->first();
+                $file = $user->files->where('related_field','avatar')->first();
 
                 if($file)
                 {
