@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Field extends Model
 {
@@ -11,8 +12,8 @@ class Field extends Model
 
     protected $fillable = ['title'];
 
-    public function groups()
+    public function groups() : BelongsToMany
     {
-        return $this->belongsToMany(Group::class, 'field_group');
+        return $this->belongsToMany(Group::class);
     }
 }

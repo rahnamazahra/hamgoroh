@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('field_id')->comment('شناسه رشته');
             $table->unsignedBigInteger('age_id')->comment('شناسه بازه‌سنی');
             $table->enum('gender', [-1, 0, 1])->comment('جنسیت همه/خانم/آقا');
-            $table->enum('nationality', [-1, 0, 1])->comment('ملیت همه/خانم/آقا');
+            $table->enum('nationality', [-1, 0, 1])->comment('ملیت همه/ایرانی/خارجی');
             $table->dateTime('start_time')->comment('زمان شروع');
             $table->dateTime('finish_time')->comment('زمان پایان');
             $table->dateTime('result_start_time')->comment('زمان شروع ثبت نام');

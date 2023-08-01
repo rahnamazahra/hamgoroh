@@ -6,7 +6,9 @@ use Exception;
 use App\Models\AgeRange;
 use App\Models\Challenge;
 use App\Models\Competition;
+use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChallengeRequest;
 
@@ -33,24 +35,336 @@ class ChallengeController extends Controller
      */
     public function store(ChallengeRequest $request, Competition $competition)
     {
-        // dd($request->input('age_ranges'));
+        $gender = $request->input('gender');
+        $nationality = $request->input('nationality');
+
         try {
             foreach ($request->input('age_ranges') as $age)
             {
                 AgeRange::create([
                     'competition_id' => $competition->id,
-                    'title' => $age->title,
-                    'from_date' => Jalalian::fromFormat('Y/m/d', $age->from_date)->toCarbon(),
-                    'to_date' => Jalalian::fromFormat('Y/m/d', $age->to_date)->toCarbon(),
+                    'title' => $age['title'],
+                    'from_date' => Jalalian::fromFormat('Y/m/d', $age['from_date'])->toCarbon(),
+                    'to_date' => Jalalian::fromFormat('Y/m/d', $age['to_date'])->toCarbon(),
                 ]);
             }
 
-            //
+            $ages = $competition->ages;
+            $groups = $competition->groups->pluck('id');
+            $fields = DB::table('field_group')->whereIn('group_id', $groups)->groupBy('field_id')->pluck('field_id');
+
+            if ($gender == -1 and $nationality == -1)       // both and both
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 0,
+                            'nationality' => 0,
+                        ]);
+
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 0,
+                            'nationality' => 1,
+                        ]);
+
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 1,
+                            'nationality' => 0,
+                        ]);
+
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 1,
+                            'nationality' => 1,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == -1 and $nationality == 0)    // both and native
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 0,
+                            'nationality' => 0,
+                        ]);
+
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 1,
+                            'nationality' => 0,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == -1 and $nationality == 1)    //both and foreign
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 0,
+                            'nationality' => 1,
+                        ]);
+
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 1,
+                            'nationality' => 1,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == -1 and $nationality == 2)    // both and neither
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 0,
+                            'nationality' => -1,
+                        ]);
+
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 1,
+                            'nationality' => -1,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == 0 and $nationality == -1)    // female and both
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 0,
+                            'nationality' => 0,
+                        ]);
+
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 0,
+                            'nationality' => 1,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == 0 and $nationality == 0)     // female and native
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 0,
+                            'nationality' => 0,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == 0 and $nationality == 1)     // female and foreign
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 0,
+                            'nationality' => 1,
+                        ]);
+
+                    }
+                }
+            }
+            elseif ($gender == 0 and $nationality == 2)     // female and neither
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 0,
+                            'nationality' => -1,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == 1 and $nationality == -1)    // male and both
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 1,
+                            'nationality' => 0,
+                        ]);
+
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 1,
+                            'nationality' => 1,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == 1 and $nationality == 0)     // male and native
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 1,
+                            'nationality' => 0,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == 1 and $nationality == 1)     // male and foreign
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 1,
+                            'nationality' => 1,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == 1 and $nationality == 2)     // male and neither
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => 1,
+                            'nationality' => -1,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == 2 and $nationality == -1)    // neither and both
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => -1,
+                            'nationality' => 0,
+                        ]);
+
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => -1,
+                            'nationality' => 1,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == 2 and $nationality == 0)     // neither and native
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => -1,
+                            'nationality' => 0,
+                        ]);
+                    }
+                }
+            }
+            elseif ($gender == 2 and $nationality == 1)     // neither and foreign
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => -1,
+                            'nationality' => 1,
+                        ]);
+                    }
+                }
+            }
+            else                                            // neither and neither
+            {
+                foreach ($fields as $field)
+                {
+                    foreach ($ages as $age)
+                    {
+                        Challenge::create([
+                            'field_id' => $field,
+                            'age_id' => $age->id,
+                            'gender' => -1,
+                            'nationality' => -1,
+                        ]);
+                    }
+                }
+            }
 
 
         }
-        catch (Exception $e) {
-            return redirect()->route('admin.challenges.create')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        catch (Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 500);
+            // return redirect()->route('admin.challenges.create', ['competition' => $competition])->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
         }
         return view('admin.competitions.challenges.edit', ['competition' => $competition]);
     }

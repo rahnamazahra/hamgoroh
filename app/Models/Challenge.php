@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Challenge extends Model
 {
     use HasFactory;
-    protected $fillable = ['competition_id', 'field_id', 'start_time', 'finish_time', 'registration_start_time', 'registration_finish_time'];
-    public function competition()
+
+    protected $fillable = ['age_id', 'field_id', 'gender', 'natonality', 'start_time', 'finish_time', 'result_start_time', 'result_finish_time'];
+
+    public function age()
     {
-        return $this->belongsTo(Competition::class);
+        return $this->belongsTo(AgeRange::class);
     }
+
     public function field()
     {
         return $this->belongsTo(Field::class);

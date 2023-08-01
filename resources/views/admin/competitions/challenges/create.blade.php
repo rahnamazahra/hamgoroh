@@ -83,13 +83,13 @@
                 </div>
                 <div class="col-md-3 fv-row">
                     <div class="form-check form-check-custom form-check-solid">
-                        <input type="radio" class="form-check-input" name="gender" value="2" id="both"/>
+                        <input type="radio" class="form-check-input" name="gender" value="-1" id="both"/>
                         <label class="form-check-label" for="both">هردو</label>
                     </div>
                 </div>
                 <div class="col-md-3 fv-row">
                     <div class="form-check form-check-custom form-check-solid">
-                        <input type="radio" class="form-check-input" name="gender" value="3" id="neither"/>
+                        <input type="radio" class="form-check-input" name="gender" value="2" id="neither"/>
                         <label class="form-check-label" for="neither">فرقی ندارد</label>
                     </div>
                 </div>
@@ -111,13 +111,13 @@
                 </div>
                 <div class="col-md-3 fv-row">
                     <div class="form-check form-check-custom form-check-solid">
-                        <input type="radio" class="form-check-input" name="nationality" value="2" id="both"/>
+                        <input type="radio" class="form-check-input" name="nationality" value="-1" id="both"/>
                         <label class="form-check-label" for="both">هردو</label>
                     </div>
                 </div>
                 <div class="col-md-3 fv-row">
                     <div class="form-check form-check-custom form-check-solid">
-                        <input type="radio" class="form-check-input" name="nationality" value="3" id="neither"/>
+                        <input type="radio" class="form-check-input" name="nationality" value="2" id="neither"/>
                         <label class="form-check-label" for="neither">فرقی ندارد</label>
                     </div>
                 </div>

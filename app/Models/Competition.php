@@ -23,6 +23,11 @@ class Competition extends Model
         return $this->hasMany(Group::class);
     }
 
+    public function ages()
+    {
+        return $this->hasMany(AgeRange::class);
+    }
+
     public function files()
     {
         return $this->morphMany(File::class, 'fileable');
