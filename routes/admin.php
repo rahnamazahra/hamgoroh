@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\EvaluationModelController;
+use App\Http\Controllers\Admin\NewsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\CityController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CompetitionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ChallengeController;
+use App\Http\Controllers\Admin\StepController;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,3 +124,21 @@ Route::controller(AjaxController::class)->group(function () {
 });
 
 Route::get('/evaluationModels', [EvaluationModelController::class, 'index'])->middleware('auth')->name('admin.evaluation_models.index');
+
+// steps
+Route::controller(StepController::class)->group(function () {
+    Route::get('/competition/{competition}/steps/create', 'create')->name('admin.steps.create');
+    Route::post('/competition/{competition}/steps', 'store')->name('admin.steps.store');
+    Route::patch('/competition/{competition}/steps', 'update')->name('admin.steps.update');
+});
+
+// News
+Route::controller(NewsController::class)->group(function () {
+    Route::get('/news', 'index')->name('admin.news.index');
+    Route::get('/news/create', 'create')->name('admin.news.create');
+    Route::post('/news', 'store')->name('admin.news.store');
+    Route::get('/news/{news}/show', 'show')->name('admin.news.show');
+    Route::get('/news/{news}/edit', 'edit')->name('admin.news.edit');
+    Route::patch('/news/{news}', 'update')->name('admin.news.update');
+    Route::delete('/news/{news}/delete', 'delete')->name('admin.news.delete');
+});

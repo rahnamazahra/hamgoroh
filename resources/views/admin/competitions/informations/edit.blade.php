@@ -78,37 +78,6 @@
                     </div>
 
 
-                    {{--                    <div class="col-md-6 fv-row">--}}
-                    {{--                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان شروع</label>--}}
-                    {{--                        <div class="d-flex">--}}
-                    {{--                            <select class="form-select form-select-solid" id="start_time2" name="start_time2">--}}
-                    {{--                                @for ($minute = 0; $minute <= 45; $minute += 15)--}}
-                    {{--                                    <option value="{{ $minute }}" @if (old('start_time2') == $minute) selected @endif>{{ sprintf("%02d", $minute) }}</option>--}}
-                    {{--                                @endfor--}}
-                    {{--                            </select>--}}
-                    {{--                            <select class="form-select form-select-solid me-2" id="start_time1" name="start_time1">--}}
-                    {{--                                @for ($hour = 0; $hour <= 23; $hour++)--}}
-                    {{--                                    <option value="{{ $hour }}" @if (old('start_time1') == $hour) selected @endif>{{ $hour }}</option>--}}
-                    {{--                                @endfor--}}
-                    {{--                            </select>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
-
-                    {{--                    <div class="col-md-6 fv-row">--}}
-                    {{--                        <label for="start_time" class="required d-flex align-items-center fs-6 fw-bold mb-2">زمان شروع</label>--}}
-                    {{--                        <div class="d-flex">--}}
-                    {{--                            <select class="form-select form-select-solid" id="start_time2" name="start_time2">--}}
-                    {{--                                @foreach ([0, 15, 30, 45] as $minute)--}}
-                    {{--                                    <option value="{{ $minute }}" @if ((old('start_time2') === null && Jalalian::fromFormat('Y-m-d H:i:s', $competition->registration_start_time)->toCarbon()->format('i') == $minute) || old('start_time2') == $minute) selected @endif>{{ sprintf("%02d", $minute) }}</option>--}}
-                    {{--                                @endforeach--}}
-                    {{--                            </select>--}}
-                    {{--                            <select class="form-select form-select-solid me-2" id="start_time1" name="start_time1">--}}
-                    {{--                                @for ($hour = 0; $hour <= 23; $hour++)--}}
-                    {{--                                    <option value="{{ $hour }}" @if ((old('start_time1') === null && $competition->registration_finish_time->format('H') == $hour) || old('start_time1') == $hour) selected @endif>{{ $hour }}</option>--}}
-                    {{--                                @endfor--}}
-                    {{--                            </select>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
 
 
                     <div class="col-md-6 fv-row">
@@ -123,7 +92,6 @@
                                 @else
                                     {{ $registrationStartDateTime = null }}
                                 @endif
-{{--                                {{ $registrationStartDateTime = optional($competition->registration_start_time)->format('Y-m-d H:i:s') }}--}}
                             @foreach ([0, 15, 30, 45] as $minute)
                                     <option value="{{ $minute }}"
                                             @if ((old('start_time2') === null && optional($registrationStartDateTime)->format('i') == $minute) || old('start_time2') == $minute) selected @endif>{{ sprintf("%02d", $minute) }}</option>
@@ -155,7 +123,6 @@
                                     @else
                                         {{ $registrationFinishDateTime = null }}
                                     @endif
-{{--                                    {{ $registrationFinishDateTime = optional($competition->registration_start_time)->format('Y-m-d H:i:s')}}--}}
                                     @foreach ([0, 15, 30, 45] as $minute)
                                         <option value="{{ $minute }}"
                                                 @if ((old('finish_time2') === null && optional($registrationFinishDateTime)->format('i') == $minute) || old('finish_time2') == $minute) selected @endif>{{ sprintf("%02d", $minute) }}</option>
@@ -178,13 +145,11 @@
 
                     <div class="col-md-12 fv-row">
                         <label for="registration_description" class="required form-label">توضیحات</label>
-                        {{--                        <textarea class="form-control form-control-solid" name="registration_description">{{ old('registration_description', $competition->registration_description) }}</textarea>--}}
                         <textarea class="form-control" rows="3" id="textarea"
                                   name="registration_description">{{ old('registration_description', $competition->registration_description) }}</textarea>
                     </div>
                     <div class="col-md-12 fv-row">
                         <label for="rules_description" class="required form-label">قوانین</label>
-                        {{--                        <textarea class="form-control form-control-solid" name="rules_description">{{ old('rules_description', $competition->rules_description) }}</textarea>--}}
                         <textarea class="form-control" rows="3" id="textarea2"
                                   name="rules_description">{{ old('rules_description', $competition->rules_description) }}</textarea>
                     </div>
@@ -223,12 +188,13 @@
                             <label for="letter_method" class="required form-label">شیوه نامه</label>
                             <div class="form-text my-auto"> فایل‌های مجاز: pdf.</div>
                         </div>
+                        <br>
 {{--                        <div class="dropzone" id="kt_dropzonejs_example_1"></div>--}}
                         @if($letter_method)
                             <input type="file" name="letter_method" class="form-control form-control-solid mt-4" accept=".pdf">
 {{--                            <div class="form-text"> فایل‌های مجاز: pdf.</div>--}}
                         <br>
-                            <a href="{{ url('upload/'.$letter_method) }}" target="_blank">
+                            <a href="{{ url('upload/'.$letter_method) }}" class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary btn-hover-rise" target="_blank">
                                 <i class="bi bi-download"></i>  دانلود فایل</a>
                         @else
                         <input type="file" name="letter_method" class="form-control form-control-solid" accept=".pdf">

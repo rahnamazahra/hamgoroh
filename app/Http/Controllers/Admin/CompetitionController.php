@@ -49,7 +49,7 @@ class CompetitionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CompetitionRequest $request)
+    public function store(Request $request)
     {
         try {
                 $competition = Competition::create([

@@ -24,15 +24,19 @@ class CompetitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'nullable|string|min:3',
-            'is_active' => 'nullable|boolean',
-            'registration_start_date' => 'nullable|date_format:Y/m/d',
-            'registration_finish_date' => 'nullable|date_format:Y/m/d',
-            'registration_description' => 'nullable|string',
-            'rules_description' => 'nullable|string',
-            'letter_method' => 'nullable|max:4096|file|mimes:pdf,png',
-            'banner' => 'nullable|max:4096|file|mimes:jpeg,png,jpg,gif,svg,jfif',
-            'creator' => 'nullable',
+            'title' => 'required|string|min:3',
+            'is_active' => 'required|boolean',
+            'registration_start_date' => 'required|date_format:Y/m/d',
+            'registration_finish_date' => 'required|date_format:Y/m/d',
+            'start_time1' => 'required',
+            'start_time2' => 'required',
+            'finish_time1' => 'required',
+            'finish_time2' => 'required',
+            'registration_description' => 'required|string',
+            'rules_description' => 'required|string',
+            'letter_method' => 'nullable|max:4096|file|mimes:pdf',
+            'banner' => 'required|max:4096|file|mimes:jpeg,png,jpg,gif,svg,jfif',
+            'creator' => 'required',
         ];
     }
 
