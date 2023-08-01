@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompetitionRequest;
 use App\Models\Competition;
+use App\Models\File;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -79,7 +80,10 @@ class CompetitionController extends Controller
     {
         $users = User::get();
 
-        return view('admin.competitions.informations.edit', ['competition' => $competition, 'users' => $users]);
+        $letter_method = $competition->files->where('related_field','letter_method')->pluck('path')->first();
+        $banner = $competition->files->where('related_field','banner')->pluck('path')->first();
+
+        return view('admin.competitions.informations.edit', ['competition' => $competition, 'users' => $users, 'letter_method' => $letter_method, 'banner' => $banner]);
     }
 
     public function show(Competition $competition)
@@ -94,6 +98,7 @@ class CompetitionController extends Controller
     public function update(CompetitionRequest $request, Competition $competition)
     {
         try {
+//            dd($request->all());
             $start_time = $request->input('start_time1') . ':' . $request->input('start_time2') . ':00';
             $finish_time = $request->input('finish_time1') . ':' . $request->input('finish_time2') . ':00';
 
@@ -103,14 +108,34 @@ class CompetitionController extends Controller
                 'is_active' => $request->input('is_active'),
                 'registration_start_time' => Jalalian::fromFormat('Y/m/d', $request->input('registration_start_date'))->toCarbon()->format('Y-m-d') . ' ' . $start_time,
                 'registration_finish_time' => Jalalian::fromFormat('Y/m/d', $request->input('registration_finish_date'))->toCarbon()->format('Y-m-d') . ' ' . $finish_time,
-//                'registration_start_time' => $request->input('start_time1') ? $request->input('start_time1') . ':' . $request->input('start_time2') : null,
-//                'registration_finish_time' => $request->input('finish_time1') ? $request->input('finish_time1') . ':' . $request->input('finish_time2') : null,
                 'registration_description' => $request->input('registration_description'),
                 'rules_description' => $request->input('rules_description'),
-                'letter_method' => $request->input('letter_method'),
-                'banner' => $request->input('banner'),
                 'creator' => $request->input('creator'),
             ]);
+
+            if ($request->hasFile('letter_method')){
+                $file = $competition->files->where('related_field','letter_method')->first();
+
+                if ($file){
+                    purge($file->path);
+                    $file->delete();
+                }
+                $letter_method = $request->file('letter_method');
+                $storage_dir = '/competition';
+                uploadFile($storage_dir, ['letter_method' => $letter_method], ['fileable_id' => $competition->id, 'fileable_type' => Competition::class]);
+            }
+
+            if ($request->hasFile('banner')){
+                $file = $competition->files->where('related_field','banner')->first();
+
+                if ($file){
+                    purge($file->path);
+                    $file->delete();
+                }
+                $banner = $request->file('banner');
+                $storage_dir = '/competition';
+                uploadFile($storage_dir, ['banner' => $banner], ['fileable_id' => $competition->id, 'fileable_type' => Competition::class]);
+            }
 
             return redirect()->route('admin.groups.create', ['competition' => $competition])->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
         }catch (\Exception $exception) {

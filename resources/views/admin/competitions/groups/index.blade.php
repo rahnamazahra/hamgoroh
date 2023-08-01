@@ -26,11 +26,12 @@
         @if($competition->groups()->exists())
             <div class="card shadow-sm">
                 <form method="POST" action="{{ route('admin.groups.update', ['competition' => $competition->id]) }}">
+                    @method('PATCH')
                     @csrf
                     <div class="card-body">
                         <div class="row g-9">
                             <!--begin::Repeater-->
-                            <div id="kt_docs_repeater_basic">
+                            <div id="group_repeater_update">
                                 <div class="d-flex justify-content-between">
                                     <span class="fs-3 fw-bold">سبد</span>
                                     <a href="javascript:;" data-repeater-create class="btn btn-sm btn-light-success"><i class="la la-plus"></i>افزودن</a>
@@ -45,16 +46,15 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label class="required form-label">تصویر</label>
-                                                    <input type="text" class="form-control mb-2 mb-md-0" name="image" value="{{ $group->image }}"
-                                                           data-jdp/>
+                                                    <input type="file" name="image" class="form-control form-control-solid mt-4" accept=".png, .jpg, .jpeg, .gif, .svg, .jfif">
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label for="fields" class="required form-label">‌رشته‌ها</label>
-                                                    <select class="form-select" id="fields_{{rand(100000,110000000)}}" name="fields[]" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
+                                                    <select class="form-select" name="fields" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
                                                         <option></option>
                                                         @foreach($fields as $field)
-                                                            <option value="{{ $field->id }}" @selected(old('fields') and in_array($field->id, old('fields'))) >{{ $field->title }}</option>
+                                                            <option value="{{ $field->id }}" @selected($group->fields->contains($field->id)) >{{ $field->title }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -81,10 +81,10 @@
 
                                                 <div class="col-md-3">
                                                     <label for="fields" class="required form-label">‌رشته‌ها</label>
-                                                    <select class="form-select" id="fields_{{rand(100000,110000000)}}" name="fields[]" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
+                                                    <select class="form-select" name="fields" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
                                                         <option></option>
                                                         @foreach($fields as $field)
-                                                            <option value="{{ $field->id }}" @selected(old('fields') and in_array($field->id, old('fields'))) >{{ $field->title }}</option>
+                                                            <option value="{{ $field->id }}">{{ $field->title }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -120,12 +120,12 @@
             </div>
         @else
             <div class="card shadow-sm">
-                <form method="POST" action="{{ route('admin.groups.store', ['competition' => $competition->id]) }}">
+                <form method="POST" action="{{ route('admin.groups.store', ['competition' => $competition->id]) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <div class="row g-9">
                             <!--begin::Repeater-->
-                            <div id="kt_docs_repeater_basic">
+                            <div id="group_repeater_create">
                                 <div class="d-flex justify-content-between">
                                     <span class="fs-3 fw-bold">سبد</span>
                                     <a href="javascript:;" data-repeater-create class="btn btn-sm btn-light-success"><i
@@ -136,21 +136,19 @@
                                         <div data-repeater-item>
                                             <div class="form-group row mb-4">
                                                 <div class="col-md-3">
-                                                    <label class="required form-label">عنوان</label>
-                                                    <input type="text" class="form-control mb-2 mb-md-0" name="title"/>
+                                                    <label class="required form-label">تصویر</label>
+                                                    <input type="file" name="image" class="form-control form-control-solid mb-2 mb-md-0" accept=".png, .jpg, .jpeg, .gif, .svg, .jfif">
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label class="required form-label">تصویر</label>
-                                                    <input type="text" class="form-control mb-2 mb-md-0" name="image"
-                                                           data-jdp/>
+                                                    <label class="required form-label">عنوان</label>
+                                                    <input type="text" class="form-control form-control-solid mb-2 mb-md-0" name="title"/>
                                                 </div>
-
                                                 <div class="col-md-3">
                                                     <label for="fields" class="required form-label">‌رشته‌ها</label>
-                                                    <select class="form-select" id="fields_{{rand(100000,110000000)}}" name="fields[]" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
+                                                    <select class="form-select form-select-solid " name="fields" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
                                                         <option></option>
                                                         @foreach($fields as $field)
-                                                            <option value="{{ $field->id }}" @selected(old('fields') and in_array($field->id, old('fields'))) >{{ $field->title }}</option>
+                                                            <option value="{{ $field->id }}" >{{ $field->title }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -190,10 +188,28 @@
 @endsection
 
 @section('custom-scripts')
-    <script src="{{asset('admin/assets/plugins/custom/formrepeater/formrepeater.bundle.js')}}"></script>
+    <script src="{{ asset('admin/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
 
     <script>
-        $('#kt_docs_repeater_basic').repeater({
+        $('#group_repeater_create').repeater({
+            initEmpty: false,
+
+            defaultValues: {
+                'text-input': 'foo'
+            },
+
+            show: function () {
+                $(this).slideDown();
+            },
+
+            hide: function (deleteElement) {
+                $(this).slideUp(deleteElement);
+            }
+        });
+    </script>
+
+    <script>
+        $('#group_repeater_update').repeater({
             initEmpty: false,
 
             defaultValues: {
