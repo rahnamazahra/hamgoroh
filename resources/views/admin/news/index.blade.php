@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-    @can('competitions-index')
+    @can('news-index')
         <div class="card shadow-sm">
             <div class="card-header">
                 <div class="card-title">
@@ -42,9 +42,9 @@
                     </div>
                 </div>
                 <div class="card-toolbar">
-{{--                    @can('competitions-create')--}}
+                    @can('news-create')
                     <a href="{{ route('admin.news.create') }}" class="btn btn-sm btn-primary">+ خبر جدید</a>
-{{--                    @endcan--}}
+                    @endcan
                 </div>
             </div>
             <div class="card-body">
@@ -69,7 +69,18 @@
                             @endphp
                             <tr>
                                 <td class="text-center">{{ $row_number }}</td>
-                                <td class="text-center">{{ $item->image }}</td>
+                                @php
+                                    $image = \App\Models\File::where('fileable_id', $item->id)->pluck('path')->first();
+                                @endphp
+                                @if($image)
+                                <td>
+                                    <img src="{{ asset('upload/'.$image) }}" class=" rounded-circle" alt="" style="width: 50px">
+                                </td>
+                                @else
+                                    <td>
+{{--                                        <img src="{{ asset('admin/assets/media/icons/duotune/general/gen006.svg') }}" class=" rounded-circle" alt="" style="width: 50px">--}}
+                                    </td>
+                                @endif
                                 <td class="text-center">{{ $item->title }}</td>
                                 <td class="text-center">
                                     <div class="position-relative ps-6 pe-3 py-2">
@@ -91,6 +102,7 @@
 
                                 <td class="text-center">
                                     <div class="btn btn-group-sm">
+                                        @can('news-index')
                                         <a href="{{ route('admin.news.show', ['news' => $item->id]) }}"
                                            class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1"
                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="اطلاعات تکمیلی">
@@ -106,7 +118,8 @@
                                                 </svg>
                                             </span>
                                         </a>
-                                        @can('competitions-update')
+                                        @endcan
+                                        @can('news-update')
                                             <a href="{{ route('admin.news.edit', ['news' => $item->id]) }}"
                                                class="btn btn-icon btn-bg-light btn-active-color-success btn-sm me-1"
                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">
@@ -123,7 +136,7 @@
                                                 </span>
                                             </a>
                                         @endcan
-                                        @can('competitions-delete')
+                                        @can('news-delete')
                                             <button name="btn_delete_item"
                                                     class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm me-1"
                                                     data-id="{{ $item->id }}"

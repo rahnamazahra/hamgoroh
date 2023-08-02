@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\EvaluationModelController;
 use App\Http\Controllers\Admin\NewsController;
@@ -129,6 +130,7 @@ Route::get('/evaluationModels', [EvaluationModelController::class, 'index'])->mi
 Route::controller(StepController::class)->group(function () {
     Route::get('/competition/{competition}/steps/create', 'create')->name('admin.steps.create');
     Route::post('/competition/{competition}/steps', 'store')->name('admin.steps.store');
+    Route::get('/competition/{competition}/steps/edit', 'edit')->name('admin.steps.edit');
     Route::patch('/competition/{competition}/steps', 'update')->name('admin.steps.update');
 });
 
@@ -141,4 +143,15 @@ Route::controller(NewsController::class)->group(function () {
     Route::get('/news/{news}/edit', 'edit')->name('admin.news.edit');
     Route::patch('/news/{news}', 'update')->name('admin.news.update');
     Route::delete('/news/{news}/delete', 'delete')->name('admin.news.delete');
+});
+
+// About us
+Route::controller(AboutController::class)->group(function () {
+    Route::get('/abouts', 'index')->name('admin.abouts.index');
+    Route::get('/abouts/create', 'create')->name('admin.abouts.create');
+    Route::post('/abouts', 'store')->name('admin.abouts.store');
+    Route::get('/abouts/{about}/show', 'show')->name('admin.abouts.show');
+    Route::get('/abouts/{about}/edit', 'edit')->name('admin.abouts.edit');
+    Route::patch('/abouts/{about}', 'update')->name('admin.abouts.update');
+    Route::delete('/abouts/{about}/delete', 'delete')->name('admin.abouts.delete');
 });

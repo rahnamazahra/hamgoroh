@@ -38,7 +38,7 @@
 
                     <div class="col-md-12 fv-row">
                         <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('{{ asset('admin/assets/media/avatars/man.png') }}')">
-                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url('{{ asset('admin/assets/media/avatars/man.png') }}')"></div>
+                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url('{{ asset('admin/assets/media/icons/duotune/general/gen006.svg') }}')"></div>
                             <label class="btn btn-icon btn-circle btn-active-color-success w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="" data-bs-original-title="تغییر عکس">
                                 <span class="svg-icon svg-icon-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

@@ -167,6 +167,17 @@
                                         </span>
                                         <span class="menu-title">ایجاد دوره‌ی مسابقه</span>
                                     </a>
+
+{{--                                    /////////--}}
+{{--                                    <form method="post" action="{{ route('admin.competitions.store') }}">--}}
+{{--                                        @csrf--}}
+{{--                                        <button type="submit" id="add_permission_form_submit">--}}
+{{--                                            <span class="menu-bullet">--}}
+{{--                                            <span class="bullet bullet-dot"></span>--}}
+{{--                                        </span>--}}
+{{--                                            <span class="menu-title">ایجاد دوره‌ی مسابقه</span>--}}
+{{--                                        </button>--}}
+{{--                                    </form>--}}
                                 </div>
                             @endcan
                         </div>
@@ -188,23 +199,61 @@
 
                     </div>
                 @endcanany
-                    @can('evaluation-models-index')
-                        <div class="menu-item">
-                            <a class="menu-link {{ Request::routeIs('admin.evaluation_models.index') ? 'active' : '' }}" href="{{ route('admin.evaluation_models.index') }}" title="" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right" data-bs-original-title="">
-                        <span class="menu-icon">
-                            <!--begin::Svg Icon | path: assets/media/icons/duotune/maps/map008.svg-->
-                            <span class="svg-icon svg-icon-muted svg-icon-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <path d="M16.925 3.90078V8.00077L12.025 10.8008V5.10078L15.525 3.10078C16.125 2.80078 16.925 3.20078 16.925 3.90078ZM2.525 13.5008L6.025 15.5008L10.925 12.7008L6.025 9.90078L2.525 11.9008C1.825 12.3008 1.825 13.2008 2.525 13.5008ZM18.025 19.7008V15.6008L13.125 12.8008V18.5008L16.625 20.5008C17.225 20.8008 18.025 20.4008 18.025 19.7008Z" fill="currentColor" />
-                                    <path opacity="0.3" d="M8.52499 3.10078L12.025 5.10078V10.8008L7.125 8.00077V3.90078C7.125 3.20078 7.92499 2.80078 8.52499 3.10078ZM7.42499 20.5008L10.925 18.5008V12.8008L6.02499 15.6008V19.7008C6.02499 20.4008 6.82499 20.8008 7.42499 20.5008ZM21.525 11.9008L18.025 9.90078L13.125 12.7008L18.025 15.5008L21.525 13.5008C22.225 13.2008 22.225 12.3008 21.525 11.9008Z" fill="currentColor" />
-                                </svg>
+
+                    @canany(['news-index', 'news-create', 'news-update', 'news-delete'])
+                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Request::routeIs('admin.news.index') ? 'hover show' : '' }}">
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <span class="svg-icon svg-icon-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M14 18V16H10V18L9 20H15L14 18Z" fill="currentColor"/>
+                                        <path opacity="0.3" d="M20 4H17V3C17 2.4 16.6 2 16 2H8C7.4 2 7 2.4 7 3V4H4C3.4 4 3 4.4 3 5V9C3 11.2 4.8 13 7 13C8.2 14.2 8.8 14.8 10 16H14C15.2 14.8 15.8 14.2 17 13C19.2 13 21 11.2 21 9V5C21 4.4 20.6 4 20 4ZM5 9V6H7V11C5.9 11 5 10.1 5 9ZM19 9C19 10.1 18.1 11 17 11V6H19V9ZM17 21V22H7V21C7 20.4 7.4 20 8 20H16C16.6 20 17 20.4 17 21ZM10 9C9.4 9 9 8.6 9 8V5C9 4.4 9.4 4 10 4C10.6 4 11 4.4 11 5V8C11 8.6 10.6 9 10 9ZM10 13C9.4 13 9 12.6 9 12V11C9 10.4 9.4 10 10 10C10.6 10 11 10.4 11 11V12C11 12.6 10.6 13 10 13Z" fill="currentColor"/>
+                                    </svg>
+                                </span>
                             </span>
-                            <!--end::Svg Icon-->
+                            <span class="menu-title">اخبار</span>
+                            <span class="menu-arrow"></span>
                         </span>
-                                <span class="menu-title">مدل‌های ارزیابی</span>
-                            </a>
+                            <div class="menu-sub menu-sub-accordion">
+                                @can('news-index')
+                                    <div class="menu-item">
+                                        <a class="menu-link {{ Request::routeIs('admin.news.index') ? 'active' : '' }}" href="{{ route('admin.news.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                            <span class="menu-title">مدیریت اخبار</span>
+                                        </a>
+                                    </div>
+                                @endcan
+                                @can('news-create')
+{{--                                    <div class="menu-item">--}}
+{{--                                        <a class="menu-link {{ Request::routeIs('admin.news.create') ? 'active' : '' }}" href="{{ route('admin.news.create') }}">--}}
+{{--                                        <span class="menu-bullet">--}}
+{{--                                            <span class="bullet bullet-dot"></span>--}}
+{{--                                        </span>--}}
+{{--                                            <span class="menu-title">ایجاد دوره‌ی مسابقه</span>--}}
+{{--                                        </a>--}}
+{{--                                    </div>--}}
+                                @endcan
+                            </div>
+
+                            {{--  <div class="menu-sub menu-sub-accordion">
+                                @canany(['groups-index', 'groups-create', 'groups-update', 'groups-delete'])
+                                    <div class="menu-item">
+                                        <a class="menu-link {{ Request::routeIs('admin.groups.index') ? 'active' : '' }}" href="{{ route('admin.groups.index') }}">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                            <span class="menu-title">لیست گروه‌های مسابقات</span>
+                                        </a>
+                                    </div>
+                                @endcanany
+
+                            </div>  --}}
+
+
                         </div>
-                    @endcan
+                    @endcanany
             </div>
         </div>
         <!--end::Aside menu-->

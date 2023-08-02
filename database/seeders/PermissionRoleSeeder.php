@@ -238,6 +238,30 @@ class PermissionRoleSeeder extends Seeder
             'description' => 'امکان مشاهده مدل‌های ارزیابی',
         ]);
 
+        $permission_news_index = Permission::create([
+            'title'       => 'لیست اخبار',
+            'slug'        => 'news-index',
+            'description' => 'امکان مشاهده لسیت اخبار',
+        ]);
+
+        $permission_news_create = Permission::create([
+            'title'       => 'ایجاد خبر  جدید',
+            'slug'        => 'news-create',
+            'description' => 'امکان ایجاد خبر  جدید',
+        ]);
+
+        $permission_news_update = Permission::create([
+            'title'       => 'ویرایش خبر',
+            'slug'        => 'news-update',
+            'description' => 'امکان ویرایش خبر',
+        ]);
+
+        $permission_news_delete = Permission::create([
+            'title'       => 'حذف خبر',
+            'slug'        => 'news-delete',
+            'description' => 'امکان حذف خبر',
+        ]);
+
         $permission_admin_index->roles()->attach([$developer, $admin, $general_manager]);
         $permission_roles_index->roles()->attach([$developer, $admin]);
         $permission_roles_create->roles()->attach([$developer, $admin]);
@@ -275,5 +299,9 @@ class PermissionRoleSeeder extends Seeder
         $permission_groups_update->roles()->attach([$developer, $admin, $general_manager]);
         $permission_groups_delete->roles()->attach([$developer, $admin, $general_manager]);
         $permission_evaluation_models_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_news_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_news_create->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_news_update->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_news_delete->roles()->attach([$developer, $admin, $general_manager]);
     }
 }
