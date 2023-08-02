@@ -15,6 +15,5 @@ class DatabaseSeeder extends Seeder
         $this->call(ProvinceCitySeeder::class);
         $this->call(UserRoleSeeder::class);
         $this->call(PermissionRoleSeeder::class);
-        $this->call(EvaluationModelSeeder::class);
     }
 }

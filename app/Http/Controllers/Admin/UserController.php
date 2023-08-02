@@ -8,7 +8,6 @@ use App\Models\City;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Province;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
 use App\Http\Requests\UserRequest;
@@ -74,7 +73,6 @@ class UserController extends Controller
         try {
 
             $user                = User::create($request->except(['birthday_date', 'avatar']));
-
             $user->birthday_date = Jalalian::fromFormat('Y/m/d', $request->input('birthday_date'))->toCarbon();
             $user->creator       = Auth::id();
             $user->save();
@@ -83,8 +81,7 @@ class UserController extends Controller
 
             if($request->hasFile('avatar'))
             {
-
-                $avatar  = $request->file('avatar');
+                $avatar      = $request->file('avatar');
                 $storage_dir = '/user';
 
                 uploadFile($storage_dir, ['avatar' => $avatar], ['fileable_id' => $user->id, 'fileable_type' => User::class]);
@@ -119,9 +116,11 @@ class UserController extends Controller
         $user->is_active = 0;
 
         try {
+
             $user->update($request->except(['birthday_date', 'avatar']));
 
             $user->birthday_date = Jalalian::fromFormat('Y/m/d', $request->input('birthday_date'))->toCarbon();
+
             $user->creator       = Auth::id();
 
             $user->roles()->sync($request->input('roles'));
@@ -160,6 +159,7 @@ class UserController extends Controller
     public function delete(User $user)
     {
         try {
+
             $user->delete();
 
             return response()->json(['success' => true], 200);

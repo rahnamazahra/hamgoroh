@@ -3,92 +3,72 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GroupRequest;
+use App\Http\Requests\StepRequest;
+use App\Models\Challenge;
 use App\Models\Competition;
-use App\Models\Field;
-use App\Models\Group;
 use App\Models\Step;
-use Illuminate\Database\Eloquent\Builder;
+use Exception;
 use Illuminate\Http\Request;
-use Throwable;
 
 class StepController extends Controller
 {
     public function create(Competition $competition)
     {
-        $steps = Step::get();
+        $ages       = $competition->ages->pluck('id');
+        $challenges = Challenge::whereIn('age_id', $ages)->get();
 
-        return view('admin.competitions.steps.index', ['steps' => $steps, 'competition' => $competition]);
+        return view('admin.competitions.steps.index', ['challenges' => $challenges, 'competition' => $competition]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(GroupRequest $request, Competition $competition)
+    public function store(Request $request, Competition $competition)
     {
+ dd($request->all());
+
         try {
-            dd($request->all());
-//            $group = Group::create([
-//                'title' => $request->input('title'),
-//                'image' => $request->input('image'),
-//                'competition_id' => $request->input('competition_id'),
-//            ]);
-//
-//            $group->fields()->attach($request->input('fields'));
-//
-//            return redirect()->route('admin.groups.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
-            $groupData = $request->input('groups');
+                foreach ($request->input('challenge') as $key => $challenge)
+                {
+                    foreach($challenge['steps'] as $step)
+                    {
 
-            foreach ($groupData as $item) {
-                $group = Group::create([
-                    'title' => $item['title'],
-                    'image' => $item['image'],
-                    'competition_id' => $competition->id,
-                ]);
+                        Step::create([
+                            'challenge_id' => $challenge->id,
+                            'title' => $step['title'],
+                            'weight' => $step['weight'],
+                            'level' => $step['level'],
+                            'type' => $step['type']
+                        ]);
 
-                $group->fields()->attach($item['fields[']);
-            }
-
-            return redirect()->route('admin.competitions.index')->with('success', 'ثبت اطلاعات با موفقیت انجام شد.');
-
-
-        } catch (\Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 500);
+                    }
+                }
         }
-//        catch (\Exception $e) {
-//            return redirect()->route('admin.competitions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
-//        }
+        catch (Exception $e) {
+
+        }
 
     }
 
-    public function edit(Group $group)
+    public function edit(Competition $competition)
     {
-        $fields = Field::get();
-        $competitions = Competition::get();
+        $ages       = $competition->ages->pluck('id');
+        $challenges = Challenge::whereIn('age_id', $ages)->get();
 
-        return view('admin.groups.edit', ['group' => $group, 'fields' => $fields, 'competitions' => $competitions]);
+        return view('admin.competitions.steps.index', ['challenges' => $challenges, 'competition' => $competition]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(GroupRequest $request, Group $group)
+    public function update(StepRequest $request, Competition $competition)
     {
-        dd($request->all());
         try {
-            $group->update([
-                'title' => $request->input('title'),
-                'image' => $request->input('image'),
-//                'competition_id' => $request->input('competition_id'),
-                'competition_id' => 1,
-            ]);
-            $group->fields()->sync($request->input('fields'));
 
-            return redirect()->route('admin.groups.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
-        } catch (\Exception $e) {
-            return redirect()->route('admin.groups.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+
+        }
+        catch (Exception $e) {
+
         }
 
     }
@@ -96,13 +76,12 @@ class StepController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(Group $group)
+    public function delete(Step $step)
     {
         try {
-            $group->delete();
+            $step->delete();
             return response()->json(['success' => true], 200);
-        }
-        catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }

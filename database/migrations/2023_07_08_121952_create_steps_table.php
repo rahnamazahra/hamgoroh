@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title')->comment('عنوان');
             $table->integer('weight')->comment('ضریب');
             $table->enum('level', ['provincial', 'country'])->comment('سطح برگذاری مسابقات');
+            $table->enum('type', ['file_upload', 'test', 'text', 'video_online', 'call'])->comment('نوع آزمون مسابقات');
             $table->unsignedBigInteger('challenge_id')->comment('شناسه چالش');
             $table->timestamps();
 

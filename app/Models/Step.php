@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Step extends Model
 {
     use HasFactory;
-    protected $fillable = ['challenge_id', 'title', 'weight', 'level'];
+    protected $fillable = ['challenge_id', 'title', 'weight', 'level','type'];
     public function challenge()
     {
         return $this->belongsTo(Challenge::class);

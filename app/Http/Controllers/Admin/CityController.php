@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\CityRequest;
 use App\Models\City;
-use App\Models\Province;
-
+use Exception;
 
 class CityController extends Controller
 {
@@ -28,7 +27,7 @@ class CityController extends Controller
             City::create($request->all());
             return response()->json(['success' => true], 200);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
@@ -39,7 +38,7 @@ class CityController extends Controller
             $city->update($request->all());
             return response()->json(['success' => true], 200);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
@@ -53,7 +52,7 @@ class CityController extends Controller
             $city->delete();
             return response()->json(['success' => true], 200);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }

@@ -54,7 +54,7 @@
                     <div class="stepper-desc">لیست زیررشته‌ها</div>
                 </div>
             </a>
-            <a href="{{ route('admin.steps.create', ['competition' => $competition->id]) }}" class="stepper-item me-5" data-kt-stepper-element="nav">
+            <a href="{{ route('admin.steps.edit', ['competition' => $competition->id]) }}" class="stepper-item me-5" data-kt-stepper-element="nav">
                 <div class="stepper-line w-40px"></div>
                 <div class="stepper-icon w-40px h-40px">
                     <i class="stepper-check fas fa-check"></i>

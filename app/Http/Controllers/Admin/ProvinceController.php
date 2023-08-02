@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProvinceRequest;
 use App\Models\Province;
-use Database\Seeders\ProvinceSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Exception;
 
 class ProvinceController extends Controller
 {
@@ -39,12 +39,13 @@ class ProvinceController extends Controller
     {
         $validatedData = $request->validated();
 
-            try {
-                Province::create($validatedData);
-                return response()->json(['success' => true], 200);
-            } catch (\Exception $e) {
-                return response()->json(['success' => false, 'errors' => [$e->getMessage()]], 400);
-            }
+        try {
+            Province::create($validatedData);
+            return response()->json(['success' => true], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'errors' => [$e->getMessage()]], 400);
+        }
     }
 
     /**
@@ -56,7 +57,7 @@ class ProvinceController extends Controller
             $province->update($request->all());
             return response()->json(['success' => true], 200);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
@@ -70,7 +71,7 @@ class ProvinceController extends Controller
             $province->delete();
             return response()->json(['success' => true], 200);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
