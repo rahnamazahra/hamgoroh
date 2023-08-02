@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id()->comment('شناسه');
             $table->unsignedBigInteger('field_id')->comment('شناسه رشته');
             $table->unsignedBigInteger('age_id')->comment('شناسه بازه‌سنی');
-            $table->enum('gender', [-1, 0, 1])->comment('جنسیت همه/خانم/آقا');
-            $table->enum('nationality', [-1, 0, 1])->comment('ملیت همه/ایرانی/خارجی');
-            $table->dateTime('start_time')->comment('زمان شروع');
-            $table->dateTime('finish_time')->comment('زمان پایان');
-            $table->dateTime('result_start_time')->comment('زمان شروع ثبت نام');
-            $table->dateTime('result_finish_time')->comment('زمان پایان ثبت نام');
+            $table->enum('gender', [-1, 0, 1])->default(-1)->comment('جنسیت همه/خانم/آقا');
+            $table->enum('nationality', [-1, 0, 1])->default(0)->comment('ملیت همه/ایرانی/خارجی');
+            $table->dateTime('start_time')->nullable()->comment('زمان شروع');
+            $table->dateTime('finish_time')->nullable()->comment('زمان پایان');
+            $table->dateTime('result_start_time')->nullable()->comment('زمان شروع ثبت نام');
+            $table->dateTime('result_finish_time')->nullable()->comment('زمان پایان ثبت نام');
             $table->timestamps();
 
             $table->foreign('field_id')->references('id')->on('fields')->cascadeOnUpdate();

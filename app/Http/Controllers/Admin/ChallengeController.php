@@ -6,22 +6,14 @@ use Exception;
 use App\Models\AgeRange;
 use App\Models\Challenge;
 use App\Models\Competition;
-use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChallengeRequest;
+use App\Models\Field;
 
 class ChallengeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -43,9 +35,9 @@ class ChallengeController extends Controller
             {
                 AgeRange::create([
                     'competition_id' => $competition->id,
-                    'title' => $age['title'],
-                    'from_date' => Jalalian::fromFormat('Y/m/d', $age['from_date'])->toCarbon(),
-                    'to_date' => Jalalian::fromFormat('Y/m/d', $age['to_date'])->toCarbon(),
+                    'title'          => $age['title'],
+                    'from_date'      => Jalalian::fromFormat('Y/m/d', $age['from_date'])->toCarbon(),
+                    'to_date'        => Jalalian::fromFormat('Y/m/d', $age['to_date'])->toCarbon(),
                 ]);
             }
 
@@ -62,29 +54,29 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 0,
-                            'nationality' => 0,
+                            'gender' => '0',
+                            'nationality' => '0',
                         ]);
 
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 0,
-                            'nationality' => 1,
+                            'gender' => '0',
+                            'nationality' => '1',
                         ]);
 
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 1,
-                            'nationality' => 0,
+                            'gender' => '1',
+                            'nationality' => '0',
                         ]);
 
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 1,
-                            'nationality' => 1,
+                            'gender' => '1',
+                            'nationality' => '1',
                         ]);
                     }
                 }
@@ -98,15 +90,15 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 0,
-                            'nationality' => 0,
+                            'gender' => '0',
+                            'nationality' => '0',
                         ]);
 
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 1,
-                            'nationality' => 0,
+                            'gender' => '1',
+                            'nationality' => '0',
                         ]);
                     }
                 }
@@ -120,15 +112,15 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 0,
-                            'nationality' => 1,
+                            'gender' => '0',
+                            'nationality' => '1',
                         ]);
 
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 1,
-                            'nationality' => 1,
+                            'gender' => '1',
+                            'nationality' => '1',
                         ]);
                     }
                 }
@@ -142,15 +134,15 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 0,
-                            'nationality' => -1,
+                            'gender' => '0',
+                            'nationality' => '-1',
                         ]);
 
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 1,
-                            'nationality' => -1,
+                            'gender' => '1',
+                            'nationality' => '-1',
                         ]);
                     }
                 }
@@ -164,15 +156,15 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 0,
-                            'nationality' => 0,
+                            'gender' => '0',
+                            'nationality' => '0',
                         ]);
 
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 0,
-                            'nationality' => 1,
+                            'gender' => '0',
+                            'nationality' => '1',
                         ]);
                     }
                 }
@@ -186,8 +178,8 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 0,
-                            'nationality' => 0,
+                            'gender' => '0',
+                            'nationality' => '0',
                         ]);
                     }
                 }
@@ -201,8 +193,8 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 0,
-                            'nationality' => 1,
+                            'gender' => '0',
+                            'nationality' => '1',
                         ]);
 
                     }
@@ -217,8 +209,8 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 0,
-                            'nationality' => -1,
+                            'gender' => '0',
+                            'nationality' => '-1',
                         ]);
                     }
                 }
@@ -232,15 +224,15 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 1,
-                            'nationality' => 0,
+                            'gender' => '1',
+                            'nationality' => '0',
                         ]);
 
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 1,
-                            'nationality' => 1,
+                            'gender' => '1',
+                            'nationality' => '1',
                         ]);
                     }
                 }
@@ -254,8 +246,8 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 1,
-                            'nationality' => 0,
+                            'gender' => '1',
+                            'nationality' => '0',
                         ]);
                     }
                 }
@@ -269,8 +261,8 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 1,
-                            'nationality' => 1,
+                            'gender' => '1',
+                            'nationality' => '1',
                         ]);
                     }
                 }
@@ -284,8 +276,8 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => 1,
-                            'nationality' => -1,
+                            'gender' => '1',
+                            'nationality' => '-1',
                         ]);
                     }
                 }
@@ -299,15 +291,15 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => -1,
-                            'nationality' => 0,
+                            'gender' => '-1',
+                            'nationality' => '0',
                         ]);
 
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => -1,
-                            'nationality' => 1,
+                            'gender' => '-1',
+                            'nationality' => '1',
                         ]);
                     }
                 }
@@ -321,8 +313,8 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => -1,
-                            'nationality' => 0,
+                            'gender' => '-1',
+                            'nationality' => '0',
                         ]);
                     }
                 }
@@ -336,8 +328,8 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => -1,
-                            'nationality' => 1,
+                            'gender' => '-1',
+                            'nationality' => '1',
                         ]);
                     }
                 }
@@ -351,38 +343,35 @@ class ChallengeController extends Controller
                         Challenge::create([
                             'field_id' => $field,
                             'age_id' => $age->id,
-                            'gender' => -1,
-                            'nationality' => -1,
+                            'gender' => '-1',
+                            'nationality' => '-1',
                         ]);
                     }
                 }
             }
 
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
 
+            return redirect()->route('admin.challenges.edit', ['competition' => $competition]);
         }
-        catch (Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 500);
-            // return redirect()->route('admin.challenges.create', ['competition' => $competition])->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
-        }
-        return view('admin.competitions.challenges.edit', ['competition' => $competition]);
-    }
+        catch (Exception $exception)  {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Challenge $challenge)
-    {
-        //
+            return redirect()->route('admin.challenges.create', ['competition' => $competition]);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Challenge $challenge)
+    public function edit(Competition $competition)
     {
-        //
+        $groups = $competition->groups;
+        $fields = Field::whereRelation('')->get();
+        // $fields = DB::table('field_group')->whereIn('group_id', $groups)->groupBy('field_id')->pluck('field_id');
+        $challenges = Challenge::with(['field', 'age'])->get();
+
+        return view('admin.competitions.challenges.edit', ['competition' => $competition, 'challenges' => $challenges]);
     }
 
     /**
@@ -396,7 +385,7 @@ class ChallengeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Challenge $challenge)
+    public function delete(Challenge $challenge)
     {
         //
     }

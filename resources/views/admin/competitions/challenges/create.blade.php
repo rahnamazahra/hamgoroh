@@ -13,8 +13,14 @@
     <li class="breadcrumb-item text-muted">
         <a href="{{ route('admin.competitions.index') }}" class="text-muted text-hover-primary">لیست دوره‌های مسابقات</a>
     </li>
+    <li class="breadcrumb-item">
+        <span class="bullet bg-gray-300 w-5px h-2px"></span>
+    </li>
     <li class="breadcrumb-item text-muted">
         <a href="{{ route('admin.competitions.edit', ['competition' => $competition->id]) }}" class="text-muted text-hover-primary">اطلاعات کلی مسابقه</a>
+    </li>
+    <li class="breadcrumb-item">
+        <span class="bullet bg-gray-300 w-5px h-2px"></span>
     </li>
     <li class="breadcrumb-item text-muted">
         <a href="{{ route('admin.groups.index', ['competition' => $competition->id]) }}" class="text-muted text-hover-primary">سبد و رشته‌ها</a>
@@ -44,15 +50,15 @@
                                 <div class="form-group row mb-4">
                                     <div class="col-md-3">
                                         <label class="required form-label">عنوان</label>
-                                        <input type="text" class="form-control mb-2 mb-md-0" name="title" />
+                                        <input type="text" class="form-control mb-2 mb-md-0" name="title" required />
                                     </div>
                                     <div class="col-md-3">
                                         <label class="required form-label">از تاریخ</label>
-                                        <input type="text" class="form-control mb-2 mb-md-0" name="from_date" data-jdp/>
+                                        <input type="text" class="form-control mb-2 mb-md-0" name="from_date" required data-jdp/>
                                     </div>
                                     <div class="col-md-3">
                                         <label class="required form-label">تا تاریخ</label>
-                                        <input type="text" class="form-control mb-2 mb-md-0" name="to_date" data-jdp/>
+                                        <input type="text" class="form-control mb-2 mb-md-0" name="to_date" required data-jdp/>
                                     </div>
                                     <div class="col-md-3">
                                         <a href="javascript:;" data-repeater-delete class="btn btn-sm btn-light-danger mt-3 mt-md-8">
@@ -83,7 +89,7 @@
                 </div>
                 <div class="col-md-3 fv-row">
                     <div class="form-check form-check-custom form-check-solid">
-                        <input type="radio" class="form-check-input" name="gender" value="-1" id="both"/>
+                        <input type="radio" class="form-check-input" name="gender" value="-1" id="both" checked/>
                         <label class="form-check-label" for="both">هردو</label>
                     </div>
                 </div>
@@ -99,7 +105,7 @@
                 <span class="fs-3 fw_bold">ملیت</span>
                 <div class="col-md-3 fv-row">
                     <div class="form-check form-check-custom form-check-solid">
-                        <input type="radio" class="form-check-input" name="nationality" value="0" id="native"/>
+                        <input type="radio" class="form-check-input" name="nationality" value="0" id="native" checked/>
                         <label class="form-check-label" for="native">ایرانی</label>
                     </div>
                 </div>
@@ -125,8 +131,8 @@
         </div>
         <div class="card-footer">
             <div class="d-flex justify-content-end">
-                <a href="{{ route('admin.permissions.index') }}" id="add_permission_form_cancel" class="btn btn-light me-3">لغو</a>
-                <button type="submit" id="add_permission_form_submit" class="btn btn-primary">
+                <a href="{{ route('admin.competitions.index') }}" id="add_challenge_form_cancel" class="btn btn-light me-3">لغو</a>
+                <button type="submit" id="add_challenge_form_submit" class="btn btn-primary">
                     <span class="indicator-label">ثبت</span>
                     <span class="indicator-progress">لطفا چند لحظه صبر کنید ...
                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span>

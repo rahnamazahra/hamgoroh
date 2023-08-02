@@ -21,8 +21,35 @@ class ChallengeRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        switch ($this->method())
+        {
+            case ('GET'):
+                break;
+
+            case ('POST'):
+                $rules = [
+                    'age_ranges'  => 'required',
+                    'gender'      => 'required',
+                    'nationality' => 'required',
+                ];
+
+                return $rules;
+
+            case ('PUT'):
+                break;
+
+            case ('PATCH'):
+                return [
+                    'age_ranges'  => 'required',
+                    'gender'      => 'required',
+                    'nationality' => 'required',
+                ];
+
+            case ('DELETE'):
+                break;
+
+            default:
+                break;
+        }
     }
 }

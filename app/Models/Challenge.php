@@ -9,7 +9,7 @@ class Challenge extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['age_id', 'field_id', 'gender', 'natonality', 'start_time', 'finish_time', 'result_start_time', 'result_finish_time'];
+    protected $fillable = ['age_id', 'field_id', 'gender', 'nationality', 'start_time', 'finish_time', 'result_start_time', 'result_finish_time'];
 
     public function age()
     {
@@ -19,5 +19,10 @@ class Challenge extends Model
     public function field()
     {
         return $this->belongsTo(Field::class);
+    }
+
+    public function steps()
+    {
+        return $this->hasMany(Step::class);
     }
 }
