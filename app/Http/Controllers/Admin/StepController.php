@@ -17,7 +17,7 @@ class StepController extends Controller
         $ages       = $competition->ages->pluck('id');
         $challenges = Challenge::whereIn('age_id', $ages)->get();
 
-        return view('admin.competitions.steps.index', ['challenges' => $challenges, 'competition' => $competition]);
+        return view('admin.competitions.steps.create', ['challenges' => $challenges, 'competition' => $competition]);
     }
 
     /**
@@ -25,24 +25,32 @@ class StepController extends Controller
      */
     public function store(Request $request, Competition $competition)
     {
- dd($request->all());
 
         try {
-                foreach ($request->input('challenge') as $key => $challenge)
+
+            foreach ($request->input('groups') as $group)
+            {
+                foreach($group['challenges'] as $challenge)
                 {
-                    foreach($challenge['steps'] as $step)
+                    foreach($group['steps'] as $step)
                     {
-
                         Step::create([
-                            'challenge_id' => $challenge->id,
-                            'title' => $step['title'],
-                            'weight' => $step['weight'],
-                            'level' => $step['level'],
-                            'type' => $step['type']
+                            'challenge_id' => $challenge,
+                            'title'        => $step['title'],
+                            'weight'       => $step['weight'],
+                            'level'        => $step['level'],
+                            'type'         => $step['type']
                         ]);
-
                     }
                 }
+            }
+
+            $ages       = $competition->ages->pluck('id');
+            $challenges = Challenge::whereIn('age_id', $ages)->get();
+
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+
+            return redirect()->route('admin.steps.edit', ['competition' => $competition]);
         }
         catch (Exception $e) {
 
@@ -55,17 +63,48 @@ class StepController extends Controller
         $ages       = $competition->ages->pluck('id');
         $challenges = Challenge::whereIn('age_id', $ages)->get();
 
-        return view('admin.competitions.steps.index', ['challenges' => $challenges, 'competition' => $competition]);
+        return view('admin.competitions.steps.edit', ['challenges' => $challenges, 'competition' => $competition]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StepRequest $request, Competition $competition)
+    public function update(Request $request, Competition $competition)
     {
+            $ages       = $competition->ages->pluck('id');
+            $challenges = Challenge::whereIn('age_id', $ages)->get();
+
+            foreach($challenges as $challenge)
+            {
+                $steps      = $challenges->steps();
+                foreach ($steps as $item) {
+                    $item->find($item['id'])->delete();
+                }
+            }
+
+
         try {
 
+            foreach ($request->input('groups') as $group)
+            {
+                foreach($group['challenges'] as $challenge)
+                {
+                    foreach($group['steps'] as $step)
+                    {
+                        Step::create([
+                            'challenge_id' => $challenge,
+                            'title'        => $step['title'],
+                            'weight'       => $step['weight'],
+                            'level'        => $step['level'],
+                            'type'         => $step['type']
+                        ]);
+                    }
+                }
+            }
 
+            Alert('success', 'اطلاعات باموفقیت ویرایش شد.');
+
+            return redirect()->route('admin.steps.ceate', ['competition' => $competition]);
         }
         catch (Exception $e) {
 
@@ -78,11 +117,6 @@ class StepController extends Controller
      */
     public function delete(Step $step)
     {
-        try {
-            $step->delete();
-            return response()->json(['success' => true], 200);
-        } catch (Exception $e) {
-            return response()->json(['success' => false, 'errors' => $e], 400);
-        }
+        //
     }
 }
