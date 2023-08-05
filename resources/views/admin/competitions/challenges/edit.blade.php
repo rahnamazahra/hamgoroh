@@ -44,25 +44,58 @@
         @method('PATCH')
         @csrf
         <div class="card-body">
-            @forelse ($challenges as $challenge)
+            @forelse ($fields as $f)
+            @php
+                $field = App\Models\Field::with('challenges')->find($f->field_id);
+            @endphp
                 <div class="row g-9">
-                    <div class="col-md-6 fv-row">
-                        <label for="title" class="required form-label">عنوان</label>
-                        <input type="text" class="form-control form-control-solid" id="title" name="title" value="{{ old('title') }}" />
-                    </div>
-                    <div class="col-md-6 fv-row">
-                        <label for="slug" class="required form-label">اسلاگ</label>
-                        <input type="text" class="form-control form-control-solid" id="slug" name="slug" value="{{ old('slug') }}" />
-                    </div>
+                    <span class="fs-3 fw-bold">{{ $field->title }}</span>
                 </div>
+                @foreach ($field->challenges as $challenge)
+                    <div class="row g-9 my-2">
+                        <div class="col-md-4 fv-row">
+                            <label for="age_id" class="required form-label">بازه سنی</label>
+                            <select class="form-select form-select-solid" data-control="select2" data-placeholder="لطفا انتخاب کنید" id="age_id" name="age_id">
+                                <option></option>
+                                @foreach ($competition->ages as $age)
+                                    <option value="{{ $age->id }}" @selected($challenge->age_id == $age->id)>{{ $age->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 fv-row">
+                            <label for="gender" class="required form-label">جنسیت</label>
+                            <select class="form-select form-select-solid" data-control="select2" data-placeholder="لطفا انتخاب کنید" id="gender" name="gender">
+                                <option></option>
+                                <option value="-1" @selected($challenge->gender == '-1')>همه</option>
+                                <option value="0"  @selected($challenge->gender == '0')>خانم‌ها</option>
+                                <option value="1"  @selected($challenge->gender == '1')>آقایان</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 fv-row">
+                            <label for="nationality" class="required form-label">ملیت</label>
+                            <select class="form-select form-select-solid" data-control="select2" data-placeholder="لطفا انتخاب کنید" id="nationality" name="nationality">
+                                <option></option>
+                                <option value="-1" @selected($challenge->nationality == '-1')>همه</option>
+                                <option value="0"  @selected($challenge->nationality == '0')>ایرانی</option>
+                                <option value="1"  @selected($challenge->nationality == '1')>خارجی</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 fv-row">
+                            <button class="btn btn-sm btn-light-danger mt-3 mt-md-8" name="btn_delete_item" data-id="{{ $challenge->id }}" data-url="{{ route('admin.challenges.delete', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}">
+                                <i class="la la-trash-o"></i>حذف
+                            </button>
+                        </div>
+                    </div>
+                @endforeach
+                <div class="separator my-10"></div>
             @empty
-
+            jiluikjhkjhuyouyhui
             @endforelse
         </div>
         <div class="card-footer">
             <div class="d-flex justify-content-end">
-                <a href="{{ route('admin.competitions.index') }}" id="add_challenge_form_cancel" class="btn btn-light me-3">لغو</a>
-                <button type="submit" id="add_challenge_form_submit" class="btn btn-primary">
+                <a href="{{ route('admin.competitions.index') }}" id="update_challenge_form_cancel" class="btn btn-light me-3">لغو</a>
+                <button type="submit" id="update_challenge_form_submit" class="btn btn-primary">
                     <span class="indicator-label">ثبت</span>
                     <span class="indicator-progress">لطفا چند لحظه صبر کنید ...
                         <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
@@ -72,10 +105,4 @@
         </div>
     </form>
 </div>
-@endsection
-
-@section('custom-scripts')
-<script>
-    jalaliDatepicker.startWatch();
-</script>
 @endsection

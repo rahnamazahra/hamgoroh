@@ -19,7 +19,7 @@ class Group extends Model
 
     public function fields() : BelongsToMany
     {
-        return $this->belongsToMany(Field::class);
+        return $this->belongsToMany(Field::class)->withPivot('competition_id');
     }
 
     public function files()

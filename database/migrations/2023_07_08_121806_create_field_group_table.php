@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id()->comment('شناسه');
             $table->unsignedBigInteger('field_id')->comment('شناسه رشته');
             $table->unsignedBigInteger('group_id')->comment('شناسه گروه');
+            $table->unsignedBigInteger('competition_id')->comment('شناسه مسابقه');
             $table->timestamps();
 
             $table->foreign('field_id')->references('id')->on('fields')->cascadeOnDelete();
             $table->foreign('group_id')->references('id')->on('groups')->cascadeOnDelete();
+            $table->foreign('competition_id')->references('id')->on('competitions')->cascadeOnDelete();
 
             $table->comment('اختصاص رشته به گروه');
         });

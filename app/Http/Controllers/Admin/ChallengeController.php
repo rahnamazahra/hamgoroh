@@ -366,12 +366,11 @@ class ChallengeController extends Controller
      */
     public function edit(Competition $competition)
     {
-        $groups = $competition->groups;
-        $fields = Field::whereRelation('')->get();
-        // $fields = DB::table('field_group')->whereIn('group_id', $groups)->groupBy('field_id')->pluck('field_id');
-        $challenges = Challenge::with(['field', 'age'])->get();
+        $groups = $competition->groups->pluck('id');
+        $fields = DB::table('field_group')->whereIn('group_id', $groups)->groupBy('field_id')->get(['field_id']);
+        $challenges = Challenge::whereRelation('age', 'age_ranges.competition_id', $competition->id)->with(['field', 'age'])->get();
 
-        return view('admin.competitions.challenges.edit', ['competition' => $competition, 'challenges' => $challenges]);
+        return view('admin.competitions.challenges.edit', ['competition' => $competition, 'fields' => $fields, 'challenges' => $challenges]);
     }
 
     /**
