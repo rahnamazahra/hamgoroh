@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\CriteriaController;
 use App\Http\Controllers\Admin\GroupController;
-use App\Http\Controllers\Admin\EvaluationModelController;
+use App\Http\Controllers\Admin\NewsCategoryController;
 use App\Http\Controllers\Admin\NewsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AjaxController;
@@ -117,6 +119,7 @@ Route::controller(ChallengeController::class)->group(function () {
     Route::post('/competition/{competition}/challenges/store', 'store')->name('admin.challenges.store');
     Route::get('/competition/{competition}/challenges/edit', 'edit')->name('admin.challenges.edit');
     Route::patch('/competition/{competition}/challenges/update', 'update')->name('admin.challenges.update');
+    Route::delete('/competition/{competition}/challenges/{challenge}/delete', 'delete')->name('admin.challenges.delete');
 });
 
 // Ajax
@@ -124,14 +127,12 @@ Route::controller(AjaxController::class)->group(function () {
     Route::post('/province/cities', 'showCitiesByProvince')->name('admin.ajax.cities');
 });
 
-Route::get('/evaluationModels', [EvaluationModelController::class, 'index'])->middleware('auth')->name('admin.evaluation_models.index');
-
 // steps
 Route::controller(StepController::class)->group(function () {
     Route::get('/competition/{competition}/steps/create', 'create')->name('admin.steps.create');
-    Route::post('/competition/{competition}/steps', 'store')->name('admin.steps.store');
+    Route::post('/competition/{competition}/steps/store', 'store')->name('admin.steps.store');
     Route::get('/competition/{competition}/steps/edit', 'edit')->name('admin.steps.edit');
-    Route::patch('/competition/{competition}/steps', 'update')->name('admin.steps.update');
+    Route::patch('/competition/{competition}/steps/update', 'update')->name('admin.steps.update');
 });
 
 // News
@@ -145,6 +146,16 @@ Route::controller(NewsController::class)->group(function () {
     Route::delete('/news/{news}/delete', 'delete')->name('admin.news.delete');
 });
 
+// Category News
+Route::controller(NewsCategoryController::class)->group(function () {
+    Route::get('/newsCategories', 'index')->name('admin.newsCategories.index');
+    Route::get('/newsCategories/create', 'create')->name('admin.newsCategories.create');
+    Route::post('/newsCategories', 'store')->name('admin.newsCategories.store');
+    Route::get('/newsCategories/{newsCategory}/edit', 'edit')->name('admin.newsCategories.edit');
+    Route::patch('/newsCategories/{newsCategory}', 'update')->name('admin.newsCategories.update');
+    Route::delete('/newsCategories/{newsCategory}/delete', 'delete')->name('admin.newsCategories.delete');
+});
+
 // About us
 Route::controller(AboutController::class)->group(function () {
     Route::get('/abouts', 'index')->name('admin.abouts.index');
@@ -154,4 +165,25 @@ Route::controller(AboutController::class)->group(function () {
     Route::get('/abouts/{about}/edit', 'edit')->name('admin.abouts.edit');
     Route::patch('/abouts/{about}', 'update')->name('admin.abouts.update');
     Route::delete('/abouts/{about}/delete', 'delete')->name('admin.abouts.delete');
+});
+
+//Contacts
+Route::controller(ContactController::class)->group(function () {
+    Route::get('/contacts', 'index')->name('admin.contacts.index');
+    Route::get('/contacts/create', 'create')->name('admin.contacts.create');
+    Route::post('/contacts', 'store')->name('admin.contacts.store');
+    Route::get('/contacts/{contact}/show', 'show')->name('admin.contacts.show');
+    Route::get('/contacts/{contact}/edit', 'edit')->name('admin.contacts.edit');
+    Route::patch('/contacts/{contact}', 'update')->name('admin.contacts.update');
+    Route::delete('/contacts/{contact}/delete', 'delete')->name('admin.contacts.delete');
+});
+
+Route::controller(CriteriaController::class)->group(function () {
+    Route::get('/criteria', 'index')->name('admin.criteria.index');
+    Route::get('/criteria/create', 'create')->name('admin.criteria.create');
+    Route::post('/criteria', 'store')->name('admin.criteria.store');
+    Route::get('/criteria/{criteria}/show', 'show')->name('admin.criteria.show');
+    Route::get('/criteria/{criteria}/edit', 'edit')->name('admin.criteria.edit');
+    Route::patch('/criteria/{criteria}', 'update')->name('admin.criteria.update');
+    Route::delete('/criteria/{criteria}/delete', 'delete')->name('admin.criteria.delete');
 });

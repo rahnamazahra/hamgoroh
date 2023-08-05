@@ -262,6 +262,36 @@ class PermissionRoleSeeder extends Seeder
             'description' => 'امکان حذف خبر',
         ]);
 
+        $permission_setting_index = Permission::create([
+            'title'       => 'لیست تنظیمات',
+            'slug'        => 'setting-index',
+            'description' => 'امکان مشاهده لسیت تنظیمات',
+        ]);
+
+        $permission_criteria_index = Permission::create([
+            'title'       => 'لیست معیار',
+            'slug'        => 'criteria-index',
+            'description' => 'امکان مشاهده لسیت معیارها',
+        ]);
+
+        $permission_criteria_create = Permission::create([
+            'title'       => 'ایجاد معیار  جدید',
+            'slug'        => 'criteria-create',
+            'description' => 'امکان ایجاد معیار  جدید',
+        ]);
+
+        $permission_criteria_update = Permission::create([
+            'title'       => 'ویرایش معیار',
+            'slug'        => 'criteria-update',
+            'description' => 'امکان ویرایش معیار',
+        ]);
+
+        $permission_criteria_delete = Permission::create([
+            'title'       => 'حذف معیار',
+            'slug'        => 'criteria-delete',
+            'description' => 'امکان حذف معیار',
+        ]);
+
         $permission_admin_index->roles()->attach([$developer, $admin, $general_manager]);
         $permission_roles_index->roles()->attach([$developer, $admin]);
         $permission_roles_create->roles()->attach([$developer, $admin]);
@@ -303,5 +333,10 @@ class PermissionRoleSeeder extends Seeder
         $permission_news_create->roles()->attach([$developer, $admin, $general_manager]);
         $permission_news_update->roles()->attach([$developer, $admin, $general_manager]);
         $permission_news_delete->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_setting_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_criteria_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_criteria_create->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_criteria_update->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_criteria_delete->roles()->attach([$developer, $admin, $general_manager]);
     }
 }
