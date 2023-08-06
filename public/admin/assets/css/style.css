@@ -2,6 +2,12 @@ html,body {
     direction: rtl
 }
 
+.rtl-justify {
+    text-align: justify;
+    text-justify: persian;
+    direction: rtl;
+}
+
 p, h1, h2, h3, h4, h5, h6, input, select, textarea, a, span, li,th, td, tr, button, label,div {
     font-family: iranyekan !important;
 }
