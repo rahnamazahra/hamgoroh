@@ -70,7 +70,7 @@
                             <tr>
                                 <td class="text-center">{{ $row_number }}</td>
                                 @php
-                                    $image = \App\Models\File::where('fileable_id', $item->id)->pluck('path')->first();
+                                    $image = \App\Models\File::where('fileable_id', $item->id)->where('fileable_type', 'App\Models\News')->pluck('path')->first();
                                 @endphp
                                 @if($image)
                                 <td>

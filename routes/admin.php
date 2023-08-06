@@ -96,7 +96,8 @@ Route::controller(FieldController::class)->group(function () {
 Route::controller(CompetitionController::class)->group(function () {
     Route::get('/competitions', 'index')->name('admin.competitions.index');
 //    Route::get('/competitions/create', 'create')->name('admin.competitions.create');
-    Route::get('/competitions/store', 'store')->name('admin.competitions.store');
+    Route::get('/competitions/store', 'store')->name('admin.competitions.create');
+    Route::post('/competitions', 'store')->name('admin.competitions.store');
     Route::get('/competitions/{competition}/show', 'show')->name('admin.competitions.show');
     Route::get('/competitions/{competition}/edit', 'edit')->name('admin.competitions.edit');
     Route::patch('/competitions/{competition}', 'update')->name('admin.competitions.update');

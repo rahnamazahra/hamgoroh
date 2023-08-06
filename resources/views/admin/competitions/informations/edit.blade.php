@@ -32,21 +32,10 @@
             </div>
             <div class="card-body">
                 <div class="row g-9">
-                    <div class="col-md-6 fv-row">
+                    <div class="col-md-12 fv-row">
                         <label for="title" class="required form-label">عنوان</label>
                         <input type="text" class="form-control form-control-solid" name="title"
                                value="{{ old('title', $competition->title) }}"/>
-                    </div>
-                    <div class="col-md-6 fv-row">
-                        <label for="cities_list" class="required fs-6 fw-bold mb-2">ایجادکننده</label>
-                        <select class="form-select form-select-solid" id="creator" name="creator" data-control="select2"
-                                data-allow-clear="true" data-placeholder="لطفا انتخاب کنید">
-                            <option></option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}"
-                                        @if ($competition->creator == $user->id) selected @endif>{{ $user->first_name . ' ' . $user->last_name }}</option>
-                            @endforeach
-                        </select>
                     </div>
 
                     <div class="col-md-6 fv-row">
@@ -153,35 +142,6 @@
                         <textarea class="form-control" rows="3" id="textarea2"
                                   name="rules_description">{{ old('rules_description', $competition->rules_description) }}</textarea>
                     </div>
-
-
-{{--                    <div class="col-md-6 fv-row">--}}
-{{--                        <label for="letter_method" class="required form-label">شیوه نامه</label>--}}
-{{--                        <input type="file" name="letter_method" accept=".png, .jpg, .jpeg, .gif, .svg, .jfif">--}}
-{{--                        @if($letter_method)--}}
-{{--                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url('{{ asset('/upload/'. $letter_method) }}')"></div>--}}
-{{--                        @else--}}
-{{--                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url('{{ asset('admin/assets/media/avatars/man.png') }}')"></div>--}}
-
-{{--                        <div class="dropzone" id="kt_dropzonejs_example_1">--}}
-{{--                            <!--begin::Message-->--}}
-{{--                            <div class="dz-message needsclick">--}}
-{{--                                <!--begin::Icon-->--}}
-{{--                                <i class="bi bi-file-earmark-arrow-up text-primary fs-3x"></i>--}}
-{{--                                <!--end::Icon-->--}}
-
-{{--                                <!--begin::Info-->--}}
-{{--                                <div class="ms-4">--}}
-{{--                                    <h3 class="fs-5 fw-bolder text-gray-900 mb-1">Drop files here or click to upload</h3>--}}
-{{--                                    <span class="fs-7 fw-bold text-gray-400">Upload up to 10 files</span>--}}
-{{--                                </div>--}}
-{{--                                <!--end::Info-->--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="form-text"> فایل های مجاز: pdf.</div>--}}
-{{--                        @endif--}}
-
-{{--                    </div>--}}
 
                     <div class="col-md-6 fv-row">
                         <div class="d-flex d-inline-block gap-10">

@@ -81,7 +81,7 @@ class NewsController extends Controller
     {
         $news_category = NewsCategory::get();
 
-        $image = $news->files->where('related_field','image')->pluck('path')->first();
+        $image = $news->files->where('fileable_id', $news->id)->where('fileable_type', 'App\Models\News')->pluck('path')->first();
 
         return view('admin.news.edit', ['news' => $news, 'news_category' => $news_category, 'image' => $image]);
     }
@@ -102,7 +102,8 @@ class NewsController extends Controller
             $news->categories()->sync($request->input('news_category'));
 
             if ($request->hasFile('image')){
-                $file = $news->files->where('related_field','image')->first();
+                $file = $news->files->where('related_field','image')
+                    ->where('fileable_type', 'App\Models\News')->where('fileable_id', $news->id)->first();
 
                 if ($file){
                     purge($file->path);
@@ -136,6 +137,14 @@ class NewsController extends Controller
     public function delete(News $news)
     {
         try {
+            $file = $news->files->where('related_field','image')
+                ->where('fileable_type', 'App\Models\News')->where('fileable_id', $news->id)->first();
+
+            if ($file){
+                purge($file->path);
+                $file->delete();
+            }
+
             $news->delete();
             return response()->json(['success' => true], 200);
         }

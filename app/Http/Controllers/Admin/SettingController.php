@@ -76,7 +76,7 @@ class SettingController extends Controller
             ]);
 
             if ($request->hasFile('logo')){
-                $file = $setting->files->where('related_field','logo')->first();
+                $file = $setting->files->where('related_field','logo')->where('fileable_type', 'App\Models\Setting')->first();
 
                 if ($file){
                     purge($file->path);

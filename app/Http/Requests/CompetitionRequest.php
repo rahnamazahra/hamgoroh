@@ -36,7 +36,6 @@ class CompetitionRequest extends FormRequest
             'rules_description' => 'required|string',
             'letter_method' => 'nullable|max:4096|file|mimes:pdf',
             'banner' => 'required|max:4096|file|mimes:jpeg,png,jpg,gif,svg,jfif',
-            'creator' => 'required',
         ];
     }
 

@@ -13,7 +13,7 @@ class AboutController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         $about = About::query()->first();
 
@@ -79,7 +79,8 @@ class AboutController extends Controller
             ]);
 
             if ($request->hasFile('image')){
-                $file = $about->files->where('related_field','image')->first();
+                $file = $about->files->where('related_field','image')
+                    ->where('fileable_type', 'App\Models\About')->first();
 
                 if ($file){
                     purge($file->path);

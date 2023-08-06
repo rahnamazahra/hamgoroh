@@ -101,6 +101,13 @@ class GroupController extends Controller
         try {
             $items = Group::where('competition_id', $competition->id)->get();
             foreach ($items as $item) {
+                $file = $item->files->where('related_field','image')->where('fileable_id', $item['id']) //need test
+                    ->where('fileable_type', 'App\Models\Group')->first();
+                if ($file){
+                    purge($file->path);
+                    $file->delete();
+                }
+
                 $item->find($item['id'])->delete();
             }
             $data = $request->all();

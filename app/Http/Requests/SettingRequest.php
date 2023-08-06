@@ -22,7 +22,8 @@ class SettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string'
+            'title' => 'required|string',
+            'logo' => 'required|file|mimes:jpeg,png,jpg,gif,svg,jfif|max:4096',
         ];
     }
 }

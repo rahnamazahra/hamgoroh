@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompetitionRequest;
+use App\Models\Challenge;
 use App\Models\Competition;
 use App\Models\File;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 use Throwable;
 
@@ -52,19 +54,7 @@ class CompetitionController extends Controller
     public function store(Request $request)
     {
         try {
-                $competition = Competition::create([
-//                'title' => $request->input('title'),
-//                'is_active' => $request->input('is_active'),
-//                'registration_start_date' => Jalalian::fromFormat('Y/m/d', $request->input('registration_start_date'))->toCarbon(),
-//                'registration_finish_date' => Jalalian::fromFormat('Y/m/d', $request->input('registration_finish_date'))->toCarbon(),
-//                'registration_start_time' => $request->input('start_time1') . ':' . $request->input('start_time2'),
-//                'registration_finish_time' => $request->input('finish_time1') . ':' . $request->input('finish_time2'),
-//                'registration_description' => $request->input('registration_description'),
-//                'rules_description' => $request->input('rules_description'),
-//                'letter_method' => $request->input('letter_method'),
-//                'banner' => $request->input('banner'),
-//                'creator' => $request->input('creator'),
-            ]);
+                $competition = Competition::create([]);
 
             return redirect()->route('admin.competitions.edit', ['competition' => $competition])->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
         } catch (\Exception $e) {
@@ -88,7 +78,10 @@ class CompetitionController extends Controller
 
     public function show(Competition $competition)
     {
-        return view('admin.competitions.show', ['competition' => $competition]);
+        $ages       = $competition->ages->pluck('id');
+        $challenges = Challenge::whereIn('age_id', $ages)->with('steps')->get();
+
+        return view('admin.competitions.show', ['competition' => $competition, 'challenges' => $challenges]);
     }
 
 
@@ -110,11 +103,11 @@ class CompetitionController extends Controller
                 'registration_finish_time' => Jalalian::fromFormat('Y/m/d', $request->input('registration_finish_date'))->toCarbon()->format('Y-m-d') . ' ' . $finish_time,
                 'registration_description' => $request->input('registration_description'),
                 'rules_description' => $request->input('rules_description'),
-                'creator' => $request->input('creator'),
+                'creator' => Auth::id(),
             ]);
 
             if ($request->hasFile('letter_method')){
-                $file = $competition->files->where('related_field','letter_method')->first();
+                $file = $competition->files->where('related_field','letter_method')->where('fileable_id', $competition->id)->first();
 
                 if ($file){
                     purge($file->path);
@@ -126,7 +119,7 @@ class CompetitionController extends Controller
             }
 
             if ($request->hasFile('banner')){
-                $file = $competition->files->where('related_field','banner')->first();
+                $file = $competition->files->where('related_field','banner')->where('fileable_id', $competition->id)->first();
 
                 if ($file){
                     purge($file->path);
@@ -155,6 +148,18 @@ class CompetitionController extends Controller
     public function delete(Competition $competition)
     {
         try {
+            $letter_method = $competition->files->where('related_field','letter_method')->where('fileable_id', $competition->id)->first();
+            if ($letter_method){
+                purge($letter_method->path);
+                $letter_method->delete();
+            }
+
+            $banner = $competition->files->where('related_field','banner')->where('fileable_id', $competition->id)->first();
+            if ($banner){
+                purge($banner->path);
+                $banner->delete();
+            }
+
             $competition->delete();
             return response()->json(['success' => true], 200);
         }
