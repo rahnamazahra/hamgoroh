@@ -42,7 +42,7 @@
 
                             <div class="col-md-6 fv-row">
                                 <label for="postal_code" class=" form-label">کدپستی</label>
-                                <input type="number" class="form-control form-control-solid" id="postal_code"
+                                <input type="text" class="form-control form-control-solid" id="postal_code"
                                        name="postal_code" value="{{ old('postal_code') }}"/>
                             </div>
 
@@ -116,7 +116,7 @@
                             </div>
 
                             <div class="col-md-6 fv-row">
-                                <label for="postal_code" class=" form-label">گدپستی</label>
+                                <label for="postal_code" class=" form-label">کدپستی</label>
                                 <input type="text" class="form-control form-control-solid" id="postal_code"
                                        name="postal_code" value="{{ old('postal_code', $contact->postal_code) }}"/>
                             </div>

@@ -17,12 +17,12 @@ return new class extends Migration
             $table->boolean('is_active')->nullable()->comment('وضعیت غیرفعال / فعال');
 //            $table->date('registration_start_date')->comment('تاریخ شروع ثبت نام');
 //            $table->date('registration_finish_date')->comment('تاریخ پایان ثبت نام');
-            $table->time('registration_start_time')->nullable()->comment('زمان شروع ثبت نام');
-            $table->time('registration_finish_time')->nullable()->comment('زمان پایان ثبت نام');
+            $table->dateTime('registration_start_time')->nullable()->comment('زمان شروع ثبت نام');
+            $table->dateTime('registration_finish_time')->nullable()->comment('زمان پایان ثبت نام');
             $table->text('registration_description')->nullable()->comment('توضیحات ثبت نام');
             $table->text('rules_description')->nullable()->comment('قوانین');
-            $table->text('letter_method')->nullable()->comment('شیوه نامه');
-            $table->text('banner')->nullable()->comment('بنر');
+//            $table->text('letter_method')->nullable()->comment('شیوه نامه');
+//            $table->text('banner')->nullable()->comment('بنر');
             $table->unsignedBigInteger('creator')->nullable()->comment('شناسه کاربر ایجاد کننده');
             $table->timestamps();
 

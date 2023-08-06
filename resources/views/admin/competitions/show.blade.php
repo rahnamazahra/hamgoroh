@@ -33,7 +33,7 @@
                 <div class="row g-9">
                     <div class="col-md-12 fv-row">
                         @php
-                            $image = \App\Models\File::where('fileable_id', $competition->id)->pluck('path')->first();
+                            $image = \App\Models\File::where('fileable_id', $competition->id)->where('related_field', 'banner')->pluck('path')->first();
                         @endphp
                         <div class="image-input image-input-outline" data-kt-image-input="true"
                              style="background-image: url('assets/media/svg/avatars/blank.svg')">
@@ -86,7 +86,7 @@
                 </div>
 
                 @php
-                    $letter_method = \App\Models\File::where('fileable_id', $competition->id)->pluck('path')->first();
+                    $letter_method = \App\Models\File::where('fileable_id', $competition->id)->where('related_field', 'letter_method')->pluck('path')->first();
                 @endphp
                 @if($letter_method)
                 <a href="{{ url('upload/'.$letter_method) }}" class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary btn-hover-rise">

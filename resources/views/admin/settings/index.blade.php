@@ -1,9 +1,9 @@
 @extends('layouts.admin.master')
 
-@section('title', 'اخبار')
+@section('title', 'تنظیمات')
 
 @section('breadcrumb')
-    <h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">درباره ما</h1>
+    <h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">تنظیمات</h1>
     <span class="h-20px border-gray-300 border-start mx-4"></span>
     <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
         <li class="breadcrumb-item text-muted">
@@ -12,18 +12,18 @@
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-dark">درباره ما</li>
+        <li class="breadcrumb-item text-dark">تنظیمات</li>
     </ul>
 @endsection
 
 @section('content')
     <div class="card shadow-sm">
         @can('setting-index')
-            @if (\App\Models\About::count() === 0)
-                <form method="POST" action="{{ route('admin.abouts.store') }}" enctype="multipart/form-data">
+            @if (\App\Models\Setting::count() === 0)
+                <form method="POST" action="{{ route('admin.settings.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="card-header">
-                        <div class="card-title">ایجاد درباره ما</div>
+                        <div class="card-title">ایجاد تنظیمات </div>
                     </div>
                     <div class="card-body">
                         <div class="row g-9">
@@ -36,7 +36,7 @@
                                     <label
                                         class="btn btn-icon btn-circle btn-active-color-success w-25px h-25px bg-body shadow"
                                         data-kt-image-input-action="change" data-bs-toggle="tooltip" title=""
-                                        data-bs-original-title="تغییر عکس">
+                                        data-bs-original-title="تغییر لوگو">
                                 <span class="svg-icon svg-icon-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none">
@@ -49,30 +49,25 @@
                                     </svg>
                                 </span>
                                         <!--begin::Inputs-->
-                                        <input type="file" name="image" accept=".png, .jpg, .jpeg, .gif, .svg, .jfif">
+                                        <input type="file" name="logo" accept=".png, .jpg, .jpeg, .gif, .svg, .jfif">
                                         <input type="hidden" name="avatar_remove">
                                     </label>
                                 </div>
                                 <div class="form-text"> فایل های مجاز: jpeg, png, jpg, gif, svg, jfif.</div>
                             </div>
 
-                            <div class="col-md-6 fv-row">
-                                <label for="preview" class="form-label">پیش نمایش</label>
-                                <textarea class="form-control form-control-solid" id="preview"
-                                          name="preview">{{ old('preview') }}</textarea>
-                            </div>
 
                             <div class="col-md-12 fv-row">
-                                <label for="body" class="required form-label">متن</label>
+                                <label for="title" class="required form-label">نام سایت</label>
                                 <textarea class="form-control" rows="3" id="textarea"
-                                          name="body">{{ old('body') }}</textarea>
+                                          name="title">{{ old('title') }}</textarea>
                             </div>
 
                         </div>
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-end">
-                            <a href="{{ route('admin.abouts.index') }}" id="add_permission_form_cancel"
+                            <a href="{{ route('admin.settings.index') }}" id="add_permission_form_cancel"
                                class="btn btn-light me-3">لغو</a>
                             <button type="submit" id="add_permission_form_submit" class="btn btn-primary">
                                 <span class="indicator-label">ثبت</span>
@@ -86,19 +81,19 @@
 
             @else
 
-                <form method="POST" action="{{ route('admin.abouts.update', ['about' => $about->id]) }}"
+                <form method="POST" action="{{ route('admin.settings.update', ['setting' => $setting->id]) }}"
                       enctype="multipart/form-data">
                     @method('PATCH')
                     @csrf
                     <div class="card-header">
-                        <div class="card-title">ویرایش درباره ما</div>
+                        <div class="card-title">ویرایش تنظیمات</div>
                     </div>
                     <div class="card-body">
                         <div class="row g-9">
 
                             <div class="col-md-12 fv-row">
                                 @php
-                                    $image = \App\Models\File::where('fileable_id', $about->id)->where('fileable_type', 'App\Models\About')->pluck('path')->first();
+                                    $image = \App\Models\File::where('fileable_id', $setting->id)->where('fileable_type', 'App\Models\Setting')->pluck('path')->first();
                                 @endphp
                                 <div class="image-input image-input-outline" data-kt-image-input="true"
                                      style="background-image: url('assets/media/svg/avatars/blank.svg')">
@@ -112,7 +107,7 @@
                                     <label
                                         class="btn btn-icon btn-circle btn-active-color-success w-25px h-25px bg-body shadow"
                                         data-kt-image-input-action="change" data-bs-toggle="tooltip" title=""
-                                        data-bs-original-title="تغییر تصویر">
+                                        data-bs-original-title="تغییر لوگو">
                                 <span class="svg-icon svg-icon-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none">
@@ -125,31 +120,24 @@
                                     </svg>
                                 </span>
                                         <!--begin::Inputs-->
-                                        <input type="file" name="image" accept=".png, .jpg, .jpeg, .gif, .svg, .jfif">
+                                        <input type="file" name="logo" accept=".png, .jpg, .jpeg, .gif, .svg, .jfif">
                                         <input type="hidden" name="avatar_remove">
                                     </label>
                                 </div>
                                 <div class="form-text"> فایل های مجاز: png, jpg, jpeg.</div>
                             </div>
 
-
-                            <div class="col-md-6 fv-row">
-                                <label for="preview" class="form-label">پیش نمایش</label>
-                                <textarea class="form-control form-control-solid" id="preview"
-                                          name="preview">{{ old('preview', $about->preview) }}</textarea>
-                            </div>
-
                             <div class="col-md-12 fv-row">
-                                <label for="body" class="form-label">متن</label>
+                                <label for="title" class="form-label">نام سایت</label>
                                 <textarea class="form-control" rows="3" id="textarea"
-                                          name="body">{{ old('body', $about->body) }}</textarea>
+                                          name="title">{{ old('title', $setting->title) }}</textarea>
                             </div>
 
                         </div>
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-end">
-                            <a href="{{ route('admin.abouts.index') }}" id="update_permission_form_cancel"
+                            <a href="{{ route('admin.settings.index') }}" id="update_permission_form_cancel"
                                class="btn btn-light me-3">لغو</a>
                             <button type="submit" id="update_permission_form_submit" class="btn btn-primary">
                                 <span class="indicator-label">ثبت</span>
@@ -167,19 +155,4 @@
 @endsection
 
 @section('custom-scripts')
-    <script src='https://gitcdn.ir/library/ckeditor/4.13.0/ckeditor.js' type='text/javascript'></script>
-
-    <script>
-        CKEDITOR.replace('textarea', {
-            language: 'fa',
-            contentsLangDirection: 'rtl',
-        });
-    </script>
-
-    <script>
-        CKEDITOR.replace('textarea2', {
-            language: 'fa',
-            contentsLangDirection: 'rtl',
-        });
-    </script>
 @endsection

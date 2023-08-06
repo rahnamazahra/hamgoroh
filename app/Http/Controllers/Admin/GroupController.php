@@ -55,6 +55,7 @@ class GroupController extends Controller
                         'competition_id' => $competition->id,
                     ]);
                     if ($item['image']) {
+//                        dd('ll');
                         $file = $group->files->where('related_field', 'image')->first();
 
                         if ($file) {
@@ -65,7 +66,7 @@ class GroupController extends Controller
                         uploadFile($storage_dir, ['image' => $item['image']], ['fileable_id' => $group->id, 'fileable_type' => Group::class]);
                     }
 
-                    $group->fields()->attach($item['fields']);
+                    $group->fields()->attach($item['fields'], ['competition_id' => $competition->id]);
                 }
             }
 
@@ -121,7 +122,7 @@ class GroupController extends Controller
                         uploadFile($storage_dir, ['image' => $group['image']], ['fileable_id' => $groups->id, 'fileable_type' => Group::class]);
                     }
 
-                    $groups->fields()->attach($group['fields']);
+                    $groups->fields()->attach($group['fields'], ['competition_id' => $competition->id]);
                 }
             }
 

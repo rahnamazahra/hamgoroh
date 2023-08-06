@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->id()->comment('شناسه');
             $table->string('address')->comment('آدرس');
-            $table->integer('postal_code')->nullable()->comment('کد پستی');
+            $table->string('postal_code')->nullable()->comment('کد پستی');
             $table->string('phone_number')->comment('شماره تلفن');
             $table->string('email')->nullable()->comment('ایمیل');
             $table->string('body')->nullable()->comment('متن');

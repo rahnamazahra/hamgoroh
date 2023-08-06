@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CriteriaController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\NewsCategoryController;
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\CityController;
@@ -94,8 +95,8 @@ Route::controller(FieldController::class)->group(function () {
 // Competitions
 Route::controller(CompetitionController::class)->group(function () {
     Route::get('/competitions', 'index')->name('admin.competitions.index');
-    Route::get('/competitions/create', 'create')->name('admin.competitions.create');
-    Route::post('/competitions', 'store')->name('admin.competitions.store');
+//    Route::get('/competitions/create', 'create')->name('admin.competitions.create');
+    Route::get('/competitions/store', 'store')->name('admin.competitions.store');
     Route::get('/competitions/{competition}/show', 'show')->name('admin.competitions.show');
     Route::get('/competitions/{competition}/edit', 'edit')->name('admin.competitions.edit');
     Route::patch('/competitions/{competition}', 'update')->name('admin.competitions.update');
@@ -159,25 +160,34 @@ Route::controller(NewsCategoryController::class)->group(function () {
 // About us
 Route::controller(AboutController::class)->group(function () {
     Route::get('/abouts', 'index')->name('admin.abouts.index');
-    Route::get('/abouts/create', 'create')->name('admin.abouts.create');
+//    Route::get('/abouts/create', 'create')->name('admin.abouts.create');
     Route::post('/abouts', 'store')->name('admin.abouts.store');
-    Route::get('/abouts/{about}/show', 'show')->name('admin.abouts.show');
-    Route::get('/abouts/{about}/edit', 'edit')->name('admin.abouts.edit');
+//    Route::get('/abouts/{about}/edit', 'edit')->name('admin.abouts.edit');
     Route::patch('/abouts/{about}', 'update')->name('admin.abouts.update');
-    Route::delete('/abouts/{about}/delete', 'delete')->name('admin.abouts.delete');
+//    Route::delete('/abouts/{about}/delete', 'delete')->name('admin.abouts.delete');
 });
 
 //Contacts
 Route::controller(ContactController::class)->group(function () {
     Route::get('/contacts', 'index')->name('admin.contacts.index');
-    Route::get('/contacts/create', 'create')->name('admin.contacts.create');
+//    Route::get('/contacts/create', 'create')->name('admin.contacts.create');
     Route::post('/contacts', 'store')->name('admin.contacts.store');
-    Route::get('/contacts/{contact}/show', 'show')->name('admin.contacts.show');
-    Route::get('/contacts/{contact}/edit', 'edit')->name('admin.contacts.edit');
+//    Route::get('/contacts/{contact}/edit', 'edit')->name('admin.contacts.edit');
     Route::patch('/contacts/{contact}', 'update')->name('admin.contacts.update');
-    Route::delete('/contacts/{contact}/delete', 'delete')->name('admin.contacts.delete');
+//    Route::delete('/contacts/{contact}/delete', 'delete')->name('admin.contacts.delete');
 });
 
+// Setting
+Route::controller(SettingController::class)->group(function () {
+    Route::get('/settings', 'index')->name('admin.settings.index');
+//    Route::get('/settings/create', 'create')->name('admin.settings.create');
+    Route::post('/settings', 'store')->name('admin.settings.store');
+//    Route::get('/settings/{setting}/edit', 'edit')->name('admin.settings.edit');
+    Route::patch('/settings/{setting}', 'update')->name('admin.settings.update');
+//    Route::delete('/settings/{setting}/delete', 'delete')->name('admin.settings.delete');
+});
+
+// Criteria
 Route::controller(CriteriaController::class)->group(function () {
     Route::get('/criteria', 'index')->name('admin.criteria.index');
     Route::get('/criteria/create', 'create')->name('admin.criteria.create');

@@ -161,23 +161,12 @@
                             @endcan
                             @can('competitions-create')
                                 <div class="menu-item">
-                                    <a class="menu-link {{ Request::routeIs('admin.competitions.create') ? 'active' : '' }}" href="{{ route('admin.competitions.create') }}">
+                                    <a class="menu-link {{ Request::routeIs('admin.competitions.store') ? 'active' : '' }}" href="{{ route('admin.competitions.store') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
                                         <span class="menu-title">ایجاد دوره‌ی مسابقه</span>
                                     </a>
-
-{{--                                    /////////--}}
-{{--                                    <form method="post" action="{{ route('admin.competitions.store') }}">--}}
-{{--                                        @csrf--}}
-{{--                                        <button type="submit" id="add_permission_form_submit">--}}
-{{--                                            <span class="menu-bullet">--}}
-{{--                                            <span class="bullet bullet-dot"></span>--}}
-{{--                                        </span>--}}
-{{--                                            <span class="menu-title">ایجاد دوره‌ی مسابقه</span>--}}
-{{--                                        </button>--}}
-{{--                                    </form>--}}
                                 </div>
                             @endcan
                                 @can('criteria-index')
@@ -191,20 +180,6 @@
                                 </div>
                                 @endcan
                         </div>
-
-                        {{--  <div class="menu-sub menu-sub-accordion">
-                            @canany(['groups-index', 'groups-create', 'groups-update', 'groups-delete'])
-                                <div class="menu-item">
-                                    <a class="menu-link {{ Request::routeIs('admin.groups.index') ? 'active' : '' }}" href="{{ route('admin.groups.index') }}">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">لیست گروه‌های مسابقات</span>
-                                    </a>
-                                </div>
-                            @endcanany
-
-                        </div>  --}}
 
 
                     </div>
@@ -231,7 +206,7 @@
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
-                                            <span class="menu-title">مدیریت اخبار</span>
+                                            <span class="menu-title">لیست اخبار</span>
                                         </a>
                                     </div>
                                     <div class="menu-item">
@@ -239,25 +214,11 @@
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
-                                            <span class="menu-title">مدیریت دسته بندی اخبار</span>
+                                            <span class="menu-title"> دسته بندی اخبار</span>
                                         </a>
                                     </div>
                                 @endcan
                             </div>
-
-                            {{--  <div class="menu-sub menu-sub-accordion">
-                                @canany(['groups-index', 'groups-create', 'groups-update', 'groups-delete'])
-                                    <div class="menu-item">
-                                        <a class="menu-link {{ Request::routeIs('admin.groups.index') ? 'active' : '' }}" href="{{ route('admin.groups.index') }}">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                            <span class="menu-title">لیست گروه‌های مسابقات</span>
-                                        </a>
-                                    </div>
-                                @endcanany
-
-                            </div>  --}}
 
 
                         </div>
@@ -295,6 +256,14 @@
                                             <span class="menu-title">درباره ما</span>
                                         </a>
                                     </div>
+                                <div class="menu-item">
+                                    <a class="menu-link {{ Request::routeIs('admin.settings.index') ? 'active' : '' }}" href="{{ route('admin.settings.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">تنظیمات سایت</span>
+                                    </a>
+                                </div>
 
                             </div>
 
