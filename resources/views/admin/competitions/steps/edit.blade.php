@@ -38,83 +38,88 @@
                         <!--end::Add repeat group-->
                         <!--begin::repeat-group-->
                         <div data-repeater-list="groups">
-                            @foreach($challenges as $challenge)
-                                @foreach($challenge->steps as $key => $step)
-                                    <div data-repeater-item>
-                                        <div class="separator my-10"></div>
-                                        <div class="form-group row mb-5">
-                                            <div class="col-md-3 mb-10">
-                                                <label class="required form-label">زیررشته ها</label>
-                                                <select class="form-select select2-element" id="" name="challenges" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
-                                                    <option></option>
-                                                    @foreach($challenges as $challenge)
-                                                        <option value="{{ $challenge->id }}" @if($step->challenge_id == $challenge->id) selected @endif> {{ $challenge->field->title }} {{ $challenge->age->title }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <!--begin::inner-repeater-->
-                                            <div class="form-group row mb-4" style="position: relative;">
-                                                <div id="inner-repeater" class="inner-repeater">
-                                                    <div data-repeater-list="steps" class="mb-5">
-                                                        <div class="d-flex flex-row-reverse" style="position: absolute;padding:0px;top:-80px;left:0px;">
-                                                            <div class="p-2">
-                                                                <button class="btn btn-sm btn-light-success" data-repeater-create type="button"> افزودن <i class="la la-plus"></i></button>
+                            @foreach($groups as $group)
+                                @foreach($challenges as $challenge)
+                                    @foreach($challenge->steps as $key => $step)
+                                        @if($step->group == $group)
+                                            <div data-repeater-item>
+                                                <div class="separator my-10"></div>
+                                                <div class="form-group row mb-5">
+                                                    <div class="col-md-3 mb-10">
+                                                        <label class="required form-label">زیررشته ها</label>
+                                                        <select class="form-select select2-element" id="" name="challenges" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
+                                                            <option></option>
+                                                            @foreach($challenges as $challenge)
+                                                                <option value="{{ $challenge->id }}" @if($step->challenge_id == $challenge->id) selected @endif> {{ $challenge->field->title }} {{ $challenge->age->title }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <!--begin::inner-repeater-->
+                                                    <div class="form-group row mb-4" style="position: relative;">
+                                                        <div id="inner-repeater" class="inner-repeater">
+                                                            <div data-repeater-list="steps" class="mb-5">
+                                                                <div class="d-flex flex-row-reverse" style="position: absolute;padding:0px;top:-80px;left:0px;">
+                                                                    <div class="p-2">
+                                                                        <button class="btn btn-sm btn-light-success" data-repeater-create type="button"> افزودن <i class="la la-plus"></i></button>
+                                                                    </div>
+                                                                    <div class="p-2">
+                                                                        <a href="javascript:;" data-repeater-delete class="btn btn-sm btn-light-danger"><i class="la la-trash-o fs-3"></i>حذف گروه</a>
+                                                                    </div>
+                                                                </div>
+                                                                <div data-repeater-item>
+                                                                <!--repeat inner form-->
+                                                                    <div class="form-group row mb-4">
+                                                                        <div class="col-md-1">
+                                                                            <span class="btn btn-sm btn-light text-dark mt-3 mt-md-8 row_number" name="row_number">
+                                                                                {{ $key + 1 }}
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <label class="required form-label">عنوان</label>
+                                                                            <input type="text" class="form-control mb-2 mb-md-0" name="title" value="{{ $step->title }}"/>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <label for="level" class="required form-label">سطح</label>
+                                                                            <select class="form-select" id="" name="level" data-control="select2" data-placeholder="لطفا انتخاب کنید">
+                                                                                <option></option>
+                                                                                <option value="provincial" @if($step->level == "provincial") selected @endif>استانی</option>
+                                                                                <option value="country" @if($step->level == "country") selected @endif>کشوری</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <label for="type" class="required form-label">نوع آزمون</label>
+                                                                            <select class="form-select" id="" name="type" data-control="select2" data-placeholder="لطفا انتخاب کنید">
+                                                                                <option></option>
+                                                                                <option value="video_upload" @if($step->type == "video_upload") selected @endif>آپلود ویدئو</option>
+                                                                                <option value="image_upload" @if($step->type == "image_upload") selected @endif>آپلود عکس</option>
+                                                                                <option value="voice_upload" @if($step->type == "voice_upload") selected @endif>آپلود صوت</option>
+                                                                                <option value="document_upload" @if($step->type == "document_upload") selected @endif>آپلود سند</option>
+                                                                                <option value="text" @if($step->type == "text") selected @endif>متن</option>
+                                                                                <option value="call" @if($step->type == "call") selected @endif>تماس تلفنی</option>
+                                                                                <option value="test" @if($step->type == "test") selected @endif>آزمون آنلاین چهارگزینه ای</option>
+                                                                                <option value="video_online" @if($step->type == "video_online") selected @endif>آزمون آنلاین تصویری</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <label for="weight" class="required form-label">ضریب</label>
+                                                                            <input type="number" class="form-control mb-2 mb-md-0" name="weight" min="1" max="10" value="{{ $step->weight }}"/>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <a href="javascript:;" data-repeater-delete class="btn btn-sm btn-light-danger mt-3 mt-md-8">
+                                                                                <i class="la la-trash-o fs-3"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--repeat inner form-->
+                                                                </div>
                                                             </div>
-                                                            <div class="p-2">
-                                                                <a href="javascript:;" data-repeater-delete class="btn btn-sm btn-light-danger"><i class="la la-trash-o fs-3"></i>حذف گروه</a>
-                                                            </div>
-                                                        </div>
-                                                        <div data-repeater-item>
-                                                        <!--repeat inner form-->
-                                                            <div class="form-group row mb-4">
-                                                                <div class="col-md-1">
-                                                                    <span class="btn btn-sm btn-light text-dark mt-3 mt-md-8 row_number" name="row_number">
-                                                                    </span>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label class="required form-label">عنوان</label>
-                                                                    <input type="text" class="form-control mb-2 mb-md-0" name="title" value="{{ $step->title }}"/>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label for="level" class="required form-label">سطح</label>
-                                                                    <select class="form-select" id="" name="level" data-control="select2" data-placeholder="لطفا انتخاب کنید">
-                                                                        <option></option>
-                                                                        <option value="provincial" @if($step->level == "provincial") selected @endif>استانی</option>
-                                                                        <option value="country" @if($step->level == "country") selected @endif>کشوری</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label for="type" class="required form-label">نوع آزمون</label>
-                                                                    <select class="form-select" id="" name="type" data-control="select2" data-placeholder="لطفا انتخاب کنید">
-                                                                        <option></option>
-                                                                        <option value="video_upload" @if($step->type == "video_upload") selected @endif>آپلود ویدئو</option>
-                                                                        <option value="image_upload" @if($step->type == "image_upload") selected @endif>آپلود عکس</option>
-                                                                        <option value="voice_upload" @if($step->type == "voice_upload") selected @endif>آپلود صوت</option>
-                                                                        <option value="document_upload" @if($step->type == "document_upload") selected @endif>آپلود سند</option>
-                                                                        <option value="text" @if($step->type == "text") selected @endif>متن</option>
-                                                                        <option value="call" @if($step->type == "call") selected @endif>تماس تلفنی</option>
-                                                                        <option value="test" @if($step->type == "test") selected @endif>آزمون آنلاین چهارگزینه ای</option>
-                                                                        <option value="video_online" @if($step->type == "video_online") selected @endif>آزمون آنلاین تصویری</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-1">
-                                                                    <label for="weight" class="required form-label">ضریب</label>
-                                                                    <input type="number" class="form-control mb-2 mb-md-0" name="weight" min="1" max="10" value="{{ $step->weight }}"/>
-                                                                </div>
-                                                                <div class="col-md-1">
-                                                                    <a href="javascript:;" data-repeater-delete class="btn btn-sm btn-light-danger mt-3 mt-md-8">
-                                                                        <i class="la la-trash-o fs-3"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <!--repeat inner form-->
                                                         </div>
                                                     </div>
+                                                    <!--end::inner-repeater-->
                                                 </div>
                                             </div>
-                                            <!--end::inner-repeater-->
-                                        </div>
-                                    </div>
+                                        @endif
+                                    @endforeach
                                 @endforeach
                             @endforeach
                         </div>

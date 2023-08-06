@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('level', ['provincial', 'country'])->comment('سطح برگذاری مسابقات');
             $table->enum('type', ['file_upload', 'test', 'text', 'video_online', 'call'])->comment('نوع آزمون مسابقات');
             $table->unsignedBigInteger('challenge_id')->comment('شناسه چالش');
+            $table->unsignedBigInteger('group')->comment('شناسه گروه');
             $table->timestamps();
 
             $table->foreign('challenge_id')->references('id')->on('challenges')->cascadeOnDelete();

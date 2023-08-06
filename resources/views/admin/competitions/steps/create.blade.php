@@ -42,7 +42,7 @@
                                 <div class="form-group row mb-5">
                                     <div class="col-md-3 mb-10">
                                         <label class="required form-label">زیررشته ها</label>
-                                        <select class="form-select select2-element" id="" name="challenges" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
+                                        <select class="form-select select2-element multi-select" id="" name="challenges" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
                                             <option></option>
                                             @foreach($challenges as $challange)
                                                 <option value="{{ $challange->id }}"> {{ $challange->field->title }} {{ $challange->age->title }}</option>
@@ -136,6 +136,25 @@
 
 @section('custom-scripts')
 <script src="{{asset('admin/assets/plugins/custom/formrepeater/formrepeater.bundle.js')}}"></script>
+<script>
+    const dropdowns = document.querySelectorAll('.multi-select');
+    dropdowns.forEach((dropdown) => {
+        dropdown.addEventListener('change', (e) => {
+            const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+            dropdowns.forEach((otherDropdown) => {
+                if (otherDropdown !== dropdown) {
+                    Array.from(otherDropdown.options).forEach((option) => {
+                    if (selectedOptions.includes(option.value)) {
+                        option.disabled = true;
+                    } else {
+                        option.disabled = false;
+                    }
+                    });
+                }
+            });
+        });
+    });
+</script>
 <script>
     var row_number=0;
     document.getElementsByClassName('row_number')[0].innerHTML=++row_number;
