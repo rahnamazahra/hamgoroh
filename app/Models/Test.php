@@ -11,6 +11,11 @@ class Test extends Model
 
     protected $fillable = [
         'title', 'show_question', 'is_random', 'is_limit', 'is_negative', 'is_score', 'duration', 'easy_count',
-        'normal_count', 'hard_count', 'all_count',
+        'normal_count', 'hard_count', 'all_count', 'is_active',
     ];
+
+    public function test_questions()
+    {
+        return $this->hasMany(TestQuestion::class);
+    }
 }

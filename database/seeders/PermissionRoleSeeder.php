@@ -292,6 +292,30 @@ class PermissionRoleSeeder extends Seeder
             'description' => 'امکان حذف معیار',
         ]);
 
+        $permission_tests_index = Permission::create([
+            'title'       => 'لیست آزمون',
+            'slug'        => 'tests-index',
+            'description' => 'امکان مشاهده لسیت آزمونها',
+        ]);
+
+        $permission_tests_create = Permission::create([
+            'title'       => 'ایجاد آزمون  جدید',
+            'slug'        => 'tests-create',
+            'description' => 'امکان ایجاد آزمون جدید',
+        ]);
+
+        $permission_tests_update = Permission::create([
+            'title'       => 'ویرایش آزمون',
+            'slug'        => 'tests-update',
+            'description' => 'امکان ویرایش آزمون',
+        ]);
+
+        $permission_tests_delete = Permission::create([
+            'title'       => 'حذف آزمون',
+            'slug'        => 'tests-delete',
+            'description' => 'امکان حذف آزمون',
+        ]);
+
         $permission_admin_index->roles()->attach([$developer, $admin, $general_manager]);
         $permission_roles_index->roles()->attach([$developer, $admin]);
         $permission_roles_create->roles()->attach([$developer, $admin]);
@@ -338,5 +362,9 @@ class PermissionRoleSeeder extends Seeder
         $permission_criteria_create->roles()->attach([$developer, $admin, $general_manager]);
         $permission_criteria_update->roles()->attach([$developer, $admin, $general_manager]);
         $permission_criteria_delete->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_tests_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_tests_create->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_tests_update->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_tests_delete->roles()->attach([$developer, $admin, $general_manager]);
     }
 }
