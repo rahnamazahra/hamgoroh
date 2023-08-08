@@ -6,6 +6,7 @@ use Exception;
 use App\Models\AgeRange;
 use App\Models\Challenge;
 use App\Models\Competition;
+use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -387,5 +388,37 @@ class ChallengeController extends Controller
     public function delete(Challenge $challenge)
     {
         //
+    }
+
+    public function createInfo(Competition $competition, Challenge $challenge)
+    {
+       return view('admin.challenges.info', ['competition' => $competition, 'challenge' => $challenge]);
+    }
+
+    public function storeInfo(Request $request, Competition $competition, Challenge $challenge)
+    {
+        try {
+
+            $challenge->update(['description' => $request->input('description')]);
+
+            if($request->hasFile('file'))
+            {
+                $file        = $request->file('file');
+                $storage_dir = '/challenge';
+
+                uploadFile($storage_dir, ['file' => $file], ['fileable_id' => $challenge->id, 'fileable_type' => Challenge::class]);
+            }
+
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+
+            return redirect()->route('admin.competitions.show', ['competition' => $competition->id]);
+        }
+        catch (Exception $e)
+        {
+
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+
+            return redirect()->route('admin.challenges.info.create', ['competition' => $competition->id, 'challenge' => $challenge]);
+        }
     }
 }

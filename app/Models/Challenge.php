@@ -9,7 +9,7 @@ class Challenge extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['age_id', 'field_id', 'gender', 'nationality', 'start_time', 'finish_time', 'result_start_time', 'result_finish_time'];
+    protected $fillable = ['age_id', 'field_id', 'gender', 'nationality', 'start_time', 'finish_time', 'result_start_time', 'result_finish_time', 'description'];
 
     public function age()
     {
@@ -24,5 +24,10 @@ class Challenge extends Model
     public function steps()
     {
         return $this->hasMany(Step::class);
+    }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
     }
 }

@@ -23,11 +23,11 @@
 @endsection
 
 @section('content')
-        <div class="card shadow-sm col-xl-12 my-10">
+        <div class="card shadow-sm col-xl-12">
             <div class="card-header">
                 <div class="card-title">
                    <h1> مسابقه {{ $competition->title }} </h1>
-                    <span class="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1"></span>
+                    <span class="h-20px ms-3 mx-2 me-1"></span>
                     @if($competition->is_active)
                         <span class="badge badge-light-success">فعال</span>
                     @else
@@ -48,13 +48,13 @@
                 <div class="row g-9">
                     <div class="col-md-4 fv-row">
                         @php
-                            $image = \App\Models\File::where('fileable_id', $competition->id)->where('related_field', 'banner')->pluck('path')->first();
+                            $banner = $competition->files->where('related_field', 'banner')->pluck('path')->first();
                         @endphp
                         <div class="cole-md-12">
-                            @if($image)
-                                <image class="img-fluid rounded" src="{{ asset('/upload/'. $image) }}">
+                            @if($banner)
+                                <image class="img-fluid rounded" src="{{ asset('/upload/'. $banner) }}" alt="banner">
                             @else
-                                <image class="img-fluid rounded" src="{{ asset('admin/assets/media/icons/duotune/general/gen006.svg') }}">
+                                <image class="img-fluid rounded" src="{{ asset('admin/assets/media/icons/duotune/general/gen006.svg') }}" alt="banner">
                             @endif
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                         </div>
                         <div class="col-md-12 my-3">
                             <span class="text-gray-400 fw-bolder">
-                                توضییحات مسابقه:
+                                توضیحات مسابقه:
                                  <p class="text-gray-800 fw-bolder rtl-justify"> {!! $competition->registration_description ?? 'ندارد' !!} </p>
                             </span>
                         </div>
@@ -75,7 +75,7 @@
                         <div class="col-md-12 my-3">
                             <span class="text-gray-400 fw-bolder">
                                 ایجاد کننده دوره:
-                                <span class="text-gray-800 fw-bolder"> {{ $competition->user ? $competition->user->first_name . ' ' . $competition->user->last_name : ' '}} </span>
+                                <span class="text-gray-800 fw-bolder"> {{ $competition->user ? $competition->user->first_name . ' ' . $competition->user->last_name : ' مشخص نشده' }} </span>
                             </span>
                         </div>
                         <div class="col-md-12 my-5">
@@ -98,7 +98,6 @@
                 </div>
             </div>
         </div>
-
         @forelse($challenges as $challenge)
             <div class="card shadow-sm col-xl-12 my-10">
                 <div class="card-header">
@@ -151,10 +150,9 @@
                                         <td></td>
                                         <td class="text-end">
                                             <div class="btn btn-group-sm">
-                                                <button type="button" class="btn btn-sm btn-success" onclick="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اطلاعات تکمیلی"> اطلاعات تکمیلی </button>
-                                                <button type="button" class="btn btn-sm btn-primary" onclick="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی </button>
-                                                <button type="button" class="btn btn-sm btn-info" onclick="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="تکنیک">تکنیک</button>
-
+                                                <a href="{{ route('admin.challenges.info.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اطلاعات تکمیلی"> اطلاعات تکمیلی </a>
+                                                <a href="" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی </a>
+                                                <a href="{{ route('admin.techniques.index', ['challenge' => $challenge->id]) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="تکنیک">تکنیک</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -220,7 +218,6 @@
                 </div>
             </div>
         @empty
-            <td class="text-center" colspan="4">‌آیتمی برای نمایش وجود ندارد.</td>
         @endforelse
 @endsection
 
@@ -230,6 +227,5 @@
     {
         $('.x'+challenge_id).toggle();
     }
-
 </script>
 @endsection

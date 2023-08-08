@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('national_code')->unique()->nullable()->comment('کدملی');
             $table->boolean('gender')->nullable()->comment('جنسیت');
             $table->date('birthday_date')->nullable()->comment('تاریخ تولد');
-            $table->string('avatar')->nullable()->comment('آواتار');
             $table->json('meta')->nullable()->comment('اطلاعات تکمیلی');
             $table->unsignedBigInteger('creator')->nullable()->comment('کاربر ایجاد کننده');
             $table->timestamps();

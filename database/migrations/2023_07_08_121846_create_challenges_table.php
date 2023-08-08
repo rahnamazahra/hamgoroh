@@ -21,6 +21,7 @@ return new class extends Migration
             $table->dateTime('finish_time')->nullable()->comment('زمان پایان');
             $table->dateTime('result_start_time')->nullable()->comment('زمان شروع ثبت نام');
             $table->dateTime('result_finish_time')->nullable()->comment('زمان پایان ثبت نام');
+            $table->text('description')->nullable()->comment('توضیحات');
             $table->timestamps();
 
             $table->foreign('field_id')->references('id')->on('fields')->cascadeOnUpdate();

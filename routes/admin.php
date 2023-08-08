@@ -1,23 +1,25 @@
 <?php
-
-use App\Http\Controllers\Admin\AboutController;
-use App\Http\Controllers\Admin\ContactController;
-use App\Http\Controllers\Admin\CriteriaController;
-use App\Http\Controllers\Admin\GroupController;
-use App\Http\Controllers\Admin\NewsCategoryController;
-use App\Http\Controllers\Admin\NewsController;
-use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\StepController;
+use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\FieldController;
+use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\CriteriaController;
 use App\Http\Controllers\Admin\ProvinceController;
+use App\Http\Controllers\Admin\ChallengeController;
+use App\Http\Controllers\Admin\TechniqueController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CompetitionController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\ChallengeController;
-use App\Http\Controllers\Admin\StepController;
+use App\Http\Controllers\Admin\NewsCategoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +37,13 @@ use App\Http\Controllers\Admin\StepController;
 Route::get('/', function () {
     return view('admin.index');
 })->name('admin.dashboard');
+
+// Admin Panel
+Route::controller(DashboardController::class)->group(function () {
+    Route::get('/', 'adminIndex')->name('admin.dashboard');
+    Route::get('/general-dashboard', 'generalIndex')->name('admin.dashboard.general');
+    Route::get('/provincial-dashboard', 'provincialIndex')->name('admin.dashboard.provincial');
+});
 
 // Roles
 Route::controller(RoleController::class)->group(function () {
@@ -122,6 +131,18 @@ Route::controller(ChallengeController::class)->group(function () {
     Route::get('/competition/{competition}/challenges/edit', 'edit')->name('admin.challenges.edit');
     Route::patch('/competition/{competition}/challenges/update', 'update')->name('admin.challenges.update');
     Route::delete('/competition/{competition}/challenges/{challenge}/delete', 'delete')->name('admin.challenges.delete');
+    Route::get('/competition/{competition}/challenge/{challenge}/info/create', 'createInfo')->name('admin.challenges.info.create');
+    Route::post('/competition/{competition}/challenge/{challenge}/info/store', 'storeInfo')->name('admin.challenges.info.store');
+});
+
+// Techniques
+Route::controller(TechniqueController::class)->group(function () {
+    Route::get('/technique/{challenge}', 'index')->name('admin.techniques.index');
+    Route::get('/technique/challenges/{challenge}/create', 'create')->name('admin.techniques.create');
+    Route::post('/technique/challenges/{challenge}/store', 'store')->name('admin.techniques.store');
+    Route::get('/technique/{technique}/challenges/{challenge}edit', 'edit')->name('admin.techniques.edit');
+    Route::patch('/technique/{technique}/challenges/{challenge}update', 'update')->name('admin.techniques.update');
+    Route::delete('/technique/{technique}/challenges/delete', 'delete')->name('admin.techniques.delete');
 });
 
 // Ajax
@@ -197,4 +218,26 @@ Route::controller(CriteriaController::class)->group(function () {
     Route::get('/criteria/{criteria}/edit', 'edit')->name('admin.criteria.edit');
     Route::patch('/criteria/{criteria}', 'update')->name('admin.criteria.update');
     Route::delete('/criteria/{criteria}/delete', 'delete')->name('admin.criteria.delete');
+});
+
+// Test
+Route::controller(TestController::class)->group(function () {
+    Route::get('/tests', 'index')->name('admin.tests.index');
+    Route::get('/tests/create', 'create')->name('admin.tests.create');
+    Route::post('/tests', 'store')->name('admin.tests.store');
+    Route::get('/tests/{test}/show', 'show')->name('admin.tests.show');
+    Route::get('/tests/{test}/edit', 'edit')->name('admin.tests.edit');
+    Route::patch('/tests/{test}', 'update')->name('admin.tests.update');
+    Route::delete('/tests/{test}/delete', 'delete')->name('admin.tests.delete');
+});
+
+// TestQuestion
+Route::controller(TestQuestionController::class)->group(function () {
+    Route::get('/testQuestions', 'index')->name('admin.testQuestions.index');
+    Route::get('/test/{test}/testQuestions/create', 'create')->name('admin.testQuestions.create');
+    Route::post('/test/{test}/testQuestions', 'store')->name('admin.testQuestions.store');
+    Route::get('/test/{test}/testQuestions/{testQuestion}/show', 'show')->name('admin.testQuestions.show');
+    Route::get('/test/{test}/testQuestions/{testQuestion}/edit', 'edit')->name('admin.testQuestions.edit');
+    Route::patch('/test/{test}/testQuestions/{testQuestion}', 'update')->name('admin.testQuestions.update');
+    Route::delete('/testQuestions/{testQuestion}/delete', 'delete')->name('admin.testQuestions.delete');
 });
