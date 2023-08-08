@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
         $user  = User::where('phone', $phone)->update(['password' => Hash::make($code)]);   // Save code in database
         // $this->sendCode($phone, $code);  // Send SMS
         Alert('success', 'کدپیامکی برای شما ارسال شد.');
-        
+
         return redirect()->route('verify.show', ['phone' => $phone]);
     }
 
@@ -49,10 +49,23 @@ class AuthenticatedSessionController extends Controller
         {
             $user = Auth::user();
             $request->session()->regenerate();
-            if ($user->roles->contains(2))
+
+            if ($user->roles->contains(1) OR $user->roles->contains(2))
             {
                 Alert('success', 'خوش آمدید');
                 return redirect()->intended(RouteServiceProvider::ADMIN);
+            }
+
+            if ($user->roles->contains(3))
+            {
+                Alert('success', 'خوش آمدید');
+                return redirect()->intended(RouteServiceProvider::GENERALMANAGER);
+            }
+
+            if ($user->roles->contains(4))
+            {
+                Alert('success', 'خوش آمدید');
+                return redirect()->intended(RouteServiceProvider::PROVINCEMANAGER);
             }
 
             return redirect()->intended(RouteServiceProvider::SITE);
