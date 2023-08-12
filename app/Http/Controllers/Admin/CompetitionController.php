@@ -6,14 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CompetitionRequest;
 use App\Models\Challenge;
 use App\Models\Competition;
-use App\Models\File;
 use App\Models\User;
-use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
-use Throwable;
 
 class CompetitionController extends Controller
 {
@@ -54,11 +52,13 @@ class CompetitionController extends Controller
     public function store(Request $request)
     {
         try {
-                $competition = Competition::create([]);
+            $competition = Competition::create([]);
 
-            return redirect()->route('admin.competitions.edit', ['competition' => $competition])->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
-        } catch (\Exception $e) {
-            return redirect()->route('admin.competitions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.competitions.edit', ['competition' => $competition]);
+        } catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.competitions.index');
         }
 
     }
@@ -70,15 +70,15 @@ class CompetitionController extends Controller
     {
         $users = User::get();
 
-        $letter_method = $competition->files->where('related_field','letter_method')->pluck('path')->first();
-        $banner = $competition->files->where('related_field','banner')->pluck('path')->first();
+        $letter_method = $competition->files->where('related_field', 'letter_method')->pluck('path')->first();
+        $banner = $competition->files->where('related_field', 'banner')->pluck('path')->first();
 
         return view('admin.competitions.informations.edit', ['competition' => $competition, 'users' => $users, 'letter_method' => $letter_method, 'banner' => $banner]);
     }
 
     public function show(Competition $competition)
     {
-        $ages       = $competition->ages->pluck('id');
+        $ages = $competition->ages->pluck('id');
         $challenges = Challenge::whereIn('age_id', $ages)->with('steps')->get();
 
         return view('admin.competitions.show', ['competition' => $competition, 'challenges' => $challenges]);
@@ -91,10 +91,8 @@ class CompetitionController extends Controller
     public function update(CompetitionRequest $request, Competition $competition)
     {
         try {
-//            dd($request->all());
             $start_time = $request->input('start_time1') . ':' . $request->input('start_time2') . ':00';
             $finish_time = $request->input('finish_time1') . ':' . $request->input('finish_time2') . ':00';
-
 
             $competition->update([
                 'title' => $request->input('title'),
@@ -106,10 +104,10 @@ class CompetitionController extends Controller
                 'creator' => Auth::id(),
             ]);
 
-            if ($request->hasFile('letter_method')){
-                $file = $competition->files->where('related_field','letter_method')->where('fileable_id', $competition->id)->first();
+            if ($request->hasFile('letter_method')) {
+                $file = $competition->files->where('related_field', 'letter_method')->where('fileable_id', $competition->id)->first();
 
-                if ($file){
+                if ($file) {
                     purge($file->path);
                     $file->delete();
                 }
@@ -118,10 +116,10 @@ class CompetitionController extends Controller
                 uploadFile($storage_dir, ['letter_method' => $letter_method], ['fileable_id' => $competition->id, 'fileable_type' => Competition::class]);
             }
 
-            if ($request->hasFile('banner')){
-                $file = $competition->files->where('related_field','banner')->where('fileable_id', $competition->id)->first();
+            if ($request->hasFile('banner')) {
+                $file = $competition->files->where('related_field', 'banner')->where('fileable_id', $competition->id)->first();
 
-                if ($file){
+                if ($file) {
                     purge($file->path);
                     $file->delete();
                 }
@@ -130,14 +128,17 @@ class CompetitionController extends Controller
                 uploadFile($storage_dir, ['banner' => $banner], ['fileable_id' => $competition->id, 'fileable_type' => Competition::class]);
             }
 
-            return redirect()->route('admin.groups.create', ['competition' => $competition])->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
-        }catch (\Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 500);
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.groups.create', ['competition' => $competition]);
         }
-// catch (\Exception $e) {
-//            return redirect()->route('admin.competitions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.competitions.index');
+        }
+//        catch (\Exception $exception) {
+//            return response()->json([
+//                'message' => $exception->getMessage()
+//            ], 500);
 //        }
 
     }
@@ -148,22 +149,21 @@ class CompetitionController extends Controller
     public function delete(Competition $competition)
     {
         try {
-            $letter_method = $competition->files->where('related_field','letter_method')->where('fileable_id', $competition->id)->first();
-            if ($letter_method){
+            $letter_method = $competition->files->where('related_field', 'letter_method')->where('fileable_id', $competition->id)->first();
+            if ($letter_method) {
                 purge($letter_method->path);
                 $letter_method->delete();
             }
 
-            $banner = $competition->files->where('related_field','banner')->where('fileable_id', $competition->id)->first();
-            if ($banner){
+            $banner = $competition->files->where('related_field', 'banner')->where('fileable_id', $competition->id)->first();
+            if ($banner) {
                 purge($banner->path);
                 $banner->delete();
             }
 
             $competition->delete();
             return response()->json(['success' => true], 200);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }

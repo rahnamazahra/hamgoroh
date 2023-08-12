@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AboutRequest;
 use App\Models\About;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -19,14 +20,6 @@ class AboutController extends Controller
 
         return view('admin.abouts.index', ['about' => $about]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-//    public function create()
-//    {
-//        return view('admin.abouts.create');
-//    }
 
     /**
      * Store a newly created resource in storage.
@@ -51,20 +44,14 @@ class AboutController extends Controller
                 uploadFile($storage_dir, ['image' => $image], ['fileable_id' => $about->id, 'fileable_type' => About::class]);
             }
 
-            return redirect()->route('admin.abouts.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.abouts.index');
 
-        } catch (\Exception $e) {
-            return redirect()->route('admin.abouts.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        } catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.abouts.index');
         }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-//    public function edit(About $about)
-//    {
-//        return view('admin.abouts.edit', ['about' => $about]);
-//    }
 
     /**
      * Update the specified resource in storage.
@@ -91,22 +78,12 @@ class AboutController extends Controller
                 uploadFile($storage_dir, ['image' => $image], ['fileable_id' => $about->id, 'fileable_type' => About::class]);
             }
 
-            return redirect()->route('admin.abouts.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
-        } catch (\Exception $e) {
-            return redirect()->route('admin.abouts.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            Alert('success', 'اطلاعات باموفقیت ویرایش شد.');
+            return redirect()->route('admin.abouts.index');
+        } catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.abouts.index');
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function delete(About $about)
-    {
-        try {
-            $about->delete();
-            return response()->json(['success' => true], 200);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'errors' => $e], 400);
-        }
-    }
 }

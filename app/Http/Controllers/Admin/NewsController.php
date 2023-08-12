@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsRequest;
 use App\Models\News;
 use App\Models\NewsCategory;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -45,7 +46,6 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         try {
-//            dd($request->all());
             $news = News::create([
                 'title' => $request->input('title'),
                 'sub_title' => $request->input('sub_title'),
@@ -62,15 +62,13 @@ class NewsController extends Controller
                 uploadFile($storage_dir, ['image' => $image], ['fileable_id' => $news->id, 'fileable_type' => News::class]);
             }
 
-            return redirect()->route('admin.news.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
-        } catch (\Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 500);
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.news.index');
         }
-//        catch (\Exception $e) {
-//            return redirect()->route('admin.news.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
-//        }
+         catch (Exception $e) {
+             Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.news.index');
+         }
 
     }
 
@@ -114,15 +112,13 @@ class NewsController extends Controller
                 uploadFile($storage_dir, ['image' => $image], ['fileable_id' => $news->id, 'fileable_type' => News::class]);
             }
 
-            return redirect()->route('admin.news.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
-        }catch (\Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 500);
+            Alert('success', 'اطلاعات باموفقیت ویرایش شد.');
+            return redirect()->route('admin.news.index');
         }
-// catch (\Exception $e) {
-//            return redirect()->route('admin.competitions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
-//        }
+         catch (Exception $e) {
+             Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.competitions.index');
+        }
 
     }
 

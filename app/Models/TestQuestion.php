@@ -11,7 +11,7 @@ class TestQuestion extends Model
 
     protected $fillable = [
         'test_id' , 'title' , 'correct_answer' , 'ancillary_answer' , 'option_one' , 'option_two' , 'option_three' ,
-        'option_four' , 'level' , 'duration' ,
+        'option_four' , 'level' ,
     ];
 
     public function test()

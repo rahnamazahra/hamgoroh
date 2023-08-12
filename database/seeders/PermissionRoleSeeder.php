@@ -316,6 +316,30 @@ class PermissionRoleSeeder extends Seeder
             'description' => 'امکان حذف آزمون',
         ]);
 
+        $permission_notices_index = Permission::create([
+            'title'       => 'لیست اطلاعیه',
+            'slug'        => 'notices-index',
+            'description' => 'امکان مشاهده لسیت اطلاعیه ها',
+        ]);
+
+        $permission_notices_create = Permission::create([
+            'title'       => 'ایجاد اطلاعیه  جدید',
+            'slug'        => 'notices-create',
+            'description' => 'امکان ایجاد اطلاعیه جدید',
+        ]);
+
+        $permission_notices_update = Permission::create([
+            'title'       => 'ویرایش اطلاعیه',
+            'slug'        => 'notices-update',
+            'description' => 'امکان ویرایش اطلاعیه',
+        ]);
+
+        $permission_notices_delete = Permission::create([
+            'title'       => 'حذف اطلاعیه',
+            'slug'        => 'notices-delete',
+            'description' => 'امکان حذف اطلاعیه',
+        ]);
+
         $permission_admin_index->roles()->attach([$developer, $admin, $general_manager]);
         $permission_roles_index->roles()->attach([$developer, $admin]);
         $permission_roles_create->roles()->attach([$developer, $admin]);
@@ -366,5 +390,10 @@ class PermissionRoleSeeder extends Seeder
         $permission_tests_create->roles()->attach([$developer, $admin, $general_manager]);
         $permission_tests_update->roles()->attach([$developer, $admin, $general_manager]);
         $permission_tests_delete->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_notices_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_notices_create->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_notices_update->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_notices_delete->roles()->attach([$developer, $admin, $general_manager]);
+
     }
 }

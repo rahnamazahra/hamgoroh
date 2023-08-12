@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TestQuestionRequest;
 use App\Models\Test;
 use App\Models\TestQuestion;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -40,7 +41,6 @@ class TestQuestionController extends Controller
     public function store(TestQuestionRequest $request, Test $test)
     {
         try {
-//            dd($request->all());
             TestQuestion::create([
                 'test_id' => $test->id,
                 'title' => $request->input('title'),
@@ -53,43 +53,49 @@ class TestQuestionController extends Controller
                 'level' => $request->input('level'),
             ]);
 
-            return redirect()->route('admin.testQuestions.create', ['test' => $test])->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.testQuestions.create', ['test' => $test]);
 
-        } catch (\Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 500);
         }
-//        catch (\Exception $e) {
-//            return redirect()->route('admin.testQuestions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
-//        }
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.testQuestions.index');
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TestQuestion $testQuestion, Test $test)
+    public function edit(Test $test, TestQuestion $testQuestion)
     {
-        return view('admin.testQuestions.edit', ['testQuestion' => $testQuestion, 'test' => $test]);
+        return view('admin.testQuestions.edit', ['test' => $test, 'testQuestion' => $testQuestion]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(TestQuestionRequest $request, TestQuestion $testQuestion, Test $test)
+    public function update(TestQuestionRequest $request ,Test $test, TestQuestion $testQuestion)
     {
         try {
-            $testQuestion->update($request->all());
+            $testQuestion->update([
+                'test_id' => $test->id,
+                'title' => $request->input('title'),
+                'correct_answer' => $request->input('correct_answer'),
+                'ancillary_answer' => json_encode($request->input('ancillary_answer')),
+                'option_one' => $request->input('option_one'),
+                'option_two' => $request->input('option_two'),
+                'option_three' => $request->input('option_three'),
+                'option_four' => $request->input('option_four'),
+                'level' => $request->input('level'),
+            ]);
 
-            return redirect()->route('admin.tests.show', ['test' => $test])->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
-        } catch (\Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 500);
+            Alert('success', 'اطلاعات باموفقیت ویرایش شد.');
+            return redirect()->route('admin.testQuestions.create', ['test' => $test]);
         }
-//        catch (\Exception $e) {
-//            return redirect()->route('admin.testQuestions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
-//        }
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.testQuestions.index');
+        }
     }
 
     /**

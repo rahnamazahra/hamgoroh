@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FieldRequest;
 use App\Models\Field;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -42,10 +43,12 @@ class FieldController extends Controller
                 'title' => $request->input('title'),
             ]);
 
-            return redirect()->route('admin.fields.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.fields.index');
 
-        } catch (\Exception $e) {
-            return redirect()->route('admin.fields.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        } catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.fields.index');
         }
     }
 
@@ -68,9 +71,11 @@ class FieldController extends Controller
                 'title' => $request->input('title'),
             ]);
 
-            return redirect()->route('admin.fields.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
-        } catch (\Exception $e) {
-            return redirect()->route('admin.fields.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            Alert('success', 'اطلاعات باموفقیت ویرایش شد.');
+            return redirect()->route('admin.fields.index');
+        } catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.fields.index');
         }
     }
 

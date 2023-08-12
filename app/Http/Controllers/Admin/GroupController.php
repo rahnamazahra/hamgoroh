@@ -34,7 +34,6 @@ class GroupController extends Controller
     public function create(Competition $competition)
     {
         $fields = Field::get();
-//        $competitions = Competition::get();
 
         return view('admin.competitions.groups.index', ['fields' => $fields, 'competition' => $competition]);
     }
@@ -45,20 +44,22 @@ class GroupController extends Controller
     public function store(GroupRequest $request, Competition $competition)
     {
         try {
-
             $groupData = $request->groups;
-
-            foreach ($groupData as $item) {
-                if ($item['title']) {
+            foreach ($groupData as $item)
+            {
+                if ($item['title'])
+                {
                     $group = Group::create([
                         'title' => $item['title'],
                         'competition_id' => $competition->id,
                     ]);
-                    if ($item['image']) {
-//                        dd('ll');
+
+                    if ($item['image'])
+                    {
                         $file = $group->files->where('related_field', 'image')->first();
 
-                        if ($file) {
+                        if ($file)
+                        {
                             purge($file->path);
                             $file->delete();
                         }
@@ -70,24 +71,21 @@ class GroupController extends Controller
                 }
             }
 
-            return redirect()->route('admin.challenges.create', ['competition' => $competition])->with('success', 'ثبت اطلاعات با موفقیت انجام شد.');
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
 
-
-        } catch (\Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 500);
+            return redirect()->route('admin.challenges.create', ['competition' => $competition]);
         }
-//        catch (\Exception $e) {
-//            return redirect()->route('admin.competitions.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
-//        }
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+
+            return redirect()->route('admin.competitions.index');
+        }
 
     }
 
     public function edit(Competition $competition)
     {
         $fields = Field::get();
-//        $competitions = Competition::get();
 
         return view('admin.groups.edit', ['fields' => $fields, 'competition' => $competition]);
     }
@@ -97,13 +95,14 @@ class GroupController extends Controller
      */
     public function update(GroupRequest $request, Competition $competition)
     {
-//        dd($request->all());
         try {
             $items = Group::where('competition_id', $competition->id)->get();
-            foreach ($items as $item) {
+            foreach ($items as $item)
+            {
                 $file = $item->files->where('related_field','image')->where('fileable_id', $item['id']) //need test
                     ->where('fileable_type', 'App\Models\Group')->first();
-                if ($file){
+                if ($file)
+                {
                     purge($file->path);
                     $file->delete();
                 }
@@ -113,10 +112,10 @@ class GroupController extends Controller
             $data = $request->all();
             foreach ($data['groups'] as $group) {
                 if ($group['title']) {
-                    $groups = new Group();
-                    $groups->competition_id = $competition->id;
-                    $groups->title = $group['title'];
-                    $groups->save();
+                    $groups = Group::create([
+                        'competition_id' => $competition->id,
+                        'title' => $group['title'],
+                    ]);
 
                     if ($group['image']) {
                         $file = File::query()->where('fileable_id', $groups->id)->first();
@@ -133,15 +132,13 @@ class GroupController extends Controller
                 }
             }
 
-            return redirect()->route('admin.challenges.create', ['competition' => $competition])->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
-        } catch (Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 500);
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.challenges.create', ['competition' => $competition]);
         }
-//        catch (\Exception $e) {
-//            return redirect()->route('admin.groups.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
-//        }
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.groups.index');
+        }
 
     }
 

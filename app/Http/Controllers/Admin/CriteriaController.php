@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CriteriaRequest;
 use App\Models\Criteria;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -40,10 +41,12 @@ class CriteriaController extends Controller
         try {
             Criteria::create($request->all());
 
-            return redirect()->route('admin.criteria.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.criteria.index');
 
-        } catch (\Exception $e) {
-            return redirect()->route('admin.criteria.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+        } catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.criteria.index');
         }
     }
 
@@ -61,12 +64,13 @@ class CriteriaController extends Controller
     public function update(CriteriaRequest $request, Criteria $criteria)
     {
         try {
-
             $criteria->update($request->all());
 
-            return redirect()->route('admin.criteria.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
-        } catch (\Exception $e) {
-            return redirect()->route('admin.criteria.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            Alert('success', 'اطلاعات باموفقیت ویرایش شد.');
+            return redirect()->route('admin.criteria.index');
+        } catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.criteria.index');
         }
     }
 

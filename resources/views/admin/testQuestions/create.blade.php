@@ -104,20 +104,23 @@
                 </div>
             </div>
 
-
+            <div class="g-4 m-2">
+                <span><h3>  تعداد سوالات ساخته شده</h3></span></div>
             <div class="row">
-                <div class="col-4">
+                <div class="col-4 fv-row">
                     <span>آسان: {{$easy}}</span>
                 </div>
-                <div class="col-4">
+                <div class="col-4 fv-row">
                     <span>متوسط: {{$normal}}</span>
                 </div>
-                <div class="col-4">
+                <div class="col-4 fv-row">
                     <span>سخت: {{$hard}}</span>
                 </div>
             </div>
 
-            <div class="row">
+
+            <span class="g-4 m-2"><h3>  تعداد سوالات باقی مانده</h3>
+            <div class="row g-9 m-2">
                 <div class="col-4">
                     <span>آسان: {{$remaining_easy}}</span>
                 </div>
@@ -128,6 +131,7 @@
                     <span>سخت: {{$remaining_hard}}</span>
                 </div>
             </div>
+            </span>
 
 
             <div class="card-footer">

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TestRequest;
 use App\Models\Test;
 use App\Models\TestQuestion;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -39,21 +40,17 @@ class TestController extends Controller
     public function store(TestRequest $request)
     {
         try {
-//            dd($request->all());
             $test = Test::create($request->all());
             $test->all_count = $test->easy_count + $test->normal_count + $test->hard_count;
             $test->save();
 
-            return redirect()->route('admin.tests.index')->with('success', 'ثبت اطلاعات  باموفقیت انجام شد.');
-
-        } catch (\Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 500);
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.tests.index');
         }
-//        catch (\Exception $e) {
-//            return redirect()->route('admin.tests.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
-//        }
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.tests.index');
+        }
     }
 
     /**
@@ -70,14 +67,15 @@ class TestController extends Controller
     public function update(TestRequest $request, Test $test)
     {
         try {
-
             $test->update($request->all());
             $test->all_count = $test->easy_count + $test->normal_count + $test->hard_count;
             $test->save();
 
-            return redirect()->route('admin.tests.index')->with('success', 'ویرایش اطلاعات  باموفقیت انجام شد.');
+            Alert('success', 'اطلاعات باموفقیت ویرایش شد.');
+            return redirect()->route('admin.tests.index');
         } catch (\Exception $e) {
-            return redirect()->route('admin.tests.index')->withErrors(['warning' => "اشکالی ناشناخته به‌وجود آمده است."]);
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.tests.index');
         }
     }
 
