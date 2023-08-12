@@ -6,9 +6,11 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StepController;
+use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\FieldController;
 use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CriteriaController;
@@ -17,10 +19,10 @@ use App\Http\Controllers\Admin\ChallengeController;
 use App\Http\Controllers\Admin\TechniqueController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\EvaluationController;
 use App\Http\Controllers\Admin\CompetitionController;
 use App\Http\Controllers\Admin\NewsCategoryController;
-
-
+use App\Http\Controllers\Admin\TestQuestionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,7 +33,6 @@ use App\Http\Controllers\Admin\NewsCategoryController;
 | be assigned to the "web" middleware group. Make something great!
 |
  */
-
 
 // Admin Panel
 Route::get('/', function () {
@@ -133,6 +134,16 @@ Route::controller(ChallengeController::class)->group(function () {
     Route::delete('/competition/{competition}/challenges/{challenge}/delete', 'delete')->name('admin.challenges.delete');
     Route::get('/competition/{competition}/challenge/{challenge}/info/create', 'createInfo')->name('admin.challenges.info.create');
     Route::post('/competition/{competition}/challenge/{challenge}/info/store', 'storeInfo')->name('admin.challenges.info.store');
+    Route::get('/competition/{competition}/challenge/{challenge}/schedule/create', 'createSchedule')->name('admin.challenges.schedule.create');
+    Route::post('/competition/challenge/{challenge}/schedule/store', 'StoreSchedule')->name('admin.challenges.schedule.store');
+});
+
+// steps
+Route::controller(StepController::class)->group(function () {
+    Route::get('/competition/{competition}/steps/create', 'create')->name('admin.steps.create');
+    Route::post('/competition/{competition}/steps/store', 'store')->name('admin.steps.store');
+    Route::get('/competition/{competition}/steps/edit', 'edit')->name('admin.steps.edit');
+    Route::patch('/competition/{competition}/steps/update', 'update')->name('admin.steps.update');
 });
 
 // Techniques
@@ -145,17 +156,15 @@ Route::controller(TechniqueController::class)->group(function () {
     Route::delete('/technique/{technique}/challenges/delete', 'delete')->name('admin.techniques.delete');
 });
 
-// Ajax
-Route::controller(AjaxController::class)->group(function () {
-    Route::post('/province/cities', 'showCitiesByProvince')->name('admin.ajax.cities');
-});
+//Evaluations
+Route::controller(EvaluationController::class)->group(function () {
+    Route::get('/evaluation/{step}', 'index')->name('admin.evaluations.index');
+    Route::get('/evaluation/steps/{step}/create', 'create')->name('admin.evaluations.create');
+    Route::post('/evaluation/steps/{step}/store', 'store')->name('admin.evaluations.store');
+    Route::get('/evaluation/{evaluation}/steps/{step}/edit', 'edit')->name('admin.evaluations.edit');
+    Route::patch('/evaluation/{evaluation}/steps/{step}/update', 'update')->name('admin.evaluations.update');
+    Route::delete('/evaluation/{evaluation}/steps/delete', 'delete')->name('admin.evaluations.delete');
 
-// steps
-Route::controller(StepController::class)->group(function () {
-    Route::get('/competition/{competition}/steps/create', 'create')->name('admin.steps.create');
-    Route::post('/competition/{competition}/steps/store', 'store')->name('admin.steps.store');
-    Route::get('/competition/{competition}/steps/edit', 'edit')->name('admin.steps.edit');
-    Route::patch('/competition/{competition}/steps/update', 'update')->name('admin.steps.update');
 });
 
 // News
@@ -240,4 +249,22 @@ Route::controller(TestQuestionController::class)->group(function () {
     Route::get('/test/{test}/testQuestions/{testQuestion}/edit', 'edit')->name('admin.testQuestions.edit');
     Route::patch('/test/{test}/testQuestions/{testQuestion}', 'update')->name('admin.testQuestions.update');
     Route::delete('/testQuestions/{testQuestion}/delete', 'delete')->name('admin.testQuestions.delete');
+});
+
+Route::controller(NoticeController::class)->group(function () {
+    Route::get('/notices', 'index')->name('admin.notices.index');
+    Route::get('/notices/create', 'create')->name('admin.notices.create');
+    Route::post('/notices', 'store')->name('admin.notices.store');
+    Route::get('/notices/{notice}/show', 'show')->name('admin.notices.show');
+    Route::get('/notices/{notice}/edit', 'edit')->name('admin.notices.edit');
+    Route::patch('/notices/{notice}', 'update')->name('admin.notices.update');
+    Route::delete('/notices/{notice}/delete', 'delete')->name('admin.notices.delete');
+});
+
+// Ajax
+Route::controller(AjaxController::class)->group(function () {
+    Route::post('/province/cities', 'showCitiesByProvince')->name('admin.ajax.cities');
+    Route::post('/referees', 'showReferees')->name('admin.ajax.referees');
+    Route::post('/generals', 'showGenerals')->name('admin.ajax.generals');
+    Route::post('/provincials', 'showProvincials')->name('admin.ajax.provincials');
 });

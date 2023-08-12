@@ -20,6 +20,8 @@ return new class extends Migration
             $table->morphs('fileable');
             $table->string('related_field');
             $table->timestamps();
+
+            $table->comment('فایل ها');
         });
     }
 

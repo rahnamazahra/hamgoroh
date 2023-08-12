@@ -48,4 +48,10 @@ class User extends Authenticatable
     {
         return $this->morphMany(File::class, 'fileable');
     }
+
+    public function evaluation_referee()
+    {
+        return $this->hasMany(EvaluationReferee::class);
+    }
+
 }

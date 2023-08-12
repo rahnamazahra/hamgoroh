@@ -151,7 +151,7 @@
                                         <td class="text-end">
                                             <div class="btn btn-group-sm">
                                                 <a href="{{ route('admin.challenges.info.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اطلاعات تکمیلی"> اطلاعات تکمیلی </a>
-                                                <a href="" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی </a>
+                                                <a href="{{ route('admin.challenges.schedule.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی </a>
                                                 <a href="{{ route('admin.techniques.index', ['challenge' => $challenge->id]) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="تکنیک">تکنیک</a>
                                             </div>
                                         </td>
@@ -206,7 +206,7 @@
                                             <td class="text-end">
                                                 <div class="btn btn-group-sm">
                                                     <button type="button" class="btn btn-sm btn-primary" onclick="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی</button>
-                                                    <button type="button" class="btn btn-sm btn-success" onclick="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="داوری"> داوری</button>
+                                                    <a href="{{ route('admin.evaluations.index', ['step' => $step->id])}}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="داوری"> داوری</a>
                                                 </div>
                                             </td>
                                         </tr>

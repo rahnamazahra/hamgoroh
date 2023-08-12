@@ -30,7 +30,7 @@
 
 @section('content')
     <div class="card shadow-sm col-xl-12">
-        <form method="POST" action="{{ route('admin.techniques.update', ['technique' => $technique->id,'challenge' => $challenge->id])}}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('admin.techniques.update', ['technique' => $technique->id, 'challenge' => $challenge->id])}}" enctype="multipart/form-data">
             @method('PATCH')
             @csrf
             <div class="card-header">

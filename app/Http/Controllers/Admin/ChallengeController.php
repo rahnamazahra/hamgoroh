@@ -11,7 +11,6 @@ use Morilog\Jalali\Jalalian;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChallengeRequest;
-use App\Models\Field;
 
 class ChallengeController extends Controller
 {
@@ -421,4 +420,35 @@ class ChallengeController extends Controller
             return redirect()->route('admin.challenges.info.create', ['competition' => $competition->id, 'challenge' => $challenge]);
         }
     }
+
+    public function createSchedule(Competition $competition, Challenge $challenge)
+    {
+        return view('admin.challenges.schedule', ['competition' => $competition, 'challenge' => $challenge]);
+    }
+
+    public function storeSchedule(Request $request, Competition $competition, Challenge $challenge)
+    {
+        try {
+
+            $start_time = $request->input('start_time1') . ':' . $request->input('start_time2') . ':00';
+            $finish_time = $request->input('finish_time1') . ':' . $request->input('finish_time2') . ':00';
+
+            $challenge->update([
+                'result_start_time' => Jalalian::fromFormat('Y/m/d', $request->input('result_start_time'))->toCarbon()->format('Y-m-d') . ' ' . $start_time,
+                'result_finish_time' => Jalalian::fromFormat('Y/m/d', $request->input('result_finish_time'))->toCarbon()->format('Y-m-d') . ' ' . $finish_time,
+            ]);
+
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+
+            return redirect()->route('admin.competitions.show', ['competition' => $competition->id]);
+        }
+        catch (Exception $e)
+        {
+
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+
+            return redirect()->route('admin.competitions.show', ['competition' => $competition->id]);
+        }
+    }
+
 }

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('challenge_id')->references('id')->on('challenges')->cascadeOnDelete();
+
+            $table->comment('تکنیک');
         });
     }
 

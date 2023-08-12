@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\File;
-use Carbon\Carbon;
+use Exception;
 use App\Models\City;
 use App\Models\Role;
 use App\Models\User;
@@ -14,7 +13,8 @@ use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Exception;
+use Rap2hpoutre\FastExcel\FastExcel;
+
 
 class UserController extends Controller
 {
@@ -169,25 +169,10 @@ class UserController extends Controller
         }
     }
 
-    // public function export()
-    // {
-    //     $exportDataArray = [
-    //         new ExportData(
-    //             ['Name', 'Email', 'Phone'],
-    //             [
-    //                 ['John Doe', 'john@example.com', '123456789'],
-    //                 ['Jane Smith', 'jane@example.com', '987654321']
-    //             ]
-    //         )
-    //     ];
-    //     Excel::create('export', function ($excel) use ($exportDataArray) {
-    //         foreach ($exportDataArray as $index => $exportData) {
-    //             $excel->sheet('Section ' . ($index + 1), function ($sheet) use ($exportData) {
-    //                 $sheet->fromArray($exportData->data, null, 'A1', false, false);
-    //                 $sheet->prependRow($exportData->columns);
-    //             });
-    //         }
-    //     })->download('xlsx');
-    // }
+    public function exportUsers()
+    {
+       //
+
+    }
 
 }
