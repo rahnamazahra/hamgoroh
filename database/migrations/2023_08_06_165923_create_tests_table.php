@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('normal_count')->comment('تعداد سوالات متوسط');
             $table->integer('hard_count')->comment('تعداد سوالات سخت');
             $table->integer('all_count')->comment('تعداد کل سوالات');
+            $table->boolean('is_active')->comment('وضعیت فعال/غیرفعال');
             $table->timestamps();
 
             $table->comment('آزمون های چهارگزینه ای');

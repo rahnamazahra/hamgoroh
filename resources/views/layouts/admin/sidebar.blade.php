@@ -179,6 +179,16 @@
                                     </a>
                                 </div>
                                 @endcan
+                                @can('tests-index')
+                                    <div class="menu-item">
+                                        <a class="menu-link {{ Request::routeIs('admin.tests.index') ? 'active' : '' }}" href="{{ route('admin.tests.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                            <span class="menu-title">مسابقات آنلاین</span>
+                                        </a>
+                                    </div>
+                                @endcan
                         </div>
 
 
