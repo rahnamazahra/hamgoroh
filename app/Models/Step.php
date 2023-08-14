@@ -18,4 +18,9 @@ class Step extends Model
     {
         return $this->belongsTo(Evaluation::class);
     }
+
+    public function examiners()
+    {
+        return $this->hasMany(Examiner::class);
+    }
 }

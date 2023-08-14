@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('step_id')->references('id')->on('steps')->cascadeOnDelete();
+            $table->foreign('criteria_id')->references('id')->on('criterias')->cascadeOnDelete();
 
             $table->comment('ارزیابی');
         });

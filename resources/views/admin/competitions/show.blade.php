@@ -91,6 +91,7 @@
                                         دانلود شیوه نامه
                                     </a>
                                     @endif
+                                    <a href="{{ route('admin.competitionResult.index', ['competition' => $competition->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج">نتایج آزمون</a>
                                 </div>
                             </div>
                         </div>
@@ -153,6 +154,7 @@
                                                 <a href="{{ route('admin.challenges.info.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اطلاعات تکمیلی"> اطلاعات تکمیلی </a>
                                                 <a href="{{ route('admin.challenges.schedule.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی </a>
                                                 <a href="{{ route('admin.techniques.index', ['challenge' => $challenge->id]) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="تکنیک">تکنیک</a>
+                                                <a href="{{ route('admin.challengeResult.index', ['competition' => $competition, 'challenge' => $challenge->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج">نتایج آزمون</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -207,6 +209,7 @@
                                                 <div class="btn btn-group-sm">
                                                     <button type="button" class="btn btn-sm btn-primary" onclick="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی</button>
                                                     <a href="{{ route('admin.evaluations.index', ['step' => $step->id])}}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="داوری"> داوری</a>
+                                                    <a href="{{ route('admin.stepResult.index', ['competition' => $competition, 'step' => $step->id])}}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج"> نتایج آزمون</a>
                                                 </div>
                                             </td>
                                         </tr>

@@ -340,6 +340,12 @@ class PermissionRoleSeeder extends Seeder
             'description' => 'امکان حذف اطلاعیه',
         ]);
 
+        $permission_result_index = Permission::create([
+            'title'       => 'لیست نتایج',
+            'slug'        => 'result-index',
+            'description' => 'امکان مشاهده لسیت نتایج',
+        ]);
+
         $permission_admin_index->roles()->attach([$developer, $admin, $general_manager]);
         $permission_roles_index->roles()->attach([$developer, $admin]);
         $permission_roles_create->roles()->attach([$developer, $admin]);
@@ -394,6 +400,6 @@ class PermissionRoleSeeder extends Seeder
         $permission_notices_create->roles()->attach([$developer, $admin, $general_manager]);
         $permission_notices_update->roles()->attach([$developer, $admin, $general_manager]);
         $permission_notices_delete->roles()->attach([$developer, $admin, $general_manager]);
-
+        $permission_result_index->roles()->attach([$developer, $admin, $general_manager]);
     }
 }
