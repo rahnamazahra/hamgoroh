@@ -19,7 +19,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const ADMIN = '/managment';
     public const GENERALMANAGER = '/managment/general-dashboard';
-    public const PROVINCEMANAGER = '/managment/provincial-dashboard';
+    public const PROVINCIALMANAGER = '/managment/provincial-dashboard';
     public const SITE = '/';
 
     /**

@@ -65,7 +65,7 @@ class AuthenticatedSessionController extends Controller
             if ($user->roles->contains(4))
             {
                 Alert('success', 'خوش آمدید');
-                return redirect()->intended(RouteServiceProvider::PROVINCEMANAGER);
+                return redirect()->intended(RouteServiceProvider::PROVINCIALMANAGER);
             }
 
             return redirect()->intended(RouteServiceProvider::SITE);
@@ -88,6 +88,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+        // return redirect()->intended(RouteServiceProvider::MAIN);
     }
 
     private function sendCode($receiver, $code)
