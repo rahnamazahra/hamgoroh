@@ -2,30 +2,33 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ExportUsers;
 use Exception;
 use App\Models\City;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Province;
-use Illuminate\Http\Request;
+use App\Exports\UserExport;
+use Illuminate\Support\Facades\URL;
 use Morilog\Jalali\Jalalian;
+use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Builder;
-use Rap2hpoutre\FastExcel\FastExcel;
 
 
 class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::with(['roles', 'city.province']);
+        $user = User::with(['roles', 'city.province', 'files']);
 
         if ($request->query('search_item'))
         {
             $search_item = $request->query('search_item');
-            $query->when($search_item, function (Builder $builder) use ($search_item) {
+            $user->when($search_item, function (Builder $builder) use ($search_item) {
                 $builder->where('first_name', 'LIKE', "%{$search_item}%")
                         ->orWhere('last_name', 'LIKE', "%{$search_item}%")
                         ->orWhere('phone', 'LIKE', "%{$search_item}%")
@@ -34,30 +37,56 @@ class UserController extends Controller
             });
         }
 
-        if($request->has('status_item') && $request->query('status_item') != 'all')
+        if ($request->has('status_item') && $request->query('status_item') != 'all')
         {
             $status_item = $request->query('status_item');
-            $query->where('is_active', $status_item);
+            $user->where('is_active', $status_item);
         }
 
-        if($request->has('gender_item') && $request->query('gender_item') != 'all')
+        if ($request->has('gender_item') && $request->query('gender_item') != 'all')
         {
             $gender_item = $request->query('gender_item');
-            $query->where('gender', $gender_item);
+
+            $user->where('gender', $gender_item);
         }
 
-        if($request->has('roles_item') && $request->query('roles_item') != 'all')
+        if ($request->has('roles_item') && $request->query('roles_item') != 'all')
         {
             $roles_item  = $request->query('roles_item');
-            $query->whereHas('roles', function ($q) use ($roles_item ) {
+
+            $user->whereHas('roles', function ($q) use ($roles_item) {
                 $q->where('role_id', $roles_item);
             });
         }
 
-        $users = $query->orderBy('last_name')->orderBy('first_name')->paginate(10)->withQueryString();
-        $roles = Role::select('id', 'title')->get();
+        if ($request->has('evidence_item') && $request->query('evidence_item') != 'all')
+        {
+            $evidence_item = $request->query('evidence_item');
 
-        return view('admin.users.index', ['users' => $users, 'roles' => $roles]);
+            if ($evidence_item)
+            {
+                $user->whereRelation('files', 'related_field', 'evidence');
+            }
+            else
+            {
+                $user->doesntHave('files');
+            }
+        }
+
+        if ($request->has('province_item') && $request->query('province_item') != 'all')
+        {
+            $province_item = $request->query('province_item');
+
+            $user->whereHas('city', function ($q) use ($province_item) {
+                $q->where('province_id', $province_item);
+            });
+        }
+
+        $users = $user->orderBy('last_name')->orderBy('first_name')->paginate(10)->withQueryString();
+        $roles = Role::select('id', 'title')->get();
+        $provinces = Province::all();
+
+        return view('admin.users.index', ['users' => $users, 'roles' => $roles, 'provinces' => $provinces]);
     }
 
     public function create()
@@ -79,12 +108,20 @@ class UserController extends Controller
 
             $user->roles()->attach($request->input('roles'));
 
-            if($request->hasFile('avatar'))
+            if ($request->hasFile('avatar'))
             {
                 $avatar      = $request->file('avatar');
-                $storage_dir = '/user';
+                $storage_dir = '/user/avatar';
 
                 uploadFile($storage_dir, ['avatar' => $avatar], ['fileable_id' => $user->id, 'fileable_type' => User::class]);
+            }
+
+            if ($request->hasFile('evidence'))
+            {
+                $evidence    = $request->file('evidence');
+                $storage_dir = '/user/evidence';
+
+                uploadFile($storage_dir, ['evidence' => $evidence], ['fileable_id' => $user->id, 'fileable_type' => User::class]);
             }
 
             Alert('success', 'اطلاعات باموفقیت ثبت شد.');
@@ -125,11 +162,11 @@ class UserController extends Controller
 
             $user->roles()->sync($request->input('roles'));
 
-            if($request->hasFile('avatar'))
+            if ($request->hasFile('avatar'))
             {
                 $file = $user->files->where('related_field','avatar')->first();
 
-                if($file)
+                if ($file)
                 {
                     purge($file->path);
                     $file->delete();
@@ -139,6 +176,22 @@ class UserController extends Controller
                 $storage_dir = '/user';
 
                 uploadFile($storage_dir, ['avatar' => $avatar], ['fileable_id' => $user->id, 'fileable_type' => User::class]);
+            }
+
+            if ($request->hasFile('evidence'))
+            {
+                $evidence = $user->files->where('related_field','evidence')->first();
+
+                if ($evidence)
+                {
+                    purge($evidence->path);
+                    $evidence->delete();
+                }
+
+                $evidence    = $request->file('evidence');
+                $storage_dir = '/user/evidence';
+
+                uploadFile($storage_dir, ['evidence' => $evidence], ['fileable_id' => $user->id, 'fileable_type' => User::class]);
             }
 
             Alert('success', 'اطلاعات باموفقیت ثبت شد.');
@@ -171,8 +224,75 @@ class UserController extends Controller
 
     public function exportUsers()
     {
-       //
+       $previousUrl = URL::previous();
+       $queryString = parse_url($previousUrl, PHP_URL_QUERY);
+       parse_str($queryString, $queryParams);
 
+        $user = User::select('first_name', 'last_name', 'is_active', 'phone', 'city_id', 'national_code', 'gender', 'birthday_date')->with(['roles', 'city.province', 'files']);
+
+        // if ($request->query('search_item'))
+        // {
+        //     $search_item = $request->query('search_item');
+        //     $user->when($search_item, function (Builder $builder) use ($search_item) {
+        //         $builder->where('first_name', 'LIKE', "%{$search_item}%")
+        //                 ->orWhere('last_name', 'LIKE', "%{$search_item}%")
+        //                 ->orWhere('phone', 'LIKE', "%{$search_item}%")
+        //                 ->orWhere('national_code', 'LIKE', "%{$search_item}%")
+        //                 ->orWhereRelation('city', 'title', 'LIKE', "%{$search_item}%");
+        //     });
+        // }
+
+        if ($queryParams['status_item'] != 'all')
+        {
+            $status_item = $queryParams['status_item'];
+            $user->where('is_active', $status_item);
+        }
+
+        if ($queryParams['gender_item'] != 'all')
+        {
+            $gender_item = $queryParams['gender_item'];
+
+            $user->where('gender', $gender_item);
+        }
+
+        if ($queryParams['roles_item'] != 'all')
+        {
+            $roles_item  = $queryParams['roles_item'];
+
+            $user->whereHas('roles', function ($q) use ($roles_item) {
+                $q->where('role_id', $roles_item);
+            });
+        }
+
+        if ($queryParams['evidence_item'] != 'all')
+        {
+            $evidence_item = $queryParams['evidence_item'];
+
+            if ($evidence_item)
+            {
+                $user->whereRelation('files', 'related_field', 'evidence');
+            }
+            else
+            {
+                $user->doesntHave('files');
+            }
+        }
+
+        if ($queryParams['province_item'] != 'all')
+        {
+            $province_item = $queryParams['province_item'];
+
+            $user->whereHas('city', function ($q) use ($province_item) {
+                $q->where('province_id', $province_item);
+            });
+        }
+
+        $users = $user->orderBy('last_name')->orderBy('first_name')->paginate(10)->withQueryString();
+
+       $response = Excel::download(new ExportUsers($users), 'users.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+        ob_end_clean();
+
+        return $response;
     }
 
 }

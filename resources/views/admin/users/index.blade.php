@@ -20,30 +20,32 @@
     <div class="card shadow-sm">
         <div class="card-header">
             <div class="card-title">
-                <div class="position-relative my-1">
-                    <form method="GET" action="{{ route('admin.users.index') }}">
-                        <div class="input-group input-group-sm input-group-solid">
-                            <button type="submit" class="input-group-text btn-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <path d="M21.7 18.9L18.6 15.8C17.9 16.9 16.9 17.9 15.8 18.6L18.9 21.7C19.3 22.1 19.9 22.1 20.3 21.7L21.7 20.3C22.1 19.9 22.1 19.3 21.7 18.9Z" fill="currentColor" />
-                                    <path opacity="0.3" d="M11 20C6 20 2 16 2 11C2 6 6 2 11 2C16 2 20 6 20 11C20 16 16 20 11 20ZM11 4C7.1 4 4 7.1 4 11C4 14.9 7.1 18 11 18C14.9 18 18 14.9 18 11C18 7.1 14.9 4 11 4ZM8 11C8 9.3 9.3 8 11 8C11.6 8 12 7.6 12 7C12 6.4 11.6 6 11 6C8.2 6 6 8.2 6 11C6 11.6 6.4 12 7 12C7.6 12 8 11.6 8 11Z" fill="currentColor" />
-                                </svg>
-                            </button>
-                            <input type="text" class="form-control form-control-solid" placeholder="جست و جو ..." name="search_item" />
-                        </div>
-                    </form>
+                <form method="GET" action="{{ route('admin.users.index') }}">
+                    <div class="input-group input-group-sm input-group-solid">
+                        <button type="submit" class="input-group-text btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M21.7 18.9L18.6 15.8C17.9 16.9 16.9 17.9 15.8 18.6L18.9 21.7C19.3 22.1 19.9 22.1 20.3 21.7L21.7 20.3C22.1 19.9 22.1 19.3 21.7 18.9Z" fill="currentColor" />
+                                <path opacity="0.3" d="M11 20C6 20 2 16 2 11C2 6 6 2 11 2C16 2 20 6 20 11C20 16 16 20 11 20ZM11 4C7.1 4 4 7.1 4 11C4 14.9 7.1 18 11 18C14.9 18 18 14.9 18 11C18 7.1 14.9 4 11 4ZM8 11C8 9.3 9.3 8 11 8C11.6 8 12 7.6 12 7C12 6.4 11.6 6 11 6C8.2 6 6 8.2 6 11C6 11.6 6.4 12 7 12C7.6 12 8 11.6 8 11Z" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <input type="text" class="form-control form-control-solid" placeholder="جست و جو ..." name="search_item" />
+                    </div>
+                </form>
+                <div class="p-2 align-items-center gap-4 m-5">
+                    <button type="button" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder" data-bs-toggle="collapse" data-bs-target="#filter_search">
+                        <span class="svg-icon svg-icon-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+                            </svg>
+                        </span>
+                        فیلتر
+                    </button>
                 </div>
             </div>
             <div class="card-toolbar">
                 <div class="p-2 align-items-center gap-4">
-                    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="collapse" data-bs-target="#filter_search">فیلتر
-                        <!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen031.svg-->
-                        <span class="svg-icon svg-icon-muted"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M19.0759 3H4.72777C3.95892 3 3.47768 3.83148 3.86067 4.49814L8.56967 12.6949C9.17923 13.7559 9.5 14.9582 9.5 16.1819V19.5072C9.5 20.2189 10.2223 20.7028 10.8805 20.432L13.8805 19.1977C14.2553 19.0435 14.5 18.6783 14.5 18.273V13.8372C14.5 12.8089 14.8171 11.8056 15.408 10.964L19.8943 4.57465C20.3596 3.912 19.8856 3 19.0759 3Z" fill="currentColor"/>
-                        </svg></span>
-                        <!--end::Svg Icon-->
-                    </button>
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary">کابر جدید +</a>
+                    <a href="{{ route('admin.users.exporUsers') }}" class="btn btn-sm btn-flex btn-outline btn-outline-success btn-active-success fw-bolder" data-bs-toggle="tooltip" data-bs-placement="bottom" title="خروجی Excel">خروجی Excel</a>
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="کاربر جدید">+ کابر جدید</a>
                 </div>
             </div>
         </div>
@@ -51,18 +53,18 @@
             <div id="filter_search" class="collapse">
                 <form method="GET" action="{{ route('admin.users.index') }}" class="mx-auto w-100 fv-plugins-bootstrap5 fv-plugins-framework">
                     <div class="row mb-8">
-                        <div class="col-md-3 fv-row">
+                        <div class="col-md-2 fv-row">
                             <div class="d-flex align-items-center fw-bolder" data-select2-id="select2-data-122-u471">
                                 <div class="text-gray-400 fs-7 me-2">نقش</div>
                                 <select name="roles_item" id="roles_item" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="لطفا انتخاب کنید" tabindex="-1" aria-hidden="true">
                                     <option value="all" @if (request()->query('roles_item') == 'all') selected @endif>همه</option>
-                                    @foreach($roles as $role)
-                                        <option value="{{ $role->id }}" @if(request()->query('roles_item') == $role->id ) selected @endif>{{ $role->title }}</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}" @if (request()->query('roles_item') == $role->id) selected @endif>{{ $role->title }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3 fv-row">
+                        <div class="col-md-2 fv-row">
                             <div class="d-flex align-items-center fw-bolder" data-select2-id="select2-data-122-u471">
                                 <div class="text-gray-400 fs-7 me-2">وضعیت</div>
                                 <select name="status_item" id="status_item" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="لطفا انتخاب کنید" tabindex="-1" aria-hidden="true">
@@ -72,7 +74,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3 fv-row">
+                        <div class="col-md-2 fv-row">
                             <div class="d-flex align-items-center fw-bolder" data-select2-id="select2-data-122-u471">
                                 <div class="text-gray-400 fs-7 me-2">جنسیت</div>
                                 <select name="gender_item" id="gender_item" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="لطفا انتخاب کنید" tabindex="-1" aria-hidden="true">
@@ -82,8 +84,40 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3 fv-row">
-                            <button type="submit" class="btn btn-sm btn-primary">جست‌و‌جو</button>
+                        <div class="col-md-2 fv-row">
+                            <div class="d-flex align-items-center fw-bolder" data-select2-id="select2-data-122-u471">
+                                <div class="text-gray-400 fs-7 me-2">مدرک</div>
+                                <select name="evidence_item" id="evidence_item" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="لطفا انتخاب کنید" tabindex="-1" aria-hidden="true">
+                                    <option value="all" @if (request()->query('evidence_item') == 'all') selected @endif>همه</option>
+                                    <option value="1">دارد</option>
+                                    <option value="0">ندارد</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2 fv-row">
+                            <div class="d-flex align-items-center fw-bolder" data-select2-id="select2-data-122-u471">
+                                <div class="text-gray-400 fs-7 me-2">استان</div>
+                                <select name="province_item" id="province_item" class="form-select form-select-transparent text-graY-800 fs-base lh-1 fw-bolder py-0 ps-3 w-auto select2-hidden-accessible" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="همه" tabindex="-1" aria-hidden="true">
+                                    <option value="all" @if (request()->query('province_item') == 'all') selected @endif>همه</option>
+                                    @foreach ($provinces as $province)
+                                        <option value="{{ $province->id }}"> {{ $province->title }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="جست‌وجو">جست‌و‌جو</button>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="{{ route('admin.users.index') }}" id="btn_remove_filter" class="btn btn-sm btn-bg-light btn-active-color-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف فیلتر">
+                                <span class="svg-icon svg-icon-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor"></path>
+                                        <path opauser="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor"></path>
+                                        <path opauser="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor"></path>
+                                    </svg>
+                                </span>
+                            </a>
                         </div>
                     </div>
                 </form>
@@ -99,36 +133,37 @@
                             <th class="text-center">شهر</th>
                             <th class="text-center">نقش ها</th>
                             <th class="text-center">وضعیت</th>
+                            <th class="text-center">مدرک</th>
                             <th class="text-center">اقدامات</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($users as $key => $user)
+                    @forelse ($users as $key => $user)
                         @php
                             $row_number = ($users->currentPage() -1) * ($users->perPage()) + ($key + 1);
                         @endphp
                         <tr>
-                            <td class="text-center">{{ $row_number }}</td>
+                            <td class="text-center"> {{ $row_number }} </td>
                             <td class="text-center">
                                 <div class="position-relative ps-6 pe-3 py-2">
-                                    <a href="#" class="mb-1 text-dark text-hover-primary"> {{ $user->first_name }} {{ $user->last_name }} </a>
+                                    <a href="#" class="mb-1 text-dark text-hover-primary"> {{ $user->first_name.' '.$user->last_name }} </a>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="position-relative ps-6 pe-3 py-2">
-                                    <span class="mb-1 text-dark"> {{ $user->national_code }}</span>
+                                    <span class="mb-1 text-dark"> {{ $user->national_code }} </span>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="position-relative ps-6 pe-3 py-2">
-                                    <span class="mb-1 text-dark"> {{ $user->phone }}</span>
+                                    <span class="mb-1 text-dark"> {{ $user->phone }} </span>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="position-relative ps-6 pe-3 py-2">
-                                    <span class="mb-1 text-dark">{{ $user->city->province->title }}</span>
+                                    <span class="mb-1 text-dark"> {{ $user->city->province->title }} </span>
                                     <div class="text-muted">
-                                        <span>{{ $user->city->title }}</span>
+                                        <span> {{ $user->city->title }} </span>
                                     </div>
                                 </div>
                             </td>
@@ -153,12 +188,22 @@
                             </td>
                             <td class="text-center">
                                 <div class="position-relative ps-6 pe-3 py-2">
-                                    @if($user->is_active==1)
+                                    @if ($user->is_active==1)
                                         <span class="badge badge-light-success">فعـال</span>
                                     @else
                                         <span class="badge badge-light-danger">غـیرفعـال</span>
                                     @endif
                                 </div>
+                            </td>
+                            <td class="text-center">
+                                @php
+                                    $evidence = $user->files->where('related_field','evidence')->pluck('path')->first();
+                                @endphp
+                                @if ($evidence)
+                                   <a href="{{ url('upload/'.$evidence) }}"> دانلود مدرک  </a>
+                                @else
+                                    ندارد
+                                @endif
                             </td>
                             <td class="text-center">
                                 <div class="btn btn-group-sm">
@@ -202,3 +247,17 @@
     </div>
 @endsection
 
+@section('custom-scripts')
+<script>
+    function showRemoveFilter()
+    {
+        $('#btn_remove_filter').css('display','block');
+    }
+</script>
+<script>
+    function hiddenRemoveFilter()
+    {
+        $('#btn_remove_filter').css('display','none');
+    }
+</script>
+@endsection

@@ -1,4 +1,7 @@
 <?php
+
+use App\Exports\ExportUsers;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\CityController;
@@ -23,6 +26,8 @@ use App\Http\Controllers\Admin\EvaluationController;
 use App\Http\Controllers\Admin\CompetitionController;
 use App\Http\Controllers\Admin\NewsCategoryController;
 use App\Http\Controllers\Admin\TestQuestionController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,11 +38,6 @@ use App\Http\Controllers\Admin\TestQuestionController;
 | be assigned to the "web" middleware group. Make something great!
 |
  */
-
-// Admin Panel
-Route::get('/', function () {
-    return view('admin.index');
-})->name('admin.dashboard');
 
 // Admin Panel
 Route::controller(DashboardController::class)->group(function () {
@@ -74,6 +74,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/{user}/edit', 'edit')->name('admin.users.edit');
     Route::patch('/users/{user}', 'update')->name('admin.users.update');
     Route::delete('/users/{user}/delete', 'delete')->name('admin.users.delete');
+    Route::get('/users/exportUsers', 'exportUsers')->name('admin.users.exporUsers');
 });
 
 // Provinces
@@ -259,6 +260,12 @@ Route::controller(NoticeController::class)->group(function () {
     Route::get('/notices/{notice}/edit', 'edit')->name('admin.notices.edit');
     Route::patch('/notices/{notice}', 'update')->name('admin.notices.update');
     Route::delete('/notices/{notice}/delete', 'delete')->name('admin.notices.delete');
+});
+
+Route::controller(ResultController::class)->group(function () {
+    Route::get('stepResult/competition/{competition}/step/{step}', 'step')->name('admin.stepResult.index');
+    Route::get('challengeResult/competition/{competition}/challenge/{challenge}', 'challenge')->name('admin.challengeResult.index');
+    Route::get('competitionResult/competition/{competition}', 'competition')->name('admin.competitionResult.index');
 });
 
 // Ajax

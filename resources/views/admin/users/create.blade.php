@@ -92,17 +92,11 @@
                         </select>
                     </div>
                     <div class="col-md-6 fv-row">
-                        <label class="required form-label">جنسیت</label>
-                        <div class="d-flex align-items-center my-5">
-                            <label for="gender_fmale" class="form-check form-check-custom form-check-solid me-10">
-                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_fmale" value="0" @if(old('gender')=="0") checked='checked' @endif/>
-                                <span class="form-check-label fw-bold">خـانم</span>
-                            </label>
-                            <label for="gender_male" class="form-check form-check-custom form-check-solid">
-                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_male" value="1" @if(old('gender')=="1") checked='checked' @endif/>
-                                <span class="form-check-label fw-bold">آقـا</span>
-                            </label>
+                        <div class="d-flex d-inline-block gap-10">
+                            <label for="evidence" class="required form-label"> مدرک </label>
                         </div>
+                        <input type="file" name="evidence" id="evidence" class="form-control form-control-solid" accept="">
+                        <div class="form-text my-auto"> فایل‌های مجاز: </div>
                     </div>
                     <div class="col-md-6 fv-row">
                         <div class="form-group">
@@ -117,8 +111,22 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="required form-label">جنسیت</label>
+                        <div class="d-flex align-items-center my-5">
+                            <label for="gender_fmale" class="form-check form-check-custom form-check-solid me-10">
+                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_fmale" value="0" @if(old('gender')=="0") checked='checked' @endif/>
+                                <span class="form-check-label fw-bold">خـانم</span>
+                            </label>
+                            <label for="gender_male" class="form-check form-check-custom form-check-solid">
+                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_male" value="1" @if(old('gender')=="1") checked='checked' @endif/>
+                                <span class="form-check-label fw-bold">آقـا</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="card-footer">
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('admin.users.index') }}" id="add_permission_form_cancel" class="btn btn-light me-3">لغو</a>

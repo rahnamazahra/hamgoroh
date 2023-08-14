@@ -94,7 +94,7 @@
                         <select class="form-select form-select-solid" id="province_id" name="province_id" onchange="getCities(this.value)" data-control="select2" data-allow-clear="true" data-placeholder="استان را انتخاب کنید">
                             <option></option>
                             @foreach($provinces as $province)
-                                <option value="{{ $province->id }}" @selected((old('province_id') and in_array($province->id, old('province_id'))) or $user->city->province->id)>{{ $province->title }}</option>
+                                <option value="{{ $province->id }}" @selected((old('province_id') and in_array($province->id, old('province_id'))) or $user->city->province->id == $province->id)>{{ $province->title }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -108,17 +108,11 @@
                         </select>
                     </div>
                     <div class="col-md-6 fv-row">
-                        <label class="required form-label">جنسیت</label>
-                        <div class="d-flex align-items-center my-5">
-                            <label for="gender_fmale" class="form-check form-check-custom form-check-solid me-10">
-                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_fmale" value="0" @if ($user->gender == "0") checked @endif/>
-                                <span class="form-check-label fw-bold">خـانم</span>
-                            </label>
-                            <label for="gender_male" class="form-check form-check-custom form-check-solid">
-                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_male" value="1" @if ($user->gender == "1") checked @endif/>
-                                <span class="form-check-label fw-bold">آقـا</span>
-                            </label>
+                        <div class="d-flex d-inline-block gap-10">
+                            <label for="evidence" class="required form-label"> مدرک </label>
                         </div>
+                        <input type="file" name="evidence" id="evidence" class="form-control form-control-solid" accept="">
+                        <div class="form-text my-auto"> فایل‌های مجاز: </div>
                     </div>
                     <div class="col-md-6 fv-row">
                         <div class="form-group">
@@ -131,6 +125,19 @@
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="required form-label">جنسیت</label>
+                        <div class="d-flex align-items-center my-5">
+                            <label for="gender_fmale" class="form-check form-check-custom form-check-solid me-10">
+                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_fmale" value="0" @if ($user->gender == "0") checked @endif/>
+                                <span class="form-check-label fw-bold">خـانم</span>
+                            </label>
+                            <label for="gender_male" class="form-check form-check-custom form-check-solid">
+                                <input class="form-check-input h-20px w-20px" type="radio" name="gender" id="gender_male" value="1" @if ($user->gender == "1") checked @endif/>
+                                <span class="form-check-label fw-bold">آقـا</span>
+                            </label>
                         </div>
                     </div>
                 </div>
