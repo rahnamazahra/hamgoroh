@@ -1,6 +1,8 @@
 <?php
 
 use App\Exports\ExportUsers;
+use App\Http\Controllers\Admin\ResultController;
+use App\Http\Controllers\Admin\ScheduleController;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AjaxController;
@@ -44,6 +46,7 @@ Route::controller(DashboardController::class)->group(function () {
     Route::get('/', 'adminIndex')->name('admin.dashboard');
     Route::get('/general-dashboard', 'generalIndex')->name('admin.dashboard.general');
     Route::get('/provincial-dashboard', 'provincialIndex')->name('admin.dashboard.provincial');
+    Route::post('/charts/chartNumberUsersProvince', 'chartNumberUsersProvince')->name('charts.chartNumberUsersProvince');
 });
 
 // Roles
@@ -274,4 +277,15 @@ Route::controller(AjaxController::class)->group(function () {
     Route::post('/referees', 'showReferees')->name('admin.ajax.referees');
     Route::post('/generals', 'showGenerals')->name('admin.ajax.generals');
     Route::post('/provincials', 'showProvincials')->name('admin.ajax.provincials');
+});
+
+//
+Route::controller(ScheduleController::class)->group(function () {
+    Route::get('/schedules/{step}', 'index')->name('admin.schedules.index');
+    Route::get('/schedules/steps/{step}/create', 'create')->name('admin.schedules.create');
+    Route::post('/schedules/steps/{step}/store', 'store')->name('admin.schedules.store');
+    Route::get('/schedules/{schedule}/steps/{step}/edit', 'edit')->name('admin.schedules.edit');
+    Route::patch('/schedules/{schedule}/steps/{step}/update', 'update')->name('admin.schedules.update');
+    Route::delete('/schedules/{schedule}/delete', 'delete')->name('admin.schedules.delete');
+
 });

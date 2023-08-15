@@ -207,7 +207,7 @@
                                             </td>
                                             <td class="text-end">
                                                 <div class="btn btn-group-sm">
-                                                    <button type="button" class="btn btn-sm btn-primary" onclick="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی</button>
+                                                    <a href="{{ route('admin.schedules.index', ['step' => $step->id])}}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی</a>
                                                     <a href="{{ route('admin.evaluations.index', ['step' => $step->id])}}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="داوری"> داوری</a>
                                                     <a href="{{ route('admin.stepResult.index', ['competition' => $competition, 'step' => $step->id])}}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج"> نتایج آزمون</a>
                                                 </div>

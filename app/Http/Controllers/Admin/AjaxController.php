@@ -21,29 +21,21 @@ class AjaxController extends Controller
 
     public function showReferees()
     {
-//        $referees  = User::whereHas('roles', function ($query) {
-//            $query->where('slug', 'referee');
-//        })->get(['id', 'first_name', 'last_name']);
         $referees  = Role::find(5)->users;
-//        dd($referees);
 
         return ['referees' => $referees];
     }
 
     public function showGenerals()
     {
-        $generals  = User::whereHas('roles', function ($query) {
-            $query->where('slug', 'general_manager');
-        })->get(['id', 'first_name', 'last_name']);
+        $generals  = Role::find(3)->users;
 
         return ['generals' => $generals];
     }
 
     public function showProvincials()
     {
-        $provincials  = User::whereHas('roles', function ($query) {
-            $query->where('slug', 'provincial_manager');
-        })->get(['id', 'first_name', 'last_name']);
+        $provincials  = Role::find(4)->users;
 
         return ['provincials' => $provincials];
     }

@@ -346,6 +346,30 @@ class PermissionRoleSeeder extends Seeder
             'description' => 'امکان مشاهده لسیت نتایج',
         ]);
 
+        $permission_schedules_index = Permission::create([
+            'title'       => 'لیست زمان‌بندی',
+            'slug'        => 'schedules-index',
+            'description' => 'امکان مشاهده لسیت زمان‌بندی',
+        ]);
+
+        $permission_schedules_create = Permission::create([
+            'title'       => 'ایجاد زمان‌بندی  جدید',
+            'slug'        => 'schedules-create',
+            'description' => 'امکان ایجاد زمان‌بندی جدید',
+        ]);
+
+        $permission_schedules_update = Permission::create([
+            'title'       => 'ویرایش زمان‌بندی',
+            'slug'        => 'schedules-update',
+            'description' => 'امکان ویرایش زمان‌بندی',
+        ]);
+
+        $permission_schedules_delete = Permission::create([
+            'title'       => 'حذف زمان‌بندی',
+            'slug'        => 'schedules-delete',
+            'description' => 'امکان حذف زمان‌بندی',
+        ]);
+
         $permission_admin_index->roles()->attach([$developer, $admin, $general_manager]);
         $permission_roles_index->roles()->attach([$developer, $admin]);
         $permission_roles_create->roles()->attach([$developer, $admin]);
@@ -401,5 +425,9 @@ class PermissionRoleSeeder extends Seeder
         $permission_notices_update->roles()->attach([$developer, $admin, $general_manager]);
         $permission_notices_delete->roles()->attach([$developer, $admin, $general_manager]);
         $permission_result_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_schedules_index->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_schedules_create->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_schedules_update->roles()->attach([$developer, $admin, $general_manager]);
+        $permission_schedules_delete->roles()->attach([$developer, $admin, $general_manager]);
     }
 }

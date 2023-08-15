@@ -223,20 +223,20 @@
                                             <div class="form-group row mb-4">
                                                 <div class="col-md-3">
                                                     <label class="required form-label">تصویر</label>
-                                                    <input type="file" name="image"
+                                                    <input type="file" name="image" required
                                                            class="form-control form-control-solid mb-2 mb-md-0"
                                                            accept=".png, .jpg, .jpeg, .gif, .svg, .jfif">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label class="required form-label">عنوان</label>
-                                                    <input type="text"
+                                                    <input type="text" required
                                                            class="form-control form-control-solid mb-2 mb-md-0"
                                                            name="title"/>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label for="fields" class="required form-label">‌رشته‌ها</label>
                                                     <select class="form-select form-select-solid select2-element"
-                                                            name="fields"
+                                                            name="fields" required
                                                             data-control="select2" data-placeholder="لطفا انتخاب کنید"
                                                             multiple="multiple">
                                                         <option></option>
