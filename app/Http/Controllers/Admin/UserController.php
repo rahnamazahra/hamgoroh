@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\ExportUsers;
 use Exception;
 use App\Models\City;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Province;
-use App\Exports\UserExport;
-use Illuminate\Support\Facades\URL;
 use Morilog\Jalali\Jalalian;
 use Illuminate\Http\Request;
+use App\Exports\ExportUsers;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Builder;
-
 
 class UserController extends Controller
 {
@@ -54,9 +52,7 @@ class UserController extends Controller
         {
             $roles_item  = $request->query('roles_item');
 
-            $user->whereHas('roles', function ($q) use ($roles_item) {
-                $q->where('role_id', $roles_item);
-            });
+            $user->whereRelation('roles', 'role_id', $roles_item);
         }
 
         if ($request->has('evidence_item') && $request->query('evidence_item') != 'all')
@@ -77,9 +73,7 @@ class UserController extends Controller
         {
             $province_item = $request->query('province_item');
 
-            $user->whereHas('city', function ($q) use ($province_item) {
-                $q->where('province_id', $province_item);
-            });
+            $user->whereRelation('city', 'province_id', $province_item);
         }
 
         $users = $user->orderBy('last_name')->orderBy('first_name')->paginate(10)->withQueryString();
@@ -225,41 +219,43 @@ class UserController extends Controller
     public function exportUsers()
     {
        $previousUrl = URL::previous();
+
        $queryString = parse_url($previousUrl, PHP_URL_QUERY);
+
        parse_str($queryString, $queryParams);
 
-        $user = User::select('first_name', 'last_name', 'is_active', 'phone', 'city_id', 'national_code', 'gender', 'birthday_date')->with(['roles', 'city.province', 'files']);
+       $users = User::select('first_name', 'last_name', 'is_active', 'phone', 'city_id', 'national_code', 'gender', 'birthday_date')->with(['roles', 'city.province', 'files']);
 
-        // if ($request->query('search_item'))
-        // {
-        //     $search_item = $request->query('search_item');
-        //     $user->when($search_item, function (Builder $builder) use ($search_item) {
-        //         $builder->where('first_name', 'LIKE', "%{$search_item}%")
-        //                 ->orWhere('last_name', 'LIKE', "%{$search_item}%")
-        //                 ->orWhere('phone', 'LIKE', "%{$search_item}%")
-        //                 ->orWhere('national_code', 'LIKE', "%{$search_item}%")
-        //                 ->orWhereRelation('city', 'title', 'LIKE', "%{$search_item}%");
-        //     });
-        // }
+        if ($queryParams['search_item'])
+        {
+            $search_item = $queryParams['search_item'];
+            $users->when($search_item, function (Builder $builder) use ($search_item) {
+                $builder->where('first_name', 'LIKE', "%{$search_item}%")
+                        ->orWhere('last_name', 'LIKE', "%{$search_item}%")
+                        ->orWhere('phone', 'LIKE', "%{$search_item}%")
+                        ->orWhere('national_code', 'LIKE', "%{$search_item}%")
+                        ->orWhereRelation('city', 'title', 'LIKE', "%{$search_item}%");
+            });
+        }
 
         if ($queryParams['status_item'] != 'all')
         {
             $status_item = $queryParams['status_item'];
-            $user->where('is_active', $status_item);
+            $users->where('is_active', $status_item);
         }
 
         if ($queryParams['gender_item'] != 'all')
         {
             $gender_item = $queryParams['gender_item'];
 
-            $user->where('gender', $gender_item);
+            $users->where('gender', $gender_item);
         }
 
         if ($queryParams['roles_item'] != 'all')
         {
             $roles_item  = $queryParams['roles_item'];
 
-            $user->whereHas('roles', function ($q) use ($roles_item) {
+            $users->whereHas('roles', function ($q) use ($roles_item) {
                 $q->where('role_id', $roles_item);
             });
         }
@@ -270,11 +266,11 @@ class UserController extends Controller
 
             if ($evidence_item)
             {
-                $user->whereRelation('files', 'related_field', 'evidence');
+                $users->whereRelation('files', 'related_field', 'evidence');
             }
             else
             {
-                $user->doesntHave('files');
+                $users->doesntHave('files');
             }
         }
 
@@ -282,14 +278,15 @@ class UserController extends Controller
         {
             $province_item = $queryParams['province_item'];
 
-            $user->whereHas('city', function ($q) use ($province_item) {
+            $users->whereHas('city', function ($q) use ($province_item) {
                 $q->where('province_id', $province_item);
             });
         }
 
-        $users = $user->orderBy('last_name')->orderBy('first_name')->paginate(10)->withQueryString();
+        $users = $users->get();
 
-       $response = Excel::download(new ExportUsers($users), 'users.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+        $response = Excel::download(new ExportUsers($users), 'users.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+
         ob_end_clean();
 
         return $response;

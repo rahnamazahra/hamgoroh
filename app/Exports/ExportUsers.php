@@ -2,15 +2,13 @@
 
 namespace App\Exports;
 
-use App\Models\User;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Morilog\Jalali\Jalalian;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class ExportUsers implements FromCollection, WithHeadings
+class ExportUsers implements FromCollection, WithHeadings, WithMapping
 {
     protected $users;
 
@@ -35,7 +33,6 @@ class ExportUsers implements FromCollection, WithHeadings
             'کدملی',
             'جنسیت',
             'تاریخ تولد',
-
         ];
 
     }
