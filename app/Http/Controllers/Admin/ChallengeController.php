@@ -351,12 +351,10 @@ class ChallengeController extends Controller
             }
 
             Alert('success', 'اطلاعات باموفقیت ثبت شد.');
-
             return redirect()->route('admin.challenges.edit', ['competition' => $competition]);
         }
         catch (Exception $exception)  {
             Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
-
             return redirect()->route('admin.challenges.create', ['competition' => $competition]);
         }
     }
@@ -366,9 +364,8 @@ class ChallengeController extends Controller
      */
     public function edit(Competition $competition)
     {
-        $groups = $competition->groups->pluck('id');
-        $fields = DB::table('field_group')->whereIn('group_id', $groups)->groupBy('field_id')->get(['field_id']);
-        $challenges = Challenge::whereRelation('age', 'age_ranges.competition_id', $competition->id)->with(['field', 'age'])->get();
+        $fields = DB::table('field_group')->where('competition_id', $competition->id)->groupBy('field_id')->get(['field_id']);
+        $challenges = Challenge::whereRelation('age', 'competition_id', $competition->id)->with(['field', 'age'])->get();
 
         return view('admin.competitions.challenges.edit', ['competition' => $competition, 'fields' => $fields, 'challenges' => $challenges]);
     }
@@ -409,14 +406,11 @@ class ChallengeController extends Controller
             }
 
             Alert('success', 'اطلاعات باموفقیت ثبت شد.');
-
             return redirect()->route('admin.competitions.show', ['competition' => $competition->id]);
         }
-        catch (Exception $e)
-        {
+        catch (Exception $e) {
 
             Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
-
             return redirect()->route('admin.challenges.info.create', ['competition' => $competition->id, 'challenge' => $challenge]);
         }
     }

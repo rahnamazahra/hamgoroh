@@ -76,9 +76,12 @@ class GroupController extends Controller
             return redirect()->route('admin.challenges.create', ['competition' => $competition]);
         }
         catch (Exception $e) {
-            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+            // Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
 
-            return redirect()->route('admin.competitions.index');
+            // return redirect()->route('admin.competitions.index');
         }
 
     }

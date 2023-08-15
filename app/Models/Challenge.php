@@ -13,7 +13,7 @@ class Challenge extends Model
 
     public function age()
     {
-        return $this->belongsTo(AgeRange::class);
+        return $this->belongsTo(AgeRange::class, 'age_id');
     }
 
     public function field()

@@ -51,7 +51,7 @@
                 <div class="row g-9">
                     <span class="fs-3 fw-bold">{{ $field->title }}</span>
                 </div>
-                @foreach ($field->challenges as $challenge)
+                @foreach ($challenges as $challenge)
                     <div class="row g-9 my-2">
                         <div class="col-md-4 fv-row">
                             <label for="age_id" class="required form-label">بازه سنی</label>
@@ -89,7 +89,7 @@
                 @endforeach
                 <div class="separator my-10"></div>
             @empty
-            jiluikjhkjhuyouyhui
+                <span>زیررشته ای وجود ندارد.</span>
             @endforelse
         </div>
         <div class="card-footer">
