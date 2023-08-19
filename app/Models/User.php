@@ -15,7 +15,7 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    protected $fillable = ['first_name', 'last_name', 'is_active', 'phone', 'password', 'national_code', 'gender', 'city_id', 'birthday_date', 'meta', 'creator'];
+    protected $fillable = ['first_name', 'last_name', 'is_active', 'phone', 'password', 'national_code', 'gender', 'city_id','province_id', 'birthday_date', 'meta', 'creator'];
     protected $hidden   = ['password'];
     protected $casts    = ['phone_verified_at' => 'datetime','password' => 'hashed',];
 
@@ -32,6 +32,11 @@ class User extends Authenticatable
     public function hasPermission($permission)
     {
         return $this->hasRole($permission->roles);
+    }
+
+    public function provin()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
     }
 
     public function city()

@@ -27,15 +27,8 @@ class DashboardController extends Controller
 
     public function chartNumberUsersProvince()
     {
-        $users = DB::table('users')
-        ->join('cities', 'users.city_id', 'cities.id')
-        ->join('provinces', 'cities.province_id', 'provinces.id')
-        ->select('provinces.title', DB::raw('COUNT(*) as count'))
-        ->groupBy('provinces.title')
-        ->get();
+        $NumberUsersProvince = Province::select('title')->withCount('users as count')->get();
 
-        //$provinces = Province::select('title')->withCount('cities.users as count')->get();
-
-        return response()->json($provinces);
+        return response()->json($NumberUsersProvince);
     }
 }

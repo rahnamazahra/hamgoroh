@@ -144,9 +144,9 @@
             success: function (response)
             {
                 console.log(response);
-                //data = response;
-                //xAxis.data.setAll(data);
-                //series.data.setAll(data);
+                data = response;
+                xAxis.data.setAll(data);
+                series.data.setAll(data);
             }
         });
 

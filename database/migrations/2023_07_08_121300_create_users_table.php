@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('phone_verified_at')->nullable()->nullable()->comment('اعتبارسنجی موبایل');
             $table->string('password')->nullable()->comment('گذرواژه');
             $table->unsignedBigInteger('city_id')->nullable()->comment('شناسه شهرستان');
+            $table->unsignedBigInteger('province_id')->nullable()->comment('شناسه استان');
             $table->string('national_code')->unique()->nullable()->comment('کدملی');
             $table->boolean('gender')->nullable()->comment('جنسیت');
             $table->date('birthday_date')->nullable()->comment('تاریخ تولد');
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('city_id')->references('id')->on('cities')->constrained()->nullOnDelete();
+            $table->foreign('province_id')->references('id')->on('provinces')->constrained()->nullOnDelete();
 
             $table->comment('کاربران');
         });

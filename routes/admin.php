@@ -116,6 +116,8 @@ Route::controller(CompetitionController::class)->group(function () {
     Route::get('/competitions/{competition}/edit', 'edit')->name('admin.competitions.edit');
     Route::patch('/competitions/{competition}', 'update')->name('admin.competitions.update');
     Route::delete('/competitions/{competition}/delete', 'delete')->name('admin.competitions.delete');
+    Route::get('/competitions/{competition}/charts', 'charts')->name('admin.competitions.charts');
+
 });
 
 // Groups
