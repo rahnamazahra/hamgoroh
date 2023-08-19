@@ -30,4 +30,47 @@ class Challenge extends Model
     {
         return $this->morphMany(File::class, 'fileable');
     }
+
+    public function getCompetition()
+    {
+        return $this->age->competition;
+    }
+
+    public function challengeName()
+    {
+        switch ($this->gender)
+        {
+            case '0':
+                $gender = 'خواهران';
+                break;
+
+            case '1':
+                $gender = 'برادران';
+                break;
+
+            default:
+                $gender = '';
+                break;
+        }
+
+        switch ($this->nationality)
+        {
+            case '0':
+                $nationality = 'ایرانی';
+                break;
+
+            case '1':
+                $nationality = 'خارجی';
+                break;
+
+            default:
+                $nationality = '';
+                break;
+        }
+
+        $field = $this->field->title;
+        $age = $this->age->title;
+
+        return $field.' '.$gender.' '.$nationality.' '.$age;
+    }
 }

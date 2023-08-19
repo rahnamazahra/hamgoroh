@@ -19,6 +19,11 @@ class User extends Authenticatable
     protected $hidden   = ['password'];
     protected $casts    = ['phone_verified_at' => 'datetime','password' => 'hashed',];
 
+    public function fullName()
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class);

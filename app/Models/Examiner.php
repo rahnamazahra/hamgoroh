@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Examiner extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'participant_id', 'step_id', 'technique_id',
-    ];
+    protected $fillable = ['participant_id', 'step_id', 'technique_id', 'score'];
 
     public function participant()
     {
@@ -26,5 +25,15 @@ class Examiner extends Model
     public function technique()
     {
         return $this->belongsTo(Technique::class);
+    }
+
+    public function scores() : HasMany
+    {
+        return $this->hasMany(Score::class);
+    }
+
+    public function getUser()
+    {
+        return $this->participant->user;
     }
 }

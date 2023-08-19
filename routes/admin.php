@@ -1,30 +1,31 @@
 <?php
 
 use App\Exports\ExportUsers;
-use App\Http\Controllers\Admin\ResultController;
-use App\Http\Controllers\Admin\ScheduleController;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\CityController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StepController;
 use App\Http\Controllers\Admin\TestController;
-use App\Http\Controllers\Admin\GroupController;
-use App\Http\Controllers\Admin\FieldController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\FieldController;
+use App\Http\Controllers\Admin\GroupController;
+use App\Http\Controllers\Admin\ScoreController;
 use App\Http\Controllers\Admin\NoticeController;
+use App\Http\Controllers\Admin\ResultController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CriteriaController;
 use App\Http\Controllers\Admin\ProvinceController;
+use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\ChallengeController;
-use App\Http\Controllers\Admin\TechniqueController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\TechniqueController;
 use App\Http\Controllers\Admin\EvaluationController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CompetitionController;
 use App\Http\Controllers\Admin\NewsCategoryController;
 use App\Http\Controllers\Admin\TestQuestionController;
@@ -109,7 +110,6 @@ Route::controller(FieldController::class)->group(function () {
 // Competitions
 Route::controller(CompetitionController::class)->group(function () {
     Route::get('/competitions', 'index')->name('admin.competitions.index');
-//    Route::get('/competitions/create', 'create')->name('admin.competitions.create');
     Route::get('/competitions/store', 'store')->name('admin.competitions.create');
     Route::post('/competitions', 'store')->name('admin.competitions.store');
     Route::get('/competitions/{competition}/show', 'show')->name('admin.competitions.show');
@@ -123,10 +123,7 @@ Route::controller(GroupController::class)->group(function () {
     Route::get('/groups', 'index')->name('admin.groups.index');
     Route::get('/competition/{competition}/groups/create', 'create')->name('admin.groups.create');
     Route::post('/competition/{competition}/groups', 'store')->name('admin.groups.store');
-    // Route::get('/groups/{group}/show', 'show')->name('admin.groups.show');
-    // Route::get('/groups/{group}/edit', 'edit')->name('admin.groups.edit');
     Route::patch('/competition/{competition}/groups', 'update')->name('admin.groups.update');
-    // Route::delete('/groups/{group}/delete', 'delete')->name('admin.groups.delete');
 });
 
 // Challenges
@@ -152,22 +149,22 @@ Route::controller(StepController::class)->group(function () {
 
 // Techniques
 Route::controller(TechniqueController::class)->group(function () {
-    Route::get('/technique/{challenge}', 'index')->name('admin.techniques.index');
-    Route::get('/technique/challenges/{challenge}/create', 'create')->name('admin.techniques.create');
-    Route::post('/technique/challenges/{challenge}/store', 'store')->name('admin.techniques.store');
-    Route::get('/technique/{technique}/challenges/{challenge}edit', 'edit')->name('admin.techniques.edit');
-    Route::patch('/technique/{technique}/challenges/{challenge}update', 'update')->name('admin.techniques.update');
-    Route::delete('/technique/{technique}/challenges/delete', 'delete')->name('admin.techniques.delete');
+    Route::get('/challenge/{challenge}/techniques/', 'index')->name('admin.techniques.index');
+    Route::get('/challenge/{challenge}/techniques/create', 'create')->name('admin.techniques.create');
+    Route::post('/challenge/{challenge}/techniques/store', 'store')->name('admin.techniques.store');
+    Route::get('/challenge/{challenge}/techniques/{technique}/edit', 'edit')->name('admin.techniques.edit');
+    Route::patch('/challenge/{challenge}/techniques/{technique}/update', 'update')->name('admin.techniques.update');
+    Route::delete('/techniques/{technique}/delete', 'delete')->name('admin.techniques.delete');
 });
 
 //Evaluations
 Route::controller(EvaluationController::class)->group(function () {
-    Route::get('/evaluation/{step}', 'index')->name('admin.evaluations.index');
-    Route::get('/evaluation/steps/{step}/create', 'create')->name('admin.evaluations.create');
-    Route::post('/evaluation/steps/{step}/store', 'store')->name('admin.evaluations.store');
-    Route::get('/evaluation/{evaluation}/steps/{step}/edit', 'edit')->name('admin.evaluations.edit');
-    Route::patch('/evaluation/{evaluation}/steps/{step}/update', 'update')->name('admin.evaluations.update');
-    Route::delete('/evaluation/{evaluation}/steps/delete', 'delete')->name('admin.evaluations.delete');
+    Route::get('/step/{step}/evaluations', 'index')->name('admin.evaluations.index');
+    Route::get('/step/{step}/evaluations/create', 'create')->name('admin.evaluations.create');
+    Route::post('/step/{step}/evaluations/store', 'store')->name('admin.evaluations.store');
+    Route::get('/step/{step}evaluations/{evaluation}//edit', 'edit')->name('admin.evaluations.edit');
+    Route::patch('/step/{step}/evaluations/{evaluation}/update', 'update')->name('admin.evaluations.update');
+    Route::delete('/evaluations/{evaluation}/delete', 'delete')->name('admin.evaluations.delete');
 
 });
 
@@ -195,45 +192,36 @@ Route::controller(NewsCategoryController::class)->group(function () {
 // About us
 Route::controller(AboutController::class)->group(function () {
     Route::get('/abouts', 'index')->name('admin.abouts.index');
-//    Route::get('/abouts/create', 'create')->name('admin.abouts.create');
     Route::post('/abouts', 'store')->name('admin.abouts.store');
-//    Route::get('/abouts/{about}/edit', 'edit')->name('admin.abouts.edit');
     Route::patch('/abouts/{about}', 'update')->name('admin.abouts.update');
-//    Route::delete('/abouts/{about}/delete', 'delete')->name('admin.abouts.delete');
 });
 
 //Contacts
 Route::controller(ContactController::class)->group(function () {
     Route::get('/contacts', 'index')->name('admin.contacts.index');
-//    Route::get('/contacts/create', 'create')->name('admin.contacts.create');
     Route::post('/contacts', 'store')->name('admin.contacts.store');
-//    Route::get('/contacts/{contact}/edit', 'edit')->name('admin.contacts.edit');
     Route::patch('/contacts/{contact}', 'update')->name('admin.contacts.update');
-//    Route::delete('/contacts/{contact}/delete', 'delete')->name('admin.contacts.delete');
 });
 
 // Setting
 Route::controller(SettingController::class)->group(function () {
     Route::get('/settings', 'index')->name('admin.settings.index');
-//    Route::get('/settings/create', 'create')->name('admin.settings.create');
     Route::post('/settings', 'store')->name('admin.settings.store');
-//    Route::get('/settings/{setting}/edit', 'edit')->name('admin.settings.edit');
     Route::patch('/settings/{setting}', 'update')->name('admin.settings.update');
-//    Route::delete('/settings/{setting}/delete', 'delete')->name('admin.settings.delete');
 });
 
-// Criteria
+// Criterias
 Route::controller(CriteriaController::class)->group(function () {
-    Route::get('/criteria', 'index')->name('admin.criteria.index');
-    Route::get('/criteria/create', 'create')->name('admin.criteria.create');
-    Route::post('/criteria', 'store')->name('admin.criteria.store');
-    Route::get('/criteria/{criteria}/show', 'show')->name('admin.criteria.show');
-    Route::get('/criteria/{criteria}/edit', 'edit')->name('admin.criteria.edit');
-    Route::patch('/criteria/{criteria}', 'update')->name('admin.criteria.update');
-    Route::delete('/criteria/{criteria}/delete', 'delete')->name('admin.criteria.delete');
+    Route::get('/criterias', 'index')->name('admin.criteria.index');
+    Route::get('/criterias/create', 'create')->name('admin.criteria.create');
+    Route::post('/criterias', 'store')->name('admin.criteria.store');
+    Route::get('/criterias/{criteria}/show', 'show')->name('admin.criteria.show');
+    Route::get('/criterias/{criteria}/edit', 'edit')->name('admin.criteria.edit');
+    Route::patch('/criterias/{criteria}', 'update')->name('admin.criteria.update');
+    Route::delete('/criterias/{criteria}/delete', 'delete')->name('admin.criteria.delete');
 });
 
-// Test
+// Tests
 Route::controller(TestController::class)->group(function () {
     Route::get('/tests', 'index')->name('admin.tests.index');
     Route::get('/tests/create', 'create')->name('admin.tests.create');
@@ -244,7 +232,7 @@ Route::controller(TestController::class)->group(function () {
     Route::delete('/tests/{test}/delete', 'delete')->name('admin.tests.delete');
 });
 
-// TestQuestion
+// Test Questions
 Route::controller(TestQuestionController::class)->group(function () {
     Route::get('/testQuestions', 'index')->name('admin.testQuestions.index');
     Route::get('/test/{test}/testQuestions/create', 'create')->name('admin.testQuestions.create');
@@ -255,6 +243,7 @@ Route::controller(TestQuestionController::class)->group(function () {
     Route::delete('/testQuestions/{testQuestion}/delete', 'delete')->name('admin.testQuestions.delete');
 });
 
+// Notices
 Route::controller(NoticeController::class)->group(function () {
     Route::get('/notices', 'index')->name('admin.notices.index');
     Route::get('/notices/create', 'create')->name('admin.notices.create');
@@ -265,12 +254,6 @@ Route::controller(NoticeController::class)->group(function () {
     Route::delete('/notices/{notice}/delete', 'delete')->name('admin.notices.delete');
 });
 
-Route::controller(ResultController::class)->group(function () {
-    Route::get('stepResult/competition/{competition}/step/{step}', 'step')->name('admin.stepResult.index');
-    Route::get('challengeResult/competition/{competition}/challenge/{challenge}', 'challenge')->name('admin.challengeResult.index');
-    Route::get('competitionResult/competition/{competition}', 'competition')->name('admin.competitionResult.index');
-});
-
 // Ajax
 Route::controller(AjaxController::class)->group(function () {
     Route::post('/province/cities', 'showCitiesByProvince')->name('admin.ajax.cities');
@@ -279,13 +262,23 @@ Route::controller(AjaxController::class)->group(function () {
     Route::post('/provincials', 'showProvincials')->name('admin.ajax.provincials');
 });
 
-//
+// Step Schedules
 Route::controller(ScheduleController::class)->group(function () {
-    Route::get('/schedules/{step}', 'index')->name('admin.schedules.index');
-    Route::get('/schedules/steps/{step}/create', 'create')->name('admin.schedules.create');
-    Route::post('/schedules/steps/{step}/store', 'store')->name('admin.schedules.store');
-    Route::get('/schedules/{schedule}/steps/{step}/edit', 'edit')->name('admin.schedules.edit');
-    Route::patch('/schedules/{schedule}/steps/{step}/update', 'update')->name('admin.schedules.update');
+    Route::get('/steps/{step}/schedules', 'index')->name('admin.schedules.index');
+    Route::get('/step/{step}/schedules/create', 'create')->name('admin.schedules.create');
+    Route::post('/step/{step}/schedules/store', 'store')->name('admin.schedules.store');
+    Route::get('/step/{step}/schedules/{schedule}/edit', 'edit')->name('admin.schedules.edit');
+    Route::patch('/step/{step}/schedules/{schedule}/update', 'update')->name('admin.schedules.update');
     Route::delete('/schedules/{schedule}/delete', 'delete')->name('admin.schedules.delete');
+});
 
+// Scores
+Route::controller(ScoreController::class)->group(function () {
+    Route::get('/step/{step}/scores', 'index')->name('admin.scores.index');
+    Route::get('/step/{step}/scores/create', 'create')->name('admin.scores.create');
+    Route::post('/step/{step}/scores', 'store')->name('admin.scores.store');
+    Route::get('/step/{step}/scores/{score}/show', 'show')->name('admin.scores.show');
+    Route::get('/step/{step}/scores/{score}/edit', 'edit')->name('admin.scores.edit');
+    Route::patch('/step/{step}/scores/{score}', 'update')->name('admin.scores.update');
+    Route::delete('/step/{step}/scores/{score}/delete', 'delete')->name('admin.scores.delete');
 });
