@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CompetitionRequest;
+use Exception;
+use App\Models\User;
+use App\Models\Group;
+use App\Models\AgeRange;
+use App\Models\Examiner;
 use App\Models\Challenge;
 use App\Models\Competition;
-use App\Models\User;
-use Exception;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Participant;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\CompetitionRequest;
+use Illuminate\Database\Eloquent\Builder;
 
 class CompetitionController extends Controller
 {
@@ -167,4 +172,44 @@ class CompetitionController extends Controller
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
+
+    public function charts(Competition $competition)
+    {
+        $chartNumberUsersChallange = $this->chartNumberUsersChallange($competition);
+
+        return view('admin.competitions.charts', ['chartNumberUsersChallange' => $chartNumberUsersChallange]);
+    }
+
+    public function chartNumberUsersChallange($competition)
+    {
+        $groups = Group::where('competition_id', $competition->id)->get();
+
+        foreach ($groups as $group)
+        {
+            $fields[] = DB::table('field_group')->select('field_id')->where('group_id', $group->id)->first();
+        }
+
+        foreach($fields as $field)
+        {
+            $challenges = Challenge::with('age')->where('field_id', $field->field_id)->groupBy('field_id')->get();
+
+            foreach ($challenges as $challenge)
+            {
+                $participantCount = Participant::where('challenge_id', $challenge->id)->count();
+                $participantIds   = Participant::where('challenge_id', $challenge->id)->pluck('id');
+                $examinerCount    = Examiner::whereIn('participant_id', $participantIds)->count();
+
+                $ageRange = $challenge->age->title ?? '';
+
+                $result[] = [
+                    'field' => $challenge->field->title,
+                    $ageRange .' '. 'ثبت نام کنندگان' => $participantCount,
+                    $ageRange .' ' . 'شرکت کنندگان'    => $examinerCount,
+                ];
+            }
+        }
+
+        return json_encode($result);
+    }
+
 }
