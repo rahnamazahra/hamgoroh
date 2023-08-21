@@ -50,22 +50,39 @@
                         <tr>
                             <th class="text-center">ردیف</th>
                             <th class="text-center">کاربر</th>
-                            <th class="text-center">مرحله</th>
-                            <th class="text-center">نمره</th>
-                            <th class="text-center">نمره نهایی در چالش</th>
+                            @foreach($steps as $step)
+                                <th class="text-center">{{ $step->title }}</th>
+                            @endforeach
+                            <th class="text-center">نمره نهایی</th>
+                            <th class="text-center">نمره از 100</th>
                         </tr>
                         </thead>
                         <tbody>
                         @forelse ($results as $key => $result)
-                            @php
-                                $row_number = ($results->currentPage() -1) * ($results->perPage()) + ($key + 1);
-                                @endphp
                             <tr>
-                                <td class="text-center">{{ $row_number }}</td>
-                                <td class="text-center">{{ $result->examiner->participant->user->first_name . ' ' .$result->examiner->participant->user->last_name }}</td>
-                                <td class="text-center">{{ $result->step->title }}</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">20</td>
+                                <td class="text-center">{{ $key }}</td>
+                                @php
+                                $participant = \App\Models\Participant::with('user')->find($result['participant']);
+                                $total = 0;
+                                $sum = 0;
+                                @endphp
+                                <td class="text-center">{{ $participant->user->fullName() }}</td>
+                                @foreach($result['scores'] as $score)
+                                    <td class="text-center">{{ $score['score'] }}</td>
+                                    @php
+                                    if ($score['score'] != '-'){
+                                    $weight = \App\Models\Step::find($score['step_id'])->weight;
+                                    $total += (int)$score['score'] * (int)$weight;
+                                    if ($weight != 1)
+                                        $sum += $weight;
+                                    }
+                                    @endphp
+                                @endforeach
+                                @php
+                                    $av = ($sum > 0) ? $total / $sum : 0;
+                                @endphp
+                                <td class="text-center">{{ $total . '/' . $sum }}</td>
+                                <td class="text-center">{{ $result['total_score'] }}</td>
                             </tr>
                         @empty
                             <tr>

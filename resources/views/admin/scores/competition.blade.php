@@ -55,16 +55,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse ($results as $key => $result)
-                            @php
-                                $row_number = ($results->currentPage() -1) * ($results->perPage()) + ($key + 1);
-                                @endphp
+                        @forelse ($participants as $key => $participant)
+{{--                            @php--}}
+{{--                                $row_number = ($results->currentPage() -1) * ($results->perPage()) + ($key + 1);--}}
+{{--                                @endphp--}}
                             <tr>
-                                <td class="text-center">{{ $row_number }}</td>
-                                <td class="text-center">{{ $result->participant->user->first_name . ' ' .$result->participant->user->last_name }}</td>
-                                <td class="text-center">{{ $result->participant->field->title }}</td>
-                                <td class="text-center">20</td>
-                            </tr>
+                                <td class="text-center">{{ $key }}</td>
+                                <td class="text-center">{{ $participant->user->fullName() }}</td>
+                                <td class="text-center">{{ $participant->field->title }}</td>
+                                <td class="text-center">{{ $participant->score }}</td>
+=                            </tr>
                         @empty
                             <tr>
                                 <td class="text-center" colspan="10">‌آیتمی برای نمایش وجود ندارد.</td>
