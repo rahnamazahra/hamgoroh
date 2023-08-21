@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\EvaluationReferee;
-use App\Models\Score;
 use App\Models\Step;
+use App\Models\Score;
+use App\Models\Examiner;
+use App\Models\Challenge;
+use App\Models\Competition;
+use App\Models\Participant;
 use Illuminate\Http\Request;
+use App\Models\EvaluationReferee;
+use App\Http\Controllers\Controller;
 
 class ScoreController extends Controller
 {
@@ -18,96 +22,88 @@ class ScoreController extends Controller
         $competition = $step->challenge->getCompetition();
         $evaluation_referees = EvaluationReferee::whereRelation('evaluation', 'step_id', $step->id)->with(['evaluation', 'evaluation.criteria', 'referee'])->orderBy('evaluation_id')->get();
         $criteria_referee_examiner = [];
-        $scores = [];
 
         foreach ($evaluation_referees as $ef)
         {
             $criteria_referee[] = ['criteria_id' => $ef->evaluation->criteria_id, 'criteria_title' => $ef->evaluation->criteria->title, 'referee_id' => $ef->referee_id, 'referee_title' => $ef->referee->fullName()];
         }
 
-        $examiners = $step->examiners->pluck('id');
-
-        foreach ($examiners as $key => $examiner)
+        foreach ($step->examiners as $key => $examiner)
         {
-            $criteria_referee_examiner[]['examiner_id'] = $examiner;
-            $scores1 = Score::whereRelation('examiner', 'step_id', $step->id)->where('examiner_id', $examiner)->get();
-            $scores2 = [];
-            foreach ($scores1 as $score)
+            $scores = [];
+            $criteria_referee_examiner[$key]['examiner_id'] = $examiner->id;
+
+            foreach ($criteria_referee as $cr)
             {
-                $scores2[] = ['criteria_id' => $score->criteria_id ?? '-', 'referee_id' => $score->referee_id ?? '-', 'score' => $score->score ?? '-'];
+                if ($score = Score::where('examiner_id', $examiner->id)->where('criteria_id', $cr['criteria_id'])->where('referee_id', $cr['referee_id'])->first())
+                {
+                    $scores[$cr['criteria_id'].$cr['referee_id']] = $score->score;
+                    // array_push($scores, ['criteria_id' => $cr['criteria_id'], 'referee_id' => $cr['referee_id'], 'score' => $score->score]);
+                }
+                else
+                {
+                    $scores[$cr['criteria_id'].$cr['referee_id']] = '-';
+                    // array_push($scores, ['criteria_referee_id' => $cr['criteria_id'], 'referee_id' => $cr['referee_id'], 'score' => '-']);
+                }
             }
 
-            array_push($criteria_referee_examiner, $scores2);
+            $criteria_referee_examiner[$key]['criteria_referee'] = $scores;
         }
-        dd($criteria_referee_examiner);
-
-        // foreach ($step->examiners as $key => $examiner)
-        // {
-        //     $criteria_referee_examiner[] = $examiner->id;
-
-        //     foreach ($examiner->scores as $score)
-        //     {
-        //         $scores[] = ['criteria_id' => $score->criteria_id , 'referee_id' => $score->referee_id , 'score' => $score->score];
-        //         $ff[] = array_push($criteria_referee_examiner, $scores);
-        //     }
-        //     $criteria_referee_examiners = array_push($criteria_referee_examiner, $scores);
-        //     // foreach ($criteria_referee as $cf)
-        //     // {
-        //     //     $score = Score::where('examiner_id', $examiner->id)->where('criteria_id', $cf['criteria_id'])->where('referee_id', $cf['referee_id'])->first();
-        //     //     $criteria_referee_examiner[$key][] = ['criteria_id' => $score->criteria_id ?? '-', 'referee_id' => $score->referee_id ?? '-', 'score' => $score->score ?? '-'];
-        //     // }
-        // }
-
-        // dd($ff);
+        // dd($criteria_referee_examiner);
 
         return view('admin.scores.step', ['competition' => $competition, 'step' => $step, 'criteria_referee' => $criteria_referee, 'criteria_referee_examiner' => $criteria_referee_examiner]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function challengeResult(Competition $competition, Challenge $challenge)
     {
-        //
-    }
+        $steps = Step::where('challenge_id', $challenge->id)->get();
+        $stepsId = Step::where('challenge_id', $challenge->id)->pluck('id');
+        $participants = Examiner::with(['participant', 'participant.user'])->whereIn('step_id', $stepsId)->orderBy('participant_id')->pluck('participant_id')->unique();
+        $userScores = [];
+        foreach ($steps as $step)
+        {
+            foreach ($participants as $participant)
+            {
+                $score = Examiner::where('participant_id', $participant)->where('step_id', $step->id)->first()->score ?? '-';
+                $userScores[$participant][] = [
+                    'step_id' => $step->id,
+                    'participant' => $participant,
+                    'score' => $score,
+                ];
+            }
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $results = [];
+        foreach ($userScores as $participant => $scoresArray)
+        {
+            $results[] = [
+                'participant' => $participant,
+                'scores' => $scoresArray,
+            ];
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Score $score)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Score $score)
-    {
-        //
-    }
+        foreach ($results as $result)
+        {
+            $total = 0;
+            $sum = 0;
+            foreach ($result['scores'] as $score)
+            {
+                if ($score['score'] != '-')
+                {
+                    $weight = \App\Models\Step::find($score['step_id'])->weight;
+                    $total += (int)$score['score'] * (int)$weight;
+                    if ($weight != 1)
+                        $sum += $weight;
+                }
+            }
+            $average = ($sum > 0) ? $total / $sum : 0;
+            $data = Participant::find($result['participant']);
+            $data->score = round($average, 2);
+            $data->save();
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Score $score)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Score $score)
-    {
-        //
+        Alert('success', 'اطلاعات باموفقیت ویرایش شد.');
+        return redirect()->route('admin.dashboard');
     }
 }

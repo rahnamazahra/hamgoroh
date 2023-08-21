@@ -3,7 +3,7 @@
 @section('title', 'نتایج آزمون')
 
 @section('breadcrumb')
-    <h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">نتایج آزمون {{ $step->challenge->challengeName() }}</h1>
+    <h1 class="d-flex text-dark fw-bolder fs-3 align-items-center my-1">نتایج آزمون {{ $step->challenge->challengeName() }} مرحله {{ $step->title }}</h1>
     <span class="h-20px border-gray-300 border-start mx-4"></span>
     <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
         <li class="breadcrumb-item text-muted">
@@ -24,7 +24,7 @@
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-dark">نتایج آزمون {{ $step->challenge->challengeName() }}</li>
+        <li class="breadcrumb-item text-dark">نتایج آزمون {{ $step->challenge->challengeName() }} مرحله {{ $step->title }}</li>
     </ul>
 @endsection
 
@@ -51,22 +51,6 @@
             <div class="table-responsive">
                 <table id="scores_list" class="table table-striped gy-7 gs-7">
                     <thead>
-                        {{-- <tr>
-                            <th class="text-center">ردیف</th>
-                            <th class="text-center">نام کاربر</th>
-                            <th class="text-center">کدملی کاربر</th>
-                            <th class="text-center">استان</th>
-                            @foreach ($step->evaluations as $evaluation)
-                                @foreach ($evaluation->evaluationReferees as $ef)
-                                    <th class="text-center">{{ $evaluation->criteria->title }} - {{ $ef->referee->fullName() }}</th>
-                                @endforeach
-                                @if ($evaluation->refereeing_type == 'average')
-                                    <th class="text-center">میانگین {{ $evaluation->criteria->title }}</th>
-                                @endif
-                            @endforeach
-                            <th class="text-center">نمره</th>
-                            <th class="text-center">وضعیت قبولی</th>
-                        </tr> --}}
                         <tr>
                             <th class="text-center">ردیف</th>
                             <th class="text-center">نام کاربر</th>
@@ -85,15 +69,36 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            @forelse ($criteria_referee_examiner as $key => $cre)
-                                <th>{{ $key }}</th>
-                                <th>{{ \App\Models\Examiner::find($cre['user_id'])->getUser()->fullName() }}</th>
-                                <th>{{ \App\Models\Examiner::find($cre['user_id'])->getUser()->national_code }}</th>
-                            @empty
+                        @forelse ($criteria_referee_examiner as $key => $cre)
+                            <tr>
+                                @php
+                                    $examiner = \App\Models\Examiner::find($cre['examiner_id']);
+                                    $user = $examiner->getUser();
+                                @endphp
+                                <th class="text-center">{{ $key }}</th>
+                                <th class="text-center">{{ $user->fullName() }}</th>
+                                <th class="text-center">{{ $user->national_code }}</th>
+                                <th class="text-center">{{ $user->province->title }}</th>
+                                @foreach ($criteria_referee as $cr)
+                                    <th class="text-center">{{ $cre['criteria_referee'][$cr['criteria_id'].$cr['referee_id']] }}</th>
+                                @endforeach
+                                <th class="text-center">
+                                    @php
 
-                            @endforelse
-                        </tr>
+                                    @endphp
+                                </th>
+                                <th class="text-center">{{ $cre['score'] }}</th>
+                                <th class="text-center">
+                                    @if ($examiner->is_passed == 0)
+                                        <span class="badge badge-light-success">قبول</span>
+                                    @else
+                                        <span class="badge badge-light-danger">رد شده</span>
+                                    @endif
+                                </th>
+                            </tr>
+                        @empty
+                            <span>آیتمی ثبت نشده است</span>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

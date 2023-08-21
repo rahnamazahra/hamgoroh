@@ -6,8 +6,10 @@ namespace App\Models;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -15,7 +17,7 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    protected $fillable = ['first_name', 'last_name', 'is_active', 'phone', 'password', 'national_code', 'gender', 'city_id','province_id', 'birthday_date', 'meta', 'creator'];
+    protected $fillable = ['first_name', 'last_name', 'is_active', 'phone', 'password', 'national_code', 'gender', 'province_id', 'city_id', 'birthday_date', 'meta', 'creator'];
     protected $hidden   = ['password'];
     protected $casts    = ['phone_verified_at' => 'datetime','password' => 'hashed',];
 
@@ -24,7 +26,7 @@ class User extends Authenticatable
         return $this->first_name.' '.$this->last_name;
     }
 
-    public function roles()
+    public function roles() : BelongsToMany
     {
         return $this->belongsToMany(Role::class);
     }
@@ -39,17 +41,17 @@ class User extends Authenticatable
         return $this->hasRole($permission->roles);
     }
 
-    public function provin()
+    public function province() : BelongsTo
     {
-        return $this->belongsTo(Province::class, 'province_id');
+        return $this->belongsTo(Province::class);
     }
 
-    public function city()
+    public function city() : BelongsTo
     {
-        return $this->belongsTo(City::class, 'city_id');
+        return $this->belongsTo(City::class);
     }
 
-    public function competitions()
+    public function competitions() : HasMany
     {
         return $this->hasMany(Competition::class);
     }
@@ -59,9 +61,9 @@ class User extends Authenticatable
         return $this->morphMany(File::class, 'fileable');
     }
 
-    public function evaluation_referee()
+    public function evaluation_referee() : HasMany
     {
-        return $this->hasMany(EvaluationReferee::class);
+        return $this->hasMany(EvaluationReferee::class, 'referee_id');
     }
 
 }

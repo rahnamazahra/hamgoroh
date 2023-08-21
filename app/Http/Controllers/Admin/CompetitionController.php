@@ -61,7 +61,8 @@ class CompetitionController extends Controller
 
             Alert('success', 'اطلاعات باموفقیت ثبت شد.');
             return redirect()->route('admin.competitions.edit', ['competition' => $competition]);
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
             return redirect()->route('admin.competitions.index');
         }
@@ -78,7 +79,7 @@ class CompetitionController extends Controller
         $letter_method = $competition->files->where('related_field', 'letter_method')->pluck('path')->first();
         $banner = $competition->files->where('related_field', 'banner')->pluck('path')->first();
 
-        return view('admin.competitions.informations.edit', ['competition' => $competition, 'users' => $users, 'letter_method' => $letter_method, 'banner' => $banner]);
+        return view('admin.competitions.edit', ['competition' => $competition, 'users' => $users, 'letter_method' => $letter_method, 'banner' => $banner]);
     }
 
     public function show(Competition $competition)
@@ -109,25 +110,31 @@ class CompetitionController extends Controller
                 'creator' => Auth::id(),
             ]);
 
-            if ($request->hasFile('letter_method')) {
+            if ($request->hasFile('letter_method'))
+            {
                 $file = $competition->files->where('related_field', 'letter_method')->where('fileable_id', $competition->id)->first();
 
-                if ($file) {
+                if ($file)
+                {
                     purge($file->path);
                     $file->delete();
                 }
+
                 $letter_method = $request->file('letter_method');
                 $storage_dir = '/competition';
                 uploadFile($storage_dir, ['letter_method' => $letter_method], ['fileable_id' => $competition->id, 'fileable_type' => Competition::class]);
             }
 
-            if ($request->hasFile('banner')) {
+            if ($request->hasFile('banner'))
+            {
                 $file = $competition->files->where('related_field', 'banner')->where('fileable_id', $competition->id)->first();
 
-                if ($file) {
+                if ($file)
+                {
                     purge($file->path);
                     $file->delete();
                 }
+
                 $banner = $request->file('banner');
                 $storage_dir = '/competition';
                 uploadFile($storage_dir, ['banner' => $banner], ['fileable_id' => $competition->id, 'fileable_type' => Competition::class]);
@@ -140,12 +147,6 @@ class CompetitionController extends Controller
             Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
             return redirect()->route('admin.competitions.index');
         }
-//        catch (\Exception $exception) {
-//            return response()->json([
-//                'message' => $exception->getMessage()
-//            ], 500);
-//        }
-
     }
 
     /**
@@ -155,22 +156,33 @@ class CompetitionController extends Controller
     {
         try {
             $letter_method = $competition->files->where('related_field', 'letter_method')->where('fileable_id', $competition->id)->first();
-            if ($letter_method) {
+
+            if ($letter_method)
+            {
                 purge($letter_method->path);
                 $letter_method->delete();
             }
 
             $banner = $competition->files->where('related_field', 'banner')->where('fileable_id', $competition->id)->first();
-            if ($banner) {
+
+            if ($banner)
+            {
                 purge($banner->path);
                 $banner->delete();
             }
 
             $competition->delete();
             return response()->json(['success' => true], 200);
-        } catch (\Exception $e) {
+        }
+        catch (Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
+    }
+
+
+    public function result(Competition $competition)
+    {
+        return view('admin.competitions.result', ['competition' => $competition]);
     }
 
     public function charts(Competition $competition)

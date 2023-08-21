@@ -117,6 +117,7 @@ Route::controller(CompetitionController::class)->group(function () {
     Route::patch('/competitions/{competition}', 'update')->name('admin.competitions.update');
     Route::delete('/competitions/{competition}/delete', 'delete')->name('admin.competitions.delete');
     Route::get('/competitions/{competition}/charts', 'charts')->name('admin.competitions.charts');
+    Route::get('/competitions/{competition}/results', 'result')->name('admin.competitions.result');
 
 });
 
@@ -139,6 +140,7 @@ Route::controller(ChallengeController::class)->group(function () {
     Route::post('/competition/{competition}/challenge/{challenge}/info/store', 'storeInfo')->name('admin.challenges.info.store');
     Route::get('/competition/{competition}/challenge/{challenge}/schedule/create', 'createSchedule')->name('admin.challenges.schedule.create');
     Route::post('/competition/challenge/{challenge}/schedule/store', 'StoreSchedule')->name('admin.challenges.schedule.store');
+    Route::delete('/challenges/{challenge}/results', 'result')->name('admin.challenges.result');
 });
 
 // steps
@@ -147,6 +149,7 @@ Route::controller(StepController::class)->group(function () {
     Route::post('/competition/{competition}/steps/store', 'store')->name('admin.steps.store');
     Route::get('/competition/{competition}/steps/edit', 'edit')->name('admin.steps.edit');
     Route::patch('/competition/{competition}/steps/update', 'update')->name('admin.steps.update');
+    Route::get('/steps/{step}/results', 'result')->name('admin.steps.result');
 });
 
 // Techniques

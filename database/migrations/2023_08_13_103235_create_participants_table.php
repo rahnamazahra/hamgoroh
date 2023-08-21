@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('competition_id')->comment('شناسه دوره');
             $table->unsignedBigInteger('field_id')->comment('شناسه رشته');
             $table->unsignedBigInteger('challenge_id')->comment('شناسه چالش');
+            $table->float('score', 4, 2)->nullable()->comment('نمره');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();

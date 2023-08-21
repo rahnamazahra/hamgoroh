@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\GroupRequest;
-use App\Models\Competition;
-use App\Models\Field;
+use Exception;
 use App\Models\File;
 use App\Models\Group;
-use Exception;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Field;
+use App\Models\Competition;
 use Illuminate\Http\Request;
+use App\Http\Requests\GroupRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class GroupController extends Controller
 {
@@ -35,7 +36,7 @@ class GroupController extends Controller
     {
         $fields = Field::get();
 
-        return view('admin.competitions.groups.index', ['fields' => $fields, 'competition' => $competition]);
+        return view('admin.groups.index', ['fields' => $fields, 'competition' => $competition]);
     }
 
     /**
@@ -45,6 +46,7 @@ class GroupController extends Controller
     {
         try {
             $groupData = $request->groups;
+
             foreach ($groupData as $item)
             {
                 if ($item['title'])
@@ -72,16 +74,11 @@ class GroupController extends Controller
             }
 
             Alert('success', 'اطلاعات باموفقیت ثبت شد.');
-
             return redirect()->route('admin.challenges.create', ['competition' => $competition]);
         }
         catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 500);
-            // Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
-
-            // return redirect()->route('admin.competitions.index');
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.competitions.index');
         }
 
     }
@@ -112,18 +109,24 @@ class GroupController extends Controller
 
                 $item->find($item['id'])->delete();
             }
+
             $data = $request->all();
-            foreach ($data['groups'] as $group) {
-                if ($group['title']) {
+
+            foreach ($data['groups'] as $group)
+            {
+                if ($group['title'])
+                {
                     $groups = Group::create([
                         'competition_id' => $competition->id,
                         'title' => $group['title'],
                     ]);
 
-                    if ($group['image']) {
+                    if ($group['image'])
+                    {
                         $file = File::query()->where('fileable_id', $groups->id)->first();
 
-                        if ($file) {
+                        if ($file)
+                        {
                             purge($file->path);
                             $file->delete();
                         }
@@ -153,7 +156,8 @@ class GroupController extends Controller
         try {
             $group->delete();
             return response()->json(['success' => true], 200);
-        } catch (\Exception $e) {
+        }
+        catch (Exception $e) {
             return response()->json(['success' => false, 'errors' => $e], 400);
         }
     }
