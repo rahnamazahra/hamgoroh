@@ -21,6 +21,11 @@ class Step extends Model
         return $this->hasMany(Evaluation::class);
     }
 
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
+
     public function examiners()
     {
         return $this->hasMany(Examiner::class);

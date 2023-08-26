@@ -31,6 +31,11 @@ class Challenge extends Model
         return $this->morphMany(File::class, 'fileable');
     }
 
+    public function techniques()
+    {
+        return $this->hasMany(Technique::class);
+    }
+
     public function getCompetition()
     {
         return $this->age->competition;

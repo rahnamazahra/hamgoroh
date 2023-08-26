@@ -91,7 +91,7 @@
                                         دانلود شیوه نامه
                                     </a>
                                     @endif
-                                    <a href="{{ route('admin.competitions.result', ['competition' => $competition->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج">نتایج آزمون</a>
+                                    <a href="{{ route('admin.competitions.result', ['competition' => $competition->id]) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج">نتایج آزمون</a>
                                 </div>
                             </div>
                         </div>
@@ -151,10 +151,31 @@
                                         <td></td>
                                         <td class="text-end">
                                             <div class="btn btn-group-sm">
-                                                <a href="{{ route('admin.challenges.info.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اطلاعات تکمیلی"> اطلاعات تکمیلی </a>
-                                                <a href="{{ route('admin.challenges.schedule.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی </a>
-                                                <a href="{{ route('admin.techniques.index', ['challenge' => $challenge->id]) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="تکنیک">تکنیک</a>
-                                                <a href="{{ route('admin.challenges.result', ['challenge' => $challenge->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج">نتایج آزمون</a>
+                                                @if($challenge->description != null)
+                                                <a href="{{ route('admin.challenges.info.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-icon-success btn-active-icon-success btn-active-secondary  btn-text-gray-700" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اطلاعات تکمیلی"><span class="svg-icon svg-icon-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
+                                                    <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>
+                                                    </svg></span>اطلاعات تکمیلی</a>
+                                                @else
+                                                    <a href="{{ route('admin.challenges.info.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-active-dark btn-outline btn-outline-dark btn-text-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اطلاعات تکمیلی">اطلاعات تکمیلی</a>
+                                                @endif
+                                                @if($challenge->result_start_time != null)
+                                                <a href="{{ route('admin.challenges.schedule.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-icon-success btn-active-icon-success btn-active-secondary  btn-text-gray-700" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"><span class="svg-icon svg-icon-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
+                                                    <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>
+                                                    </svg></span>زمان‌بندی</a>
+                                                    @else
+                                                        <a href="{{ route('admin.challenges.schedule.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-active-info btn-outline btn-outline-info btn-text-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی">زمان‌بندی</a>
+                                                    @endif
+                                                    @if($challenge->techniques()->exists())
+                                                <a href="{{ route('admin.techniques.index', ['challenge' => $challenge->id]) }}" class="btn btn-icon-success btn-active-icon-success btn-active-secondary  btn-text-gray-700" data-bs-toggle="tooltip" data-bs-placement="bottom" title="تکنیک"><span class="svg-icon svg-icon-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
+                                                    <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>
+                                                    </svg></span>تکنیک</a>
+                                                    @else
+                                                        <a href="{{ route('admin.techniques.index', ['challenge' => $challenge->id]) }}" class="btn btn-active-warning btn-outline btn-outline-warning btn-text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="تکنیک">تکنیک</a>
+                                                    @endif
+                                                <a href="{{ route('admin.challenges.result', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج">نتایج آزمون</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -168,7 +189,7 @@
                                                 <div class="text-muted fs-7 me-3 text-center fw-bolder"> نوع آزمون مسابقات</div>
                                                 @switch($step->type)
                                                     @case('video_upload')
-                                                        <div class="text-gray-800 fs-7 text-center">آپلود ویدئو</div>
+                                                        <div class="ftext-gray-800 fs-7 text-center">آپلود ویدئو</div>
                                                     @break
                                                     @case('image_upload')
                                                         <div class="text-gray-800 fs-7 text-center">آپلود عکس </div>
@@ -207,9 +228,23 @@
                                             </td>
                                             <td class="text-end">
                                                 <div class="btn btn-group-sm">
-                                                    <a href="{{ route('admin.schedules.index', ['step' => $step->id])}}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی</a>
-                                                    <a href="{{ route('admin.evaluations.index', ['step' => $step->id])}}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="داوری"> داوری</a>
-                                                    <a href="{{ route('admin.steps.result', ['step' => $step->id])}}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج"> نتایج آزمون</a>
+                                                    @if($step->schedules()->exists())
+                                                    <a href="{{ route('admin.schedules.index', ['step' => $step->id])}}" class="btn btn-icon-success btn-active-icon-success btn-active-secondary  btn-text-gray-700" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"><span class="svg-icon svg-icon-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
+                                                    <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>
+                                                    </svg></span> زمان‌بندی</a>
+                                                    @else
+                                                        <a href="{{ route('admin.schedules.index', ['step' => $step->id])}}" class="mx-3 btn btn-active-info btn-outline btn-outline-info btn-text-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"> زمان‌بندی</a>
+                                                    @endif
+                                                    @if($step->evaluations()->exists())
+                                                        <a href="{{ route('admin.evaluations.index', ['step' => $step->id])}}" class="btn btn-sm btn-icon-success btn-active-icon-success btn-active-secondary  btn-text-gray-700" data-bs-toggle="tooltip" data-bs-placement="bottom" title="داوری"><span class="svg-icon svg-icon-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
+                                                    <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>
+                                                    </svg></span> داوری</a>
+                                                    @else
+                                                    <a href="{{ route('admin.evaluations.index', ['step' => $step->id])}}" class="mx-3 btn btn-active-warning btn-outline btn-outline-warning btn-text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="داوری"> داوری</a>
+                                                    @endif
+                                                    <a href="{{ route('admin.steps.result', ['step' => $step->id])}}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج"> نتایج آزمون</a>
                                                 </div>
                                             </td>
                                         </tr>

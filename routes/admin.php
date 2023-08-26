@@ -1,6 +1,7 @@
 <?php
 
 use App\Exports\ExportUsers;
+use App\Http\Controllers\Admin\RefereeController;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AjaxController;
@@ -15,7 +16,6 @@ use App\Http\Controllers\Admin\FieldController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\ScoreController;
 use App\Http\Controllers\Admin\NoticeController;
-use App\Http\Controllers\Admin\ResultController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CriteriaController;
@@ -47,7 +47,7 @@ Route::controller(DashboardController::class)->group(function () {
     Route::get('/', 'adminIndex')->name('admin.dashboard');
     Route::get('/general-dashboard', 'generalIndex')->name('admin.dashboard.general');
     Route::get('/provincial-dashboard', 'provincialIndex')->name('admin.dashboard.provincial');
-    Route::post('/charts/chartNumberUsersProvince', 'chartNumberUsersProvince')->name('charts.chartNumberUsersProvince');
+    Route::post('/charts/chart-number-users-province', 'chartNumberUsersProvince')->name('charts.chart_number_users_province');
 });
 
 // Roles
@@ -78,7 +78,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/{user}/edit', 'edit')->name('admin.users.edit');
     Route::patch('/users/{user}', 'update')->name('admin.users.update');
     Route::delete('/users/{user}/delete', 'delete')->name('admin.users.delete');
-    Route::get('/users/exportUsers', 'exportUsers')->name('admin.users.exporUsers');
+    Route::get('/users/export-users', 'exportUsers')->name('admin.users.export_users');
 });
 
 // Provinces
@@ -140,7 +140,7 @@ Route::controller(ChallengeController::class)->group(function () {
     Route::post('/competition/{competition}/challenge/{challenge}/info/store', 'storeInfo')->name('admin.challenges.info.store');
     Route::get('/competition/{competition}/challenge/{challenge}/schedule/create', 'createSchedule')->name('admin.challenges.schedule.create');
     Route::post('/competition/challenge/{challenge}/schedule/store', 'StoreSchedule')->name('admin.challenges.schedule.store');
-    Route::delete('/challenges/{challenge}/results', 'result')->name('admin.challenges.result');
+    Route::get('/competition/{competition}/challenges/{challenge}/results', 'result')->name('admin.challenges.result');
 });
 
 // steps
@@ -170,7 +170,6 @@ Route::controller(EvaluationController::class)->group(function () {
     Route::get('/step/{step}evaluations/{evaluation}//edit', 'edit')->name('admin.evaluations.edit');
     Route::patch('/step/{step}/evaluations/{evaluation}/update', 'update')->name('admin.evaluations.update');
     Route::delete('/evaluations/{evaluation}/delete', 'delete')->name('admin.evaluations.delete');
-
 });
 
 // News
@@ -201,7 +200,7 @@ Route::controller(AboutController::class)->group(function () {
     Route::patch('/abouts/{about}', 'update')->name('admin.abouts.update');
 });
 
-//Contacts
+//Contact us
 Route::controller(ContactController::class)->group(function () {
     Route::get('/contacts', 'index')->name('admin.contacts.index');
     Route::post('/contacts', 'store')->name('admin.contacts.store');
@@ -279,11 +278,14 @@ Route::controller(ScheduleController::class)->group(function () {
 
 // Scores
 Route::controller(ScoreController::class)->group(function () {
-    Route::get('/step/{step}/scores', 'index')->name('admin.scores.index');
-    Route::get('/step/{step}/scores/create', 'create')->name('admin.scores.create');
-    Route::post('/step/{step}/scores', 'store')->name('admin.scores.store');
-    Route::get('/step/{step}/scores/{score}/show', 'show')->name('admin.scores.show');
-    Route::get('/step/{step}/scores/{score}/edit', 'edit')->name('admin.scores.edit');
-    Route::patch('/step/{step}/scores/{score}', 'update')->name('admin.scores.update');
-    Route::delete('/step/{step}/scores/{score}/delete', 'delete')->name('admin.scores.delete');
+    Route::get('/scores/step/{step}/results', 'stepResult')->name('admin.scores.step');
+    Route::get('/scores/challenge/{stchallengeep}/results', 'challengeResult')->name('admin.scores.challenge');
+});
+
+
+Route::controller(RefereeController::class)->group(function () {
+    Route::get('/refereeing', 'index')->name('admin.referee.index');
+    Route::get('/referee/create/step/{step}/examiner/{examiner?}', 'create')->name('admin.referee.create');
+    Route::post('/referees/step/{step}', 'store')->name('admin.referee.store');
+    Route::get('refereeing/showUsers/step/{step}', 'show')->name('admin.referee.show');
 });

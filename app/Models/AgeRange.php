@@ -17,8 +17,8 @@ class AgeRange extends Model
         return $this->belongsTo(Competition::class);
     }
 
-    public function challenges() : BelongsToMany
+    public function challenges()
     {
-        return $this->belongsToMany(Challenge::class);
+        return $this->hasMany(Challenge::class);
     }
 }

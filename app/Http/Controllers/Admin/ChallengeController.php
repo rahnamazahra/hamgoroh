@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Examiner;
+use App\Models\Participant;
+use App\Models\Step;
 use Exception;
 use App\Models\AgeRange;
 use App\Models\Challenge;
@@ -441,10 +444,34 @@ class ChallengeController extends Controller
         }
     }
 
-    public function result(Challenge $challenge)
+    public function result(Competition $competition, Challenge $challenge)
     {
-        // code
-        return view('admin.challenges.result', ['challenge' => $challenge]);
+        $steps = Step::where('challenge_id', $challenge->id)->get();
+        $stepsId = Step::where('challenge_id', $challenge->id)->pluck('id');
+        $participants = Examiner::with(['participant', 'participant.user'])->whereIn('step_id', $stepsId)->orderBy('participant_id')->pluck('participant_id')->unique();
+
+        $userScores = [];
+        foreach ($steps as $step) {
+            foreach ($participants as $participant) {
+                $score = Examiner::where('participant_id', $participant)->where('step_id', $step->id)->first()->score ?? '-';
+                $userScores[$participant][] = [
+                    'step_id' => $step->id,
+                    'participant' => $participant,
+                    'score' => $score,
+                ];
+            }
+        }
+
+        $results = [];
+        foreach ($userScores as $participant => $scoresArray) {
+            $total_score = Participant::find($participant)->score;
+            $results[] = [
+                'participant' => $participant,
+                'scores' => $scoresArray,
+                'total_score' => $total_score,
+            ];
+        }
+        return view('admin.challenges.result', ['competition' => $competition, 'challenge' => $challenge, 'steps' => $steps, 'results' => $results]);
     }
 
 }
