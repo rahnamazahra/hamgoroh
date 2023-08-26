@@ -22,4 +22,15 @@ class Field extends Model
     {
         return $this->hasMany(Challenge::class);
     }
+
+    public function participants()
+    {
+        return $this->hasMany(Participant::class)->whereDoesntHave('examiner');
+    }
+
+
+    public function examiners()
+    {
+        return $this->hasMany(Participant::class)->whereHas('examiner');
+    }
 }

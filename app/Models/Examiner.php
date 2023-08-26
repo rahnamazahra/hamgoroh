@@ -36,4 +36,9 @@ class Examiner extends Model
     {
         return $this->participant->user;
     }
+     public function field()
+    {
+        return $this->belongsTo(Field::class);
+    }
+
 }

@@ -44,7 +44,7 @@
             </div>
             <div class="card-toolbar">
                 <div class="p-2 align-items-center gap-4">
-                    <a href="{{ route('admin.users.exporUsers') }}" class="btn btn-sm btn-flex btn-outline btn-outline-success btn-active-success fw-bolder" data-bs-toggle="tooltip" data-bs-placement="bottom" title="خروجی Excel">خروجی Excel</a>
+                    <a href="{{ route('admin.users.export_users') }}" class="btn btn-sm btn-flex btn-outline btn-outline-success btn-active-success fw-bolder" data-bs-toggle="tooltip" data-bs-placement="bottom" title="خروجی Excel">خروجی Excel</a>
                     <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="کاربر جدید">+ کابر جدید</a>
                 </div>
             </div>

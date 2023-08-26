@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Exception;
-use App\Models\User;
-use App\Models\Group;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CompetitionRequest;
 use App\Models\AgeRange;
-use App\Models\Examiner;
 use App\Models\Challenge;
 use App\Models\Competition;
+use App\Models\Examiner;
+use App\Models\Field;
+use App\Models\Group;
 use App\Models\Participant;
-use Illuminate\Http\Request;
-use Morilog\Jalali\Jalalian;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\CompetitionRequest;
+use App\Models\User;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Morilog\Jalali\Jalalian;
 
 class CompetitionController extends Controller
 {
@@ -180,48 +181,53 @@ class CompetitionController extends Controller
     }
 
 
-    public function result(Competition $competition)
+    public function result(Request $request, Competition $competition)
     {
-        return view('admin.competitions.result', ['competition' => $competition]);
+        $item = $request->query('search_item');
+        $participants = Participant::with(['user', 'field'])->where('competition_id', $competition->id)
+            ->when($item, function (Builder $builder) use ($item) {
+                $builder->whereRelation('user', 'last_name', 'LIKE', "%{$item}%")
+                    ->orWhereRelation('user', 'first_name', 'LIKE', "%{$item}%")
+                    ->orWhereRelation('user', 'national_code', 'LIKE', "%{$item}%")
+                    ->orWhereRelation('field', 'title', 'LIKE', "%{$item}%");
+            })
+            ->paginate(10);
+        return view('admin.competitions.result', ['competition' => $competition, 'participants' => $participants]);
     }
 
     public function charts(Competition $competition)
     {
-        $chartNumberUsersChallange = $this->chartNumberUsersChallange($competition);
-
+        $chartNumberUsersChallange = $this->getFields($competition);
+        dd($chartNumberUsersChallange);
         return view('admin.competitions.charts', ['chartNumberUsersChallange' => $chartNumberUsersChallange]);
     }
 
-    public function chartNumberUsersChallange($competition)
+    public function getFields(Competition $competition)
     {
-        $groups = Group::where('competition_id', $competition->id)->get();
+        $fields = Field:: whereHas('groups', fn($query) => $query->whereIn('groups.id', $competition->groups()->pluck('id')))
+        ->get()
+        ->toArray();
 
-        foreach ($groups as $group)
-        {
-            $fields[] = DB::table('field_group')->select('field_id')->where('group_id', $group->id)->first();
-        }
+        $x = $this->getParticipants($fields, $competition);
+        return $x;
+
+    }
+
+    public function getParticipants($fields, Competition $competition)
+    {
+        $ages = $competition->ages();
+        $participants = [];
 
         foreach($fields as $field)
         {
-            $challenges = Challenge::with('age')->where('field_id', $field->field_id)->groupBy('field_id')->get();
-
-            foreach ($challenges as $challenge)
-            {
-                $participantCount = Participant::where('challenge_id', $challenge->id)->count();
-                $participantIds   = Participant::where('challenge_id', $challenge->id)->pluck('id');
-                $examinerCount    = Examiner::whereIn('participant_id', $participantIds)->count();
-
-                $ageRange = $challenge->age->title ?? '';
-
-                $result[] = [
-                    'field' => $challenge->field->title,
-                    $ageRange .' '. 'ثبت نام کنندگان' => $participantCount,
-                    $ageRange .' ' . 'شرکت کنندگان'    => $examinerCount,
-                ];
-            }
+            $participants = Participant::where('competition_id', $competition->id)->where('field_id', $field->id)->get();
         }
 
-        return json_encode($result);
+        retrun $participants;
+
     }
 
+
 }
+
+

@@ -31,7 +31,7 @@ class UserController extends Controller
                         ->orWhere('last_name', 'LIKE', "%{$search_item}%")
                         ->orWhere('phone', 'LIKE', "%{$search_item}%")
                         ->orWhere('national_code', 'LIKE', "%{$search_item}%")
-                        ->orWhereRelation('city', 'title', 'LIKE', "%{$search_item}%");
+                        ->orWhereRelation('province', 'title', 'LIKE', "%{$search_item}%");
             });
         }
 
@@ -73,7 +73,7 @@ class UserController extends Controller
         {
             $province_item = $request->query('province_item');
 
-            $user->whereRelation('city', 'province_id', $province_item);
+            $user->whereRelation('province', 'province_id', $province_item);
         }
 
         $users = $user->orderBy('last_name')->orderBy('first_name')->paginate(10)->withQueryString();
@@ -224,7 +224,7 @@ class UserController extends Controller
 
        parse_str($queryString, $queryParams);
 
-       $users = User::select('first_name', 'last_name', 'is_active', 'phone', 'city_id', 'national_code', 'gender', 'birthday_date')->with(['roles', 'city.province', 'files']);
+       $users = User::select('first_name', 'last_name', 'is_active', 'phone', 'province_id', 'national_code', 'gender', 'birthday_date')->with(['roles', 'city.province', 'files']);
 
         if ($queryParams['search_item'])
         {
@@ -234,7 +234,7 @@ class UserController extends Controller
                         ->orWhere('last_name', 'LIKE', "%{$search_item}%")
                         ->orWhere('phone', 'LIKE', "%{$search_item}%")
                         ->orWhere('national_code', 'LIKE', "%{$search_item}%")
-                        ->orWhereRelation('city', 'title', 'LIKE', "%{$search_item}%");
+                        ->orWhereRelation('province', 'title', 'LIKE', "%{$search_item}%");
             });
         }
 
@@ -278,9 +278,8 @@ class UserController extends Controller
         {
             $province_item = $queryParams['province_item'];
 
-            $users->whereHas('city', function ($q) use ($province_item) {
-                $q->where('province_id', $province_item);
-            });
+            $users->where('province_id', $province_item);
+
         }
 
         $users = $users->get();

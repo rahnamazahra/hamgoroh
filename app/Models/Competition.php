@@ -32,4 +32,9 @@ class Competition extends Model
     {
         return $this->morphMany(File::class, 'fileable');
     }
+
+    public function participants()
+    {
+        return $this->hasMany(Participant::class);
+    }
 }

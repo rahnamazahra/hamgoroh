@@ -139,7 +139,7 @@
 
         $.ajax({
             type: "POST",
-            url: "{{ route('charts.chartNumberUsersProvince') }}",
+            url: "{{ route('charts.chart_number_users_province') }}",
             data: {  _token: '{{csrf_token()}}' },
             success: function (response)
             {

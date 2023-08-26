@@ -84,7 +84,28 @@
 
     legend.valueLabels.template.set("forceHidden", true);
 
-    var data = {{ $chartNumberUsersChallange }};
+    var data = [];
+
+    const datachartNumberUsersChallange = {!! json_encode($chartNumberUsersChallange) !!};
+
+    for(let i = 0; i < datachartNumberUsersChallange.length; i++)
+    {
+        let newObj = {};
+
+        newObj['field'] = datachartNumberUsersChallange[i]["field"];
+
+        const participants = datachartNumberUsersChallange[i]["participants"];
+        for (let [key, value] of Object.entries(participants)) {
+            newObj[key] = value;
+        }
+
+        const examiners = datachartNumberUsersChallange[i]["examiners"];
+        for (let [key, value] of Object.entries(examiners)) {
+            newObj[key] = value;
+        }
+
+        data.push(newObj);
+    }
 
     var xRenderer = am5xy.AxisRendererX.new(root, {
         cellStartLocation: 0.1,
@@ -178,8 +199,33 @@
         });
     }
 
-    makeSeries("اسم نمایشی 1", "europe", false);
-    makeSeries("اسم نمایشی 2", "namerica", true);
+
+    //make series
+    for(let i = 0; i < datachartNumberUsersChallange.length; i++)
+    {
+        const participants = datachartNumberUsersChallange[i]["participants"];
+        let j = 0;
+        for (let [key, value] of Object.entries(examiners)) {
+            if (j === 0) {
+                makeSeries(key, key, false);
+            } else {
+                makeSeries(key, key, true);
+            }
+            j++;
+        }
+
+        const examiners = datachartNumberUsersChallange[i]["examiners"];
+        let k = 0;
+
+        for (let [key, value] of Object.entries(examiners)) {
+            if (k === 0) {
+                makeSeries(key, key, false);
+            } else {
+                makeSeries(key, key, true);
+            }
+            k++;
+        }
+    }
 
     chart.appear(1000, 100);
 
