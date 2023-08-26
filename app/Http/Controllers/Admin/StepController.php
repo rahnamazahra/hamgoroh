@@ -131,41 +131,96 @@ class StepController extends Controller
     }
 
 
-    public function result(Step $step)
+    public function result($step)
     {
+        $step = Step::find($step)->with(['challenge', 'evaluations', 'evaluations.evaluationReferees']);
         $competition = $step->challenge->getCompetition();
         $evaluation_referees = EvaluationReferee::whereRelation('evaluation', 'step_id', $step->id)->with(['evaluation', 'evaluation.criteria', 'referee'])->orderBy('evaluation_id')->get();
         $criteria_referee_examiner = [];
 
-        foreach ($evaluation_referees as $ef)
-        {
-            $criteria_referee[] = ['criteria_id' => $ef->evaluation->criteria_id, 'criteria_title' => $ef->evaluation->criteria->title, 'referee_id' => $ef->referee_id, 'referee_title' => $ef->referee->fullName()];
-        }
+        // foreach ($evaluation_referees as $ef)
+        // {
+        //     $criteria_referee[] = ['criteria_id' => $ef->evaluation->criteria_id, 'criteria_title' => $ef->evaluation->criteria->title, 'referee_id' => $ef->referee_id, 'referee_title' => $ef->referee->fullName()];
+        // }
 
-        foreach ($step->examiners as $key => $examiner)
-        {
-            $scores = [];
-            $criteria_referee_examiner[$key]['examiner_id'] = $examiner->id;
+        // foreach ($step->examiners as $key => $examiner)
+        // {
+        //     $scores = [];
+        //     $criteria_referee_examiner[$key]['examiner_id'] = $examiner->id;
 
-            foreach ($criteria_referee as $cr)
-            {
-                if ($score = Score::where('examiner_id', $examiner->id)->where('criteria_id', $cr['criteria_id'])->where('referee_id', $cr['referee_id'])->first())
-                {
-                    $scores[$cr['criteria_id'].$cr['referee_id']] = $score->score;
-                    // array_push($scores, ['criteria_id' => $cr['criteria_id'], 'referee_id' => $cr['referee_id'], 'score' => $score->score]);
-                }
-                else
-                {
-                    $scores[$cr['criteria_id'].$cr['referee_id']] = '-';
-                    // array_push($scores, ['criteria_referee_id' => $cr['criteria_id'], 'referee_id' => $cr['referee_id'], 'score' => '-']);
-                }
-            }
+        //     foreach ($criteria_referee as $cr)
+        //     {
+        //         if ($score = Score::where('examiner_id', $examiner->id)->where('criteria_id', $cr['criteria_id'])->where('referee_id', $cr['referee_id'])->first())
+        //         {
+        //             $scores[$cr['criteria_id'].$cr['referee_id']] = $score->score;
+        //             // array_push($scores, ['criteria_id' => $cr['criteria_id'], 'referee_id' => $cr['referee_id'], 'score' => $score->score]);
+        //         }
+        //         else
+        //         {
+        //             $scores[$cr['criteria_id'].$cr['referee_id']] = '-';
+        //             // array_push($scores, ['criteria_referee_id' => $cr['criteria_id'], 'referee_id' => $cr['referee_id'], 'score' => '-']);
+        //         }
+        //     }
 
-            $criteria_referee_examiner[$key]['criteria_referee'] = $scores;
-            $criteria_referee_examiner[$key]['score'] = $examiner->score;
-        }
+        //     $criteria_referee_examiner[$key]['criteria_referee'] = $scores;
+        //     $criteria_referee_examiner[$key]['score'] = $examiner->score;
+        // }
+
+        // foreach ($step->evaluations as $index => $evaluation)
+        // {
+        //     foreach ($evaluation->evaluationReferees as $evaluation_referee)
+        //     {
+        //         $criterias_referees[]['criteria_referee'] = ['criteria_id' => $evaluation_referee->evaluation->criteria_id, 'criteria_title' => $evaluation_referee->evaluation->criteria->title, 'referee_id' => $evaluation_referee->referee_id, 'referee_title' => $evaluation_referee->referee->fullName()];
+        //     }
+
+        //     if ($evaluation->refereeing_type == 'average')
+        //     {
+        //         $criterias_referees[]['criteria_average'] = ['criteria_id' => $evaluation_referee->evaluation->criteria_id, 'criteria_title' => $evaluation_referee->evaluation->criteria->title];
+        //     }
+        // }
+
+        // foreach ($step->examiners as $key => $examiner)
+        // {
+        //     $scores = [];
+        //     $criteria_referee_examiner[$key]['examiner_id'] = $examiner->id;
+
+        //     foreach ($criterias_referees as $cr)
+        //     {
+        //         if (array_key_exists('criteria_referee', $cr))  // Criterias and Referees
+        //         {
+        //             if ($score = Score::where('examiner_id', $examiner->id)->where('criteria_id', $cr['criteria_referee']['criteria_id'])->where('referee_id', $cr['criteria_referee']['referee_id'])->first())
+        //             {
+        //                 $scores[$cr['criteria_referee']['criteria_id'].$cr['criteria_referee']['referee_id']] = $score->score;
+        //             }
+        //             else
+        //             {
+        //                 $scores[$cr['criteria_referee']['criteria_id'].$cr['criteria_referee']['referee_id']] = '-';
+        //             }
+        //         }
+        //         else    // Average of criterias
+        //         {
+        //             if ($average_scores = Score::selectRaw('COUNT(id) AS count, SUM(score) AS sum')->where('examiner_id', $examiner->id)->where('criteria_id', $evaluation->criteria_id)->first())
+        //             {
+        //                 dd($average_scores);
+        //                 $scores['average_'.$cr['criteria_average']['criteria_id']] = $average_scores->sum / $average_scores->count;
+        //             }
+        //             else
+        //             {
+        //                 $scores['average_'.$cr['criteria_average']['criteria_id']] = '-';
+        //             }
+        //         }
+        //     }
+
+        //     $criteria_referee_examiner[$key]['criteria_referee'] = $scores;
+        //     $criteria_referee_examiner[$key]['score'] = $examiner->score;
+        // }
         // dd($criteria_referee_examiner);
 
-        return view('admin.steps.result', ['competition' => $competition, 'step' => $step, 'criteria_referee' => $criteria_referee, 'criteria_referee_examiner' => $criteria_referee_examiner]);
+        foreach ($step->evaluations as $key => $value) {
+            # code...
+        }
+
+
+        return view('admin.steps.result', ['competition' => $competition, 'step' => $step, 'criterias_referees' => $criterias_referees, 'criteria_referee_examiner' => $criteria_referee_examiner]);
     }
 }

@@ -33,7 +33,7 @@
         <div class="card-header">
             <div class="card-title">
                 <div class="position-relative my-1">
-                    <form method="GET" action="{{ route('admin.scores.index', ['step' => $step->id]) }}">
+                    {{-- <form method="GET" action="{{ route('admin.scores.index', ['step' => $step->id]) }}">
                         <div class="input-group input-group-sm input-group-solid">
                             <button type="submit" class="input-group-text btn-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -43,7 +43,7 @@
                             </button>
                             <input type="text" class="form-control form-control-solid" placeholder="جست و جو ..." name="search_item" />
                         </div>
-                    </form>
+                    </form> --}}
                 </div>
             </div>
         </div>
@@ -83,6 +83,13 @@
                                     <th class="text-center">{{ $cre['criteria_referee'][$cr['criteria_id'].$cr['referee_id']] }}</th>
                                 @endforeach
                                 <th class="text-center">
+                                    @foreach ($step->evaluations as $evaluation)
+                                        @if ($evaluation->refereeing_type == 'average')
+                                            @php
+
+                                            @endphp
+                                        @endif
+                                    @endforeach
                                     @php
 
                                     @endphp
