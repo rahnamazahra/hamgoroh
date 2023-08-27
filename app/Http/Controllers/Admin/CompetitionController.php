@@ -210,7 +210,7 @@ class CompetitionController extends Controller
                 return [
                     'field' => $field->title,
                     'participants' => $this->getParticipants($field, $competition),
-                    'examiners' => $this->fieldExaminersByAgeGroup($field),
+                    'examiners' => $this->getExaminers($field),
                 ];
             })
             ->toArray();
@@ -232,28 +232,8 @@ class CompetitionController extends Controller
         return $participantsByField;
     }
 
-    public function getExaminers()
+    public function getExaminers($field)
     {
     }
 
 }
-
-
-//$fields = Field:: whereHas('groups', fn($query) => $query->whereIn('groups.id', $competition->groups()->pluck('id')))
-    //     ->get()
-    //     ->toArray();
-
-    //     $Participant = $this->getParticipants($fields, $competition);
-    //     return $Participant;
-
-
-
-    // $ages = $competition->ages();
-        // $participants = [];
-
-        // foreach($fields as $field)
-        // {
-        //     $participants = Participant::where('competition_id', $competition->id)->where('field_id', $field->id)->get();
-        // }
-
-        // retrun $participants;
