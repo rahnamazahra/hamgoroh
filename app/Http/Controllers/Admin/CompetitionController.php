@@ -197,25 +197,58 @@ class CompetitionController extends Controller
 
     public function charts(Competition $competition)
     {
-    //     $chartNumberUsersChallange = $this->getFields($competition);
-    //   //  dd($chartNumberUsersChallange);
-    //     return view('admin.competitions.charts', ['chartNumberUsersChallange' => $chartNumberUsersChallange]);
+        $chartNumberUsersChallange = $this->getFields($competition);
+        dd($chartNumberUsersChallange);
+        return view('admin.competitions.charts', ['chartNumberUsersChallange' => $chartNumberUsersChallange]);
     }
 
     public function getFields(Competition $competition)
     {
-    //     $fields = Field:: whereHas('groups', fn($query) => $query->whereIn('groups.id', $competition->groups()->pluck('id')))
+        return Field::whereHas('groups', fn($query) => $query->whereIn('groups.id', $competition->groups()->pluck('id')))
+            ->get()
+            ->map(function ($field) use ($competition) {
+                return [
+                    'field' => $field->title,
+                    'participants' => $this->getParticipants($field, $competition),
+                    'examiners' => $this->fieldExaminersByAgeGroup($field),
+                ];
+            })
+            ->toArray();
+    }
+
+    public function getParticipants($field, Competition $competition)
+    {
+        $competition = Competition::with('ages.challenges.participants')->find($competition);
+
+        $participantsByField = $competition->ages->flatMap(function ($age) use ($field) {
+
+        return $age->challenges->flatMap(function ($challenge) use ($field) {
+                return $challenge->participants->filter(function ($participant) use ($field) {
+                    return $participant->getFieldTitle() === $field->title;
+                });
+            });
+        });
+
+        return $participantsByField;
+    }
+
+    public function getExaminers()
+    {
+    }
+
+}
+
+
+//$fields = Field:: whereHas('groups', fn($query) => $query->whereIn('groups.id', $competition->groups()->pluck('id')))
     //     ->get()
     //     ->toArray();
 
     //     $Participant = $this->getParticipants($fields, $competition);
     //     return $Participant;
 
-    }
 
-    public function getParticipants($fields, Competition $competition)
-    {
-        // $ages = $competition->ages();
+
+    // $ages = $competition->ages();
         // $participants = [];
 
         // foreach($fields as $field)
@@ -224,10 +257,3 @@ class CompetitionController extends Controller
         // }
 
         // retrun $participants;
-
-    }
-
-
-}
-
-
