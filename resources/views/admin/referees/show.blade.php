@@ -18,7 +18,13 @@
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-dark">نمره دهی</li>
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('admin.referee.create', ['step' => $step]) }}" class="text-muted text-hover-primary">نمره دهی</a>
+        </li>
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <li class="breadcrumb-item text-dark">لیست کاربران</li>
     </ul>
 @endsection
 

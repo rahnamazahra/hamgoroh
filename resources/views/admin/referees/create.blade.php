@@ -27,27 +27,7 @@
         <div class="card-header">
             <div class="card-title">
                 <div class="d-flex justify-content-between gap-lg-15">
-                    @php
-                        if ($examiner != null)
-                            $examinerUser = \App\Models\Examiner::find($examiner);
-                        else{
-                            if ($step->level == 'provincial'){
-                                foreach ($nomre_nadar as $item){
-                                    $test = \App\Models\Examiner::find($item);
-                                    if ($test->participant->user->province->title == $referee->province->title){
-                                        $examinerUser = $test;
-                                        break;
-                                    }
-                                    else
-                                        $examinerUser = null;
-                                }
-                            }
-                            else{
-                                $firstItem = reset($nomre_nadar);
-                                $examinerUser = \App\Models\Examiner::find($firstItem);
-                            }
-                        }
-                    @endphp
+
                     @if($examinerUser)
                         @php
                             $no_examiner = false;
@@ -88,7 +68,7 @@
                                 <div class="row g-9">
                                     <input type="hidden" name="examiner_id" class="form-control"
                                            value="{{$examinerUser->id}}"/>
-                                    @foreach($criterias as $item)
+                                    @foreach($criteria_result['criteria'] as $item)
                                         @php
                                             $criteria = \App\Models\Criteria::find($item);
                                             $point = \App\Models\Evaluation::where('step_id', $step->id)->where('criteria_id', $criteria->id)->first()->point;
