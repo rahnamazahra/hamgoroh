@@ -197,33 +197,33 @@ class CompetitionController extends Controller
 
     public function charts(Competition $competition)
     {
-        $chartNumberUsersChallange = $this->getFields($competition);
-        dd($chartNumberUsersChallange);
-        return view('admin.competitions.charts', ['chartNumberUsersChallange' => $chartNumberUsersChallange]);
+    //     $chartNumberUsersChallange = $this->getFields($competition);
+    //   //  dd($chartNumberUsersChallange);
+    //     return view('admin.competitions.charts', ['chartNumberUsersChallange' => $chartNumberUsersChallange]);
     }
 
     public function getFields(Competition $competition)
     {
-        $fields = Field:: whereHas('groups', fn($query) => $query->whereIn('groups.id', $competition->groups()->pluck('id')))
-        ->get()
-        ->toArray();
+    //     $fields = Field:: whereHas('groups', fn($query) => $query->whereIn('groups.id', $competition->groups()->pluck('id')))
+    //     ->get()
+    //     ->toArray();
 
-        $x = $this->getParticipants($fields, $competition);
-        return $x;
+    //     $Participant = $this->getParticipants($fields, $competition);
+    //     return $Participant;
 
     }
 
     public function getParticipants($fields, Competition $competition)
     {
-        $ages = $competition->ages();
-        $participants = [];
+        // $ages = $competition->ages();
+        // $participants = [];
 
-        foreach($fields as $field)
-        {
-            $participants = Participant::where('competition_id', $competition->id)->where('field_id', $field->id)->get();
-        }
+        // foreach($fields as $field)
+        // {
+        //     $participants = Participant::where('competition_id', $competition->id)->where('field_id', $field->id)->get();
+        // }
 
-        retrun $participants;
+        // retrun $participants;
 
     }
 
