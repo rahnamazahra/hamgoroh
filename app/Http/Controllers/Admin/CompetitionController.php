@@ -91,6 +91,16 @@ class CompetitionController extends Controller
         return view('admin.competitions.show', ['competition' => $competition, 'challenges' => $challenges]);
     }
 
+    public function main_edit(Competition $competition)
+    {
+        $users = User::get();
+
+        $letter_method = $competition->files->where('related_field', 'letter_method')->pluck('path')->first();
+        $banner = $competition->files->where('related_field', 'banner')->pluck('path')->first();
+
+        return view('admin.competitions.mainEdit', ['competition' => $competition, 'users' => $users, 'letter_method' => $letter_method, 'banner' => $banner]);
+    }
+
 
     /**
      * Update the specified resource in storage.

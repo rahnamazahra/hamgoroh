@@ -61,6 +61,7 @@
                 @if($no_examiner == true)
                     <span>کاربری وجود ندارد</span>
                 @else
+{{--                    @dd($examinerUser->id)--}}
                     <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <form method="POST" action="{{ route('admin.referee.store', ['step' => $step->id]) }}">
@@ -102,7 +103,34 @@
                         <div class="col-md-6 fv-row">
                             @switch($step->type)
                                 @case('text')
-
+                                    <div class="text-center my-auto bg-gray-200 p-3">
+                                        <p>{{ \App\Models\Text::where('examiner_id', $examinerUser->id)->first()->text ?? '' }}</p>
+                                    </div>
+                                    @break
+                                @case('document_upload')
+                                    @php
+                                        $path = \App\Models\Upload::where('examiner_id', $examinerUser->id)->first()->path;
+                                    @endphp
+                                <div class="text-center my-auto">
+                                    <a href="{{ url('upload/'.$path) }}"
+                                       class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary btn-hover-rise">
+                                        <i class="bi bi-download"></i>
+                                        دانلود فایل امتحان</a> </div>
+                                    @break
+                                @case('image_upload')
+                                    @php
+                                        $path = \App\Models\Upload::where('examiner_id', $examinerUser->id)->first()->path;
+                                    @endphp
+                                    <img src="{{ asset('upload/'.$path) }}" alt="" style="width: 500px">
+                                    @break
+                                @case('video_upload')
+                                    @php
+                                        $path = \App\Models\Upload::where('examiner_id', $examinerUser->id)->first()->path;
+                                    @endphp
+                                    <video width="500" height="400" controls>
+                                        <source src="{{ asset('upload/'.$path) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
                                     @break
 
                             @endswitch

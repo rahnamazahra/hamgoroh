@@ -85,12 +85,35 @@
                                         $letter_method = \App\Models\File::where('fileable_id', $competition->id)->where('related_field', 'letter_method')->pluck('path')->first();
                                     @endphp
                                     @if($letter_method)
-
                                     <a href="{{ url('upload/'.$letter_method) }}" class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary btn-hover-rise">
                                         <i class="bi bi-download"></i>
                                         دانلود شیوه نامه
                                     </a>
                                     @endif
+
+
+                                    <button class="btn btn-sm btn-primary show menu-dropdown"
+                                            data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true"> ویرایش
+                                    </button>
+
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-bold w-200px" data-kt-menu="true" style="z-index: 105; position: absolute; inset: auto 0px 0px auto; margin: 0px; transform: translate(-42px, 0px);" data-popper-placement="top-end" data-popper-reference-hidden="" data-popper-escaped="">
+                                        <!--begin::Menu separator-->
+                                        <div class="separator mb-3 opacity-75"></div>
+                                        <!--end::Menu separator-->
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="{{ route('admin.competitions.main_edit', ['competition' => $competition->id]) }}" class="menu-link px-3">اطلاعات مسابقه</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="{{ route('admin.groups.index', ['competition' => $competition->id]) }}" class="menu-link px-3">سبد و رشته</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                    </div>
+
+
+
                                     <a href="{{ route('admin.competitions.result', ['competition' => $competition->id]) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="نتایج">نتایج آزمون</a>
                                 </div>
                             </div>
@@ -103,6 +126,9 @@
             <div class="card shadow-sm col-xl-12 my-10">
                 <div class="card-header">
                     <div class="card-title"> رشته {{ $challenge->field->title }} </div>
+                    <div class="card-toolbar">
+                        <a href="{{ route('admin.challenges.selfCreate', ['competition' => $competition->id, 'field' => $challenge->field->id]) }}" class="btn btn-sm btn-active-primary btn-outline btn-outline-primary btn-text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom">زیررشته جدید</a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row g-9">
@@ -151,7 +177,10 @@
                                         <td></td>
                                         <td class="text-end">
                                             <div class="btn btn-group-sm">
-                                                @if($challenge->description != null)
+                                                <a href="{{ route('admin.steps.selfCreate', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-sm btn-active-primary btn-outline btn-outline-primary btn-text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom">مرحله جدید</a>
+                                                <a href="{{ route('admin.challenges.selfEdit', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-active-success btn-outline btn-outline-success btn-text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">ویرایش</a>
+                                                <button name="btn_delete_item" class="btn btn-active-danger btn-outline btn-outline-danger btn-text-danger" data-id="{{ $challenge->id }}" data-url="{{ route('admin.challenges.delete', ['challenge' => $challenge->id]) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">حذف</button>
+                                            @if($challenge->description != null)
                                                 <a href="{{ route('admin.challenges.info.create', ['competition' => $competition->id, 'challenge' => $challenge->id]) }}" class="btn btn-icon-success btn-active-icon-success btn-active-secondary  btn-text-gray-700" data-bs-toggle="tooltip" data-bs-placement="bottom" title="اطلاعات تکمیلی"><span class="svg-icon svg-icon-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                     <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
                                                     <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>
@@ -228,6 +257,8 @@
                                             </td>
                                             <td class="text-end">
                                                 <div class="btn btn-group-sm">
+                                                    <a href="{{ route('admin.steps.selfEdit', ['competition' => $competition->id, 'step' => $step->id]) }}" class="btn btn-active-success btn-outline btn-outline-success btn-text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="ویرایش">ویرایش</a>
+                                                    <button name="btn_delete_item" class="btn btn-active-danger btn-outline btn-outline-danger btn-text-danger" data-id="{{ $step->id }}" data-url="{{ route('admin.steps.delete', ['step' => $step->id]) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف">حذف</button>
                                                     @if($step->schedules()->exists())
                                                     <a href="{{ route('admin.schedules.index', ['step' => $step->id])}}" class="btn btn-icon-success btn-active-icon-success btn-active-secondary  btn-text-gray-700" data-bs-toggle="tooltip" data-bs-placement="bottom" title="زمان‌بندی"><span class="svg-icon svg-icon-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                     <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>

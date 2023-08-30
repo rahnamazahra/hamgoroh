@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GroupRequest extends FormRequest
+class SelfChallengeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,15 +21,17 @@ class GroupRequest extends FormRequest
      */
     public function rules(): array
     {
-        switch ($this->method())
-        {
+        switch ($this->method()) {
             case 'GET':
 
 
             case 'POST':
 
                 $rules = [
-                    'groups' => 'required'
+                    'field_id' => 'required',
+                    'age_id' => 'required',
+                    'gender' => 'required',
+                    'nationality' => 'required'
                 ];
 
                 return $rules;
@@ -37,16 +39,16 @@ class GroupRequest extends FormRequest
             case 'PUT':
 
             case 'PATCH':
-                $group = $this->route()->parameter('group');
                 return [
-                    'title' => 'required|string|min:3',
-                    'fields' => 'required',
-                    'image' => 'required|file|mimes:jpeg,png,jpg,gif,svg,jfif|max:4096',
+                    'age_id' => 'required',
+                    'gender' => 'required',
+                    'nationality' => 'required'
                 ];
 
             case 'DELETE':
 
-            default:break;
+            default:
+                break;
         }
     }
 }

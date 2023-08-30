@@ -44,7 +44,7 @@
                                 @php
                                     $steps = \App\Models\Step::find($step);
                                 @endphp
-                                <th class="fs-4"><a href="{{ route('admin.referee.create', ['step' => $steps->id]) }}">{{ $steps->challenge->challengeName() . ' '. $steps->title }}</a></th>
+                                <th class="fs-4"><a href="{{ route('admin.referee.create', ['step' => $steps->id]) }}">{{ $steps->challenge->id . ' '. $steps->title }}</a></th>
                             </tr>
                         @endforeach
                         </thead>

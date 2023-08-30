@@ -114,6 +114,7 @@ Route::controller(CompetitionController::class)->group(function () {
     Route::post('/competitions', 'store')->name('admin.competitions.store');
     Route::get('/competitions/{competition}/show', 'show')->name('admin.competitions.show');
     Route::get('/competitions/{competition}/edit', 'edit')->name('admin.competitions.edit');
+    Route::get('/competitions/{competition}/main_edit', 'main_edit')->name('admin.competitions.main_edit');
     Route::patch('/competitions/{competition}', 'update')->name('admin.competitions.update');
     Route::delete('/competitions/{competition}/delete', 'delete')->name('admin.competitions.delete');
     Route::get('/competitions/{competition}/charts', 'charts')->name('admin.competitions.charts');
@@ -123,10 +124,14 @@ Route::controller(CompetitionController::class)->group(function () {
 
 // Groups
 Route::controller(GroupController::class)->group(function () {
-    Route::get('/groups', 'index')->name('admin.groups.index');
+    Route::get('/groups/competition/{competition}', 'index')->name('admin.groups.index');
     Route::get('/competition/{competition}/groups/create', 'create')->name('admin.groups.create');
     Route::post('/competition/{competition}/groups', 'store')->name('admin.groups.store');
-    Route::patch('/competition/{competition}/groups', 'update')->name('admin.groups.update');
+    Route::get('/competition/{competition}/groups/{group}', 'edit')->name('admin.groups.edit');
+    Route::patch('/competition/{competition}/groups/{group}', 'update')->name('admin.groups.update');
+    Route::delete('/groups/{group}/delete', 'delete')->name('admin.groups.delete');
+    Route::get('/competition/{competition}/groups-self/create', 'selfCreate')->name('admin.groups.selfCreate');
+    Route::post('/competition/{competition}/groups-self', 'selfStore')->name('admin.groups.selfStore');
 });
 
 // Challenges
@@ -135,12 +140,20 @@ Route::controller(ChallengeController::class)->group(function () {
     Route::post('/competition/{competition}/challenges/store', 'store')->name('admin.challenges.store');
     Route::get('/competition/{competition}/challenges/edit', 'edit')->name('admin.challenges.edit');
     Route::patch('/competition/{competition}/challenges/update', 'update')->name('admin.challenges.update');
-    Route::delete('/competition/{competition}/challenges/{challenge}/delete', 'delete')->name('admin.challenges.delete');
+//    Route::delete('/competition/{competition}/challenges/{challenge}/delete', 'delete')->name('admin.challenges.delete');
     Route::get('/competition/{competition}/challenge/{challenge}/info/create', 'createInfo')->name('admin.challenges.info.create');
     Route::post('/competition/{competition}/challenge/{challenge}/info/store', 'storeInfo')->name('admin.challenges.info.store');
     Route::get('/competition/{competition}/challenge/{challenge}/schedule/create', 'createSchedule')->name('admin.challenges.schedule.create');
     Route::post('/competition/challenge/{challenge}/schedule/store', 'StoreSchedule')->name('admin.challenges.schedule.store');
     Route::get('/competition/{competition}/challenges/{challenge}/results', 'result')->name('admin.challenges.result');
+
+    Route::get('/competition/{competition}/field/{field}/challenges/create', 'selfCreate')->name('admin.challenges.selfCreate');
+    Route::post('/competition/{competition}/challenges-self/store', 'selfStore')->name('admin.challenges.selfStore');
+    Route::get('/competition/{competition}/challenge/{challenge}/edit', 'selfEdit')->name('admin.challenges.selfEdit');
+    Route::patch('/competition/{competition}/challenge/{challenge}/update', 'selfUpdate')->name('admin.challenges.selfUpdate');
+    Route::delete('/challenges/{challenge}/delete', 'delete')->name('admin.challenges.delete');
+
+
 });
 
 // steps
@@ -150,6 +163,13 @@ Route::controller(StepController::class)->group(function () {
     Route::get('/competition/{competition}/steps/edit', 'edit')->name('admin.steps.edit');
     Route::patch('/competition/{competition}/steps/update', 'update')->name('admin.steps.update');
     Route::get('/steps/{step}/results', 'result')->name('admin.steps.result');
+
+    Route::get('/competition/{competition}/challenge/{challenge}/steps/create', 'selfCreate')->name('admin.steps.selfCreate');
+    Route::post('/competition/{competition}/steps-self/store', 'selfStore')->name('admin.steps.selfStore');
+    Route::get('/competition/{competition}/step/{step}/edit', 'selfEdit')->name('admin.steps.selfEdit');
+    Route::patch('/competition/{competition}/step/{step}/update', 'selfUpdate')->name('admin.steps.selfUpdate');
+    Route::delete('/steps/{step}/delete', 'delete')->name('admin.steps.delete');
+
 });
 
 // Techniques

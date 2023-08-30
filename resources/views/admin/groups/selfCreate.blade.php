@@ -31,28 +31,20 @@
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-dark">ویرایش گروه</li>
+        <li class="breadcrumb-item text-dark">ایجاد گروه</li>
     </ul>
 @endsection
 
 @section('content')
     <div class="card shadow-sm">
-        <form method="POST" action="{{ route('admin.groups.update', ['competition' => $competition->id, 'group' => $group->id]) }}" enctype="multipart/form-data">
-            @method('PATCH')
+        <form method="POST" action="{{ route('admin.groups.selfStore', ['competition' => $competition->id]) }}" enctype="multipart/form-data">
             @csrf
-            <div class="card-header">
-                <div class="card-title">ویرایش گروه {{ $group->title }}</div>
-            </div>
             <div class="card-body">
                 <div class="row g-9">
                     <div class="col-md-12 fv-row">
-                        <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
-                            @if($image)
-                                <div class="image-input-wrapper w-125px h-125px" style="background-image: url('{{ asset('/upload/'. $image) }}')"></div>
-                            @else
-                                <div class="image-input-wrapper w-125px h-125px" style="background-image: url('{{ asset('admin/assets/media/icons/duotune/general/gen006.svg') }}')"></div>
-                            @endif
-                            <label class="btn btn-icon btn-circle btn-active-color-success w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="" data-bs-original-title="تغییر تصویر">
+                        <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('{{ asset('admin/assets/media/avatars/man.png') }}')">
+                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url('{{ asset('admin/assets/media/icons/duotune/general/gen006.svg') }}')"></div>
+                            <label class="btn btn-icon btn-circle btn-active-color-success w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="" data-bs-original-title="تغییر عکس">
                                 <span class="svg-icon svg-icon-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <path opacity="0.3"d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="currentColor"></path>
@@ -64,19 +56,19 @@
                                 <input type="hidden" name="avatar_remove">
                             </label>
                         </div>
-                        <div class="form-text"> فایل های مجاز: png, jpg, jpeg.</div>
+                        <div class="form-text"> فایل های مجاز: jpeg, png, jpg, gif, svg, jfif.</div>
                     </div>
 
-                    <div class="col-md-6 fv-row">
+                    <div class="col-md-12 fv-row">
                         <label for="title" class="required form-label">عنوان</label>
-                        <input type="text" class="form-control form-control-solid" id="title" name="title" value="{{ old('title', $group->title) }}" />
+                        <input type="text" class="form-control form-control-solid" id="title" name="title" value="{{ old('title') }}" />
                     </div>
                     <div class="col-md-12 fv-row">
                         <label for="fields" class="required form-label">‌رشته‌ها</label>
                         <select class="form-select form-select-solid" id="fields" name="fields[]" data-control="select2" data-placeholder="لطفا انتخاب کنید" multiple="multiple">
                             <option></option>
                             @foreach($fields as $field)
-                                <option value="{{ $field->id }}" @selected((old('fields') and in_array($field->id, old('fields'))) or $group->fields->contains($field->id))>{{ $field->title }}</option>
+                                <option value="{{ $field->id }}" @selected(old('fields') and in_array($field->id, old('fields')))>{{ $field->title }}</option>
                             @endforeach
                         </select>
                     </div>

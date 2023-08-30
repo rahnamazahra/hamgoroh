@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\SelfChallengeRequest;
 use App\Models\Examiner;
+use App\Models\Field;
 use App\Models\Participant;
 use App\Models\Step;
 use Exception;
@@ -362,6 +364,31 @@ class ChallengeController extends Controller
         }
     }
 
+    public function selfCreate(Competition $competition, Field $field)
+    {
+        $ages = AgeRange::where('competition_id', $competition->id)->get();
+
+        return view('admin.challenges.selfCreate', ['competition' => $competition, 'field' => $field, 'ages' => $ages]);
+    }
+
+    public function selfStore(SelfChallengeRequest $request, Competition $competition)
+    {
+        try {
+//            dd($request->all());
+            Challenge::create([
+                'field_id' => $request->input('field_id'),
+                'age_id' => $request->input('age_id'),
+                'gender' => $request->input('gender'),
+                'nationality' => $request->input('nationality'),
+            ]);
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.competitions.show', ['competition' => $competition]);
+        }
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.competitions.show', ['competition' => $competition->id]);
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -384,9 +411,40 @@ class ChallengeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
+    public function selfEdit(Competition $competition, Challenge $challenge)
+    {
+        $ages = AgeRange::where('competition_id', $competition->id)->get();
+
+        return view('admin.challenges.selfEdit', ['competition' => $competition, 'challenge' => $challenge, 'ages' => $ages]);
+
+    }
+
+    public function selfUpdate(SelfChallengeRequest $request, Competition $competition, Challenge $challenge)
+    {
+        try {
+            $challenge->update([
+                'age_id' => $request->input('age_id'),
+                'gender' => $request->input('gender'),
+                'nationality' => $request->input('nationality'),
+            ]);
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.competitions.show', ['competition' => $competition]);
+        }
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.competitions.show', ['competition' => $competition->id]);
+        }
+    }
     public function delete(Challenge $challenge)
     {
-        //
+        try {
+            $challenge->delete();
+            return response()->json(['success' => true], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
+        }
     }
 
     public function createInfo(Competition $competition, Challenge $challenge)

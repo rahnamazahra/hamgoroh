@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\SelfGroupRequest;
 use Exception;
 use App\Models\File;
 use App\Models\Group;
@@ -18,10 +19,10 @@ class GroupController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Competition $competition, Request $request)
     {
         $item = $request->query('search_item');
-        $groups = Group::with(['competition', 'fields'])
+        $groups = Group::with(['competition', 'fields'])->where('competition_id', $competition->id)
             ->when($item, function (Builder $builder) use ($item) {
                 $builder->where('title', 'LIKE', "%{$item}%")
                     ->orWhereRelation('competition', 'title', 'LIKE', "%{$item}%")
@@ -29,14 +30,14 @@ class GroupController extends Controller
             })
             ->paginate(10);
 
-        return view('admin.groups.index', ['groups' => $groups]);
+        return view('admin.groups.index', ['competition' => $competition, 'groups' => $groups]);
     }
 
     public function create(Competition $competition)
     {
         $fields = Field::get();
 
-        return view('admin.groups.index', ['fields' => $fields, 'competition' => $competition]);
+        return view('admin.groups.create', ['fields' => $fields, 'competition' => $competition]);
     }
 
     /**
@@ -83,68 +84,131 @@ class GroupController extends Controller
 
     }
 
-    public function edit(Competition $competition)
+    public function selfCreate(Competition $competition)
     {
         $fields = Field::get();
 
-        return view('admin.groups.edit', ['fields' => $fields, 'competition' => $competition]);
+        return view('admin.groups.selfCreate', ['fields' => $fields, 'competition' => $competition]);
+    }
+
+    public function selfStore(SelfGroupRequest $request, Competition $competition)
+    {
+        try {
+            $group = Group::create([
+                'title' => $request->input('title'),
+                'competition_id' => $competition->id,
+            ]);
+            $group->fields()->attach($request->input('fields'), ['competition_id' => $competition->id]);
+
+            $image = $request->file('image');
+            $storage_dir = '/groups';
+            uploadFile($storage_dir, ['image' => $image], ['fileable_id' => $group->id, 'fileable_type' => Group::class]);
+
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.groups.index', ['competition' => $competition]);
+
+        }
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.groups.index', ['competition' => $competition]);
+        }
+    }
+
+    public function edit(Competition $competition, Group $group)
+    {
+        $fields = Field::get();
+
+        $image = $group->files->where('fileable_id', $group->id)->where('fileable_type', 'App\Models\Group')->pluck('path')->first();
+
+
+        return view('admin.groups.edit', ['competition' => $competition, 'fields' => $fields, 'group' => $group, 'image' => $image]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(GroupRequest $request, Competition $competition)
+    public function update(GroupRequest $request, Competition $competition, Group $group)
     {
         try {
-            $items = Group::where('competition_id', $competition->id)->get();
-            foreach ($items as $item)
-            {
-                $file = $item->files->where('related_field','image')->where('fileable_id', $item['id']) //need test
-                    ->where('fileable_type', 'App\Models\Group')->first();
-                if ($file)
-                {
-                    purge($file->path);
-                    $file->delete();
-                }
+//            dd($competition->id);
+            $group->update([
+                'title' => $request->input('title')
+            ]);
+            $group->fields()->sync($request->input('fields'), ['competition_id' => 1]);
 
-                $item->find($item['id'])->delete();
-            }
+//            foreach ($request->input('fields') as $field) {
+//                $dataToSync = [
+//                    'field_id' => $field,
+//                    'competition_id' => $competition->id,
+//                ];
+//                $group->fields()->syncWithoutDetaching($dataToSync);
+//            }
 
-            $data = $request->all();
+                if ($request->hasFile('image')) {
+                    $file = $group->files->where('related_field', 'image')
+                        ->where('fileable_type', 'App\Models\Group')->where('fileable_id', $group->id)->first();
 
-            foreach ($data['groups'] as $group)
-            {
-                if ($group['title'])
-                {
-                    $groups = Group::create([
-                        'competition_id' => $competition->id,
-                        'title' => $group['title'],
-                    ]);
-
-                    if ($group['image'])
-                    {
-                        $file = File::query()->where('fileable_id', $groups->id)->first();
-
-                        if ($file)
-                        {
-                            purge($file->path);
-                            $file->delete();
-                        }
-                        $storage_dir = '/group';
-                        uploadFile($storage_dir, ['image' => $group['image']], ['fileable_id' => $groups->id, 'fileable_type' => Group::class]);
+                    if ($file) {
+                        purge($file->path);
+                        $file->delete();
                     }
-
-                    $groups->fields()->attach($group['fields'], ['competition_id' => $competition->id]);
+                    $image = $request->file('image');
+                    $storage_dir = '/groups';
+                    uploadFile($storage_dir, ['image' => $image], ['fileable_id' => $group->id, 'fileable_type' => Group::class]);
                 }
-            }
+//            $items = Group::where('competition_id', $competition->id)->get();
+//            foreach ($items as $item)
+//            {
+//                $file = $item->files->where('related_field','image')->where('fileable_id', $item['id']) //need test
+//                    ->where('fileable_type', 'App\Models\Group')->first();
+//                if ($file)
+//                {
+//                    purge($file->path);
+//                    $file->delete();
+//                }
+//
+//                $item->find($item['id'])->delete();
+//            }
+//
+//            $data = $request->all();
+//
+//            foreach ($data['groups'] as $group)
+//            {
+//                if ($group['title'])
+//                {
+//                    $groups = Group::create([
+//                        'competition_id' => $competition->id,
+//                        'title' => $group['title'],
+//                    ]);
+//
+//                    if ($group['image'])
+//                    {
+//                        $file = File::query()->where('fileable_id', $groups->id)->first();
+//
+//                        if ($file)
+//                        {
+//                            purge($file->path);
+//                            $file->delete();
+//                        }
+//                        $storage_dir = '/group';
+//                        uploadFile($storage_dir, ['image' => $group['image']], ['fileable_id' => $groups->id, 'fileable_type' => Group::class]);
+//                    }
+//
+//                    $groups->fields()->attach($group['fields'], ['competition_id' => $competition->id]);
+//                }
+//            }
 
-            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
-            return redirect()->route('admin.challenges.create', ['competition' => $competition]);
+                Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+                return redirect()->route('admin.groups.index', ['competition' => $competition]);
+        }catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 500);
         }
-        catch (Exception $e) {
-            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
-            return redirect()->route('admin.groups.index');
-        }
+//        catch (Exception $e) {
+//            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+//            return redirect()->route('admin.groups.index', ['competition' => $competition]);
+//        }
 
     }
 

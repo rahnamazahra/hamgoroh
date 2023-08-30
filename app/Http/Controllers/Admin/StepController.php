@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\SelfStepRequest;
 use Exception;
 use App\Models\Step;
 use App\Models\Score;
@@ -76,6 +77,25 @@ class StepController extends Controller
 
     }
 
+    public function selfCreate(Competition $competition, Challenge $challenge)
+    {
+        return view('admin.steps.selfCreate', ['competition' => $competition, 'challenge' => $challenge]);
+    }
+
+    public function selfStore(SelfStepRequest $request, Competition $competition)
+    {
+        try {
+            Step::create($request->all());
+
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.competitions.show', ['competition' => $competition]);
+        }
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.competitions.show', ['competition' => $competition->id]);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -122,12 +142,37 @@ class StepController extends Controller
 
     }
 
+    public function selfEdit(Competition $competition, Step $step)
+    {
+        return view('admin.steps.selfEdit', ['competition' => $competition, 'step' => $step]);
+
+    }
+
+    public function selfUpdate(SelfStepRequest $request, Competition $competition, Step $step)
+    {
+        try {
+            $step->update($request->all());
+
+            Alert('success', 'اطلاعات باموفقیت ثبت شد.');
+            return redirect()->route('admin.competitions.show', ['competition' => $competition]);
+        }
+        catch (Exception $e) {
+            Alert('error', 'اشکالی ناشناخته به وجود آمده است.');
+            return redirect()->route('admin.competitions.show', ['competition' => $competition->id]);
+        }
+    }
     /**
      * Remove the specified resource from storage.
      */
     public function delete(Step $step)
     {
-        //
+        try {
+            $step->delete();
+            return response()->json(['success' => true], 200);
+        }
+        catch (Exception $e) {
+            return response()->json(['success' => false, 'errors' => $e], 400);
+        }
     }
 
 

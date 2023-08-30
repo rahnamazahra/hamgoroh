@@ -10,6 +10,7 @@ use App\Models\Evaluation;
 use App\Models\Examiner;
 use App\Models\Score;
 use App\Models\Step;
+use App\Models\Upload;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -210,5 +211,28 @@ class RefereeController extends Controller
 
 //        dd($results);
         return view('admin.referees.show', ['referee' => $referee, 'step' => $step, 'results' => $results]);
+    }
+
+    public function test(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $storage_dir = '/Test';
+            $file = $request->file('file');
+            $fileName = time().'_'.$file->getClientOriginalName();
+            $path     = $file->storeAs($storage_dir, $fileName);
+            Upload::create([
+                'examiner_id'    => $request->examiner_id,
+                'path'           => $path,
+                'size'           => $file->getSize(),
+                'mime'           => $file->getClientMimeType(),
+            ]);
+            return response()->json([
+                'success' => true
+            ], 200);
+        }catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 500);
+        }
     }
 }
