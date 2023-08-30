@@ -226,7 +226,7 @@ class UserController extends Controller
 
        $users = User::select('first_name', 'last_name', 'is_active', 'phone', 'province_id', 'national_code', 'gender', 'birthday_date')->with(['roles', 'city.province', 'files']);
 
-        if ($queryParams['search_item'])
+        if (array_key_exists('search_item', $queryParams))
         {
             $search_item = $queryParams['search_item'];
             $users->when($search_item, function (Builder $builder) use ($search_item) {
@@ -238,20 +238,20 @@ class UserController extends Controller
             });
         }
 
-        if ($queryParams['status_item'] != 'all')
+        if (array_key_exists('status_item', $queryParams) AND $queryParams['status_item'] != 'all')
         {
             $status_item = $queryParams['status_item'];
             $users->where('is_active', $status_item);
         }
 
-        if ($queryParams['gender_item'] != 'all')
+        if (array_key_exists('gender_item', $queryParams) AND $queryParams['gender_item'] != 'all')
         {
             $gender_item = $queryParams['gender_item'];
 
             $users->where('gender', $gender_item);
         }
 
-        if ($queryParams['roles_item'] != 'all')
+        if (array_key_exists('roles_item', $queryParams) AND $queryParams['roles_item'] != 'all')
         {
             $roles_item  = $queryParams['roles_item'];
 
@@ -260,7 +260,7 @@ class UserController extends Controller
             });
         }
 
-        if ($queryParams['evidence_item'] != 'all')
+        if (array_key_exists('evidence_item', $queryParams) AND $queryParams['evidence_item'] != 'all')
         {
             $evidence_item = $queryParams['evidence_item'];
 
@@ -274,7 +274,7 @@ class UserController extends Controller
             }
         }
 
-        if ($queryParams['province_item'] != 'all')
+        if (array_key_exists('province_item', $queryParams) AND $queryParams['province_item'] != 'all')
         {
             $province_item = $queryParams['province_item'];
 

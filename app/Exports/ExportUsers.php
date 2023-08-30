@@ -44,7 +44,7 @@ class ExportUsers implements FromCollection, WithHeadings, WithMapping
             $user->last_name,
             $user->is_active ? 'فعال' : 'غیرفعال',
             $user->phone,
-            $user->city->province->title,
+            $user->province->title,
             $user->national_code,
             $user->gender ? 'مرد' : 'زن',
             Jalalian::fromCarbon(Carbon::parse($user->birthday_date))->format('Y/m/d'),
